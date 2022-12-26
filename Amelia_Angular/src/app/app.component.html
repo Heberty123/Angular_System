@@ -1,13 +1,38 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-   <mat-icon>menu</mat-icon>
- </button>
- <span>My App</span>
- <span class="example-spacer"></span>
- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-   <mat-icon>information</mat-icon>
- </button>
- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-  <mat-icon>logout</mat-icon>
-</button>
+<mat-toolbar class="toolbar-height" (click)="closeByClickOut();" color="primary">
+  <mat-toolbar-row>
+    <button class="box-button-menu" (click)="drawer.toggle();">
+      <mat-icon >menu</mat-icon>
+      <h1>Amélia Revendedora</h1>
+    </button>
+  </mat-toolbar-row>
 </mat-toolbar>
+
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" [(opened)]="opened" mode="side" >
+    <div class="drawer-area">
+    <mat-list>
+      <mat-list-item>
+        <button mat-icon-button>
+          <mat-icon>home</mat-icon>
+          Home
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-icon-button>
+          <mat-icon (click)="drawer.toggle();">person</mat-icon>
+          Clientes
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-icon-button>
+          <mat-icon (click)="drawer.toggle();">sell</mat-icon>
+          Produtos
+        </button>
+      </mat-list-item>
+     </mat-list>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content (click)="closeByClickOut();">
+    <h1>Teste Apenas</h1>
+  </mat-drawer-content>
+</mat-drawer-container>
