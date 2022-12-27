@@ -8,10 +8,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,6 +22,7 @@ import { AppComponent } from './app.component';
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
