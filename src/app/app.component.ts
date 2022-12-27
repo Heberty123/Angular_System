@@ -1,5 +1,4 @@
 import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
-import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,7 @@ export class AppComponent {
   }
 
   @HostListener('window:keydown.control.m', ['$event']) 
-    onKeyDownControlM(e: KeyboardEvent) {
+    onKeyDownControlM() {
       this.opened = this.opened ? false : true
   }
 
