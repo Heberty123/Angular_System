@@ -10,7 +10,6 @@ export class AppComponent {
   title = 'Amelia_Angular';
   showFiller = false;
   opened = true;
-  @ViewChild('drawer') drawer_area: ElementRef;
 
   @HostListener("document:keyup.esc")
   onkeyup() {
