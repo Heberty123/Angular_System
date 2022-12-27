@@ -32,3 +32,11 @@ button:hover {
   padding: 10px;
   width: 150px;
 }
+
+.sidenav-btt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background-color: transparent;
+}
