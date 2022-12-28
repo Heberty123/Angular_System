@@ -1,3 +1,5 @@
+.toolbar-height{
+}
 
 .example-spacer {
     flex: 1 1 auto;
@@ -17,8 +19,7 @@ button:hover {
 
 .example-container {
   width: 100%;
-  height: 90%;
-  box-sizing: border-box;
+  height: calc(100% - 64px);
 }
 
 .example-sidenav-content {
@@ -39,4 +40,22 @@ button:hover {
   gap: 10px;
   border: none;
   background-color: transparent;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+
+.LinkActive{
+  background-color: rgb(96, 131, 197);
+}
+
+
+/*  @Media  */
+
+
+@media (max-width: 599px){
+  .example-container {
+    height: calc(100% - 56px)
+  }
 }

@@ -9,10 +9,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HomeComponent } from './pages/home/home.component';
+import { ProductComponent } from './pages/product/product.component';
+import { ClientComponent } from './pages/client/client.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
+    ProductComponent,
+    ClientComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

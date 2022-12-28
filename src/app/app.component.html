@@ -12,27 +12,27 @@
     <div class="drawer-area">
     <mat-list>
       <mat-list-item>
-        <button class="sidenav-btt">
+        <button [routerLink]="['/home']" routerLinkActive="LinkActive" class="sidenav-btt">
           <mat-icon>home</mat-icon>
-          Home
+          <a>Home</a>
         </button>
       </mat-list-item>
       <mat-list-item>
-        <button class="sidenav-btt">
+        <button [routerLink]="['/client']" routerLinkActive="LinkActive" class="sidenav-btt">
           <mat-icon>person</mat-icon>
-          Clientes
+          <a>Cliente</a>
         </button>
       </mat-list-item>
       <mat-list-item>
-        <button class="sidenav-btt">
+        <button [routerLink]="['/product']" routerLinkActive="LinkActive" class="sidenav-btt">
           <mat-icon>sell</mat-icon>
-          Produtos
+          <a>Produto</a>
         </button>
       </mat-list-item>
      </mat-list>
     </div>
   </mat-drawer>
   <mat-drawer-content (click)="closeByClickOut();">
-    <h1>Teste Apenas</h1>
+    <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
