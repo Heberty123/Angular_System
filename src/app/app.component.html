@@ -1,6 +1,6 @@
-<mat-toolbar (click)="closeByClickOut();" color="primary">
+<mat-toolbar color="primary">
   <mat-toolbar-row>
-    <button class="box-button-menu" (click)="drawer.toggle();">
+    <button class="box-button-menu" (click)="changeOpened(!opened)">
       <mat-icon >menu</mat-icon>
       <h1>Amélia Revendedora</h1>
     </button>
@@ -8,7 +8,7 @@
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" [(opened)]="opened" mode="push" >
+  <mat-drawer #drawer class="example-sidenav" [(opened)]="opened" mode="side" >
     <div class="drawer-area">
     <mat-list>
       <mat-list-item>
@@ -32,7 +32,7 @@
      </mat-list>
     </div>
   </mat-drawer>
-  <mat-drawer-content (click)="closeByClickOut();">
+  <mat-drawer-content (click)="changeOpened(false)">
     <div class="router-outlet">
       <router-outlet></router-outlet>
     </div>

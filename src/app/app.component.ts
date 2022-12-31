@@ -1,4 +1,7 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { InteractionService } from './resources/interaction.service';
+
 
 @Component({
   selector: 'app-root',
@@ -6,23 +9,26 @@ import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angu
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Amelia_Angular';
-  showFiller = false;
-  opened = true;
+  title: string = 'Amelia_Angular';
+  showFiller: boolean = false;
+  opened: boolean;
+
+  constructor(private interactionService: InteractionService){
+    this.opened = this.interactionService.getValor();
+  }
+
+  changeOpened(value: boolean): void{
+    this.opened = this.interactionService.setValor(value);
+  }
 
   @HostListener("document:keyup.esc")
   onkeyup() {
-    this.opened = false;
+    this.changeOpened(false);
   }
 
-  @HostListener('window:keydown.control.m', ['$event']) 
+  @HostListener('window:keydown.control.m') 
     onKeyDownControlM() {
-      this.opened = this.opened ? false : true
-  }
-
-
-  closeByClickOut(): void{
-    this.opened = false;
+      this.changeOpened(this.opened ? false : true);
   }
 
 }
