@@ -13,7 +13,7 @@ export class CustomerService {
   private apiUrl: string = 'api/customer';
 
   findAll(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.apiUrl);
+    return this.http.get<Customer[]>(this.apiUrl + "/all");
   }
   
 }
