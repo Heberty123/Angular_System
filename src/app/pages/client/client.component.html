@@ -1,10 +1,13 @@
-    <mat-tab-group #MatTabGroup class="teste" animationDuration="400ms" mat-align-tabs="center">
+    <mat-tab-group [@.disabled]="true" #MatTabGroup class="teste" animationDuration="500ms" mat-align-tabs="center">
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">person_add</mat-icon>
             Adicionar cliente
           </ng-template>
-          Content 1
+
+          <ng-template matTabContent>
+            Content 1
+          </ng-template>
         </mat-tab>
       
         <mat-tab>
@@ -12,7 +15,10 @@
             <mat-icon class="example-tab-icon">list</mat-icon>
             Lista
           </ng-template>
-          <app-list-customer></app-list-customer>
+
+          <ng-template matTabContent>
+            <app-list-customer></app-list-customer>
+          </ng-template>
         </mat-tab>
       
         <mat-tab>
@@ -21,7 +27,9 @@
             Excluir
           </ng-template>
       
-          Content 3
+          <ng-template matTabContent>
+            Content 3
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
 
