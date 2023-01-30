@@ -1,0 +1,37 @@
+<mat-tab-group [@.disabled]="true" #MatTabGroup class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="500ms" >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person_add</mat-icon>
+        Adicionar cliente
+      </ng-template>
+
+      <ng-template matTabContent>
+        <register></register>
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">list</mat-icon>
+        Lista
+      </ng-template>
+
+      <ng-template matTabContent>
+        <list></list>
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">delete</mat-icon>
+        Excluir
+      </ng-template>
+  
+      <ng-template matTabContent>
+        App customer delete
+      </ng-template>
+    </mat-tab>
+</mat-tab-group>
+
+
+

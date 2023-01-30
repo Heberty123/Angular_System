@@ -1,0 +1,44 @@
+<div class="first-col">
+    <div class="container-div">
+        <span class="id"><strong>Id:</strong> {{address!.id}}</span>
+        <span class="cep"><strong>Cep:</strong> {{address!.cep}}</span>
+    </div>
+    <span class="street"><strong>Rua:</strong> {{address!.street}}</span>
+    <span class="number"><strong>Número:</strong> {{address!.number}}</span>
+</div>
+
+<div class="second-col">
+    <div class="container-div">
+        <span class="neighborhood"><strong>Bairro:</strong> {{address!.neighborhood}}</span>
+        <span class="city"><strong>Cidade:</strong> {{address!.city}}</span>
+        <span class="uf"><strong>Estado:</strong> {{address!.uf}}</span>
+    </div>
+    <span class="deliveryType-name"><strong>Tipo de Entrega:</strong> {{address!.deliveryType.name}}</span>
+</div>
+
+<div class="third-col">
+    <div class="container-div">
+        <span class="cellphone1"><strong>Cel 1:</strong> {{address!.cellphone1}}</span>
+        <span class="cellphone2"><strong>Cel 2:</strong> {{address!.cellphone2}}</span>
+        <span class="telephone1"><strong>Tel 1:</strong> {{address!.telephone1}}</span>
+        <span class="telephone2"><strong>Tel 2:</strong> {{address!.telephone2}}</span>
+    </div>
+    
+    <div class="div-bttns">
+        <button mat-fab color="accent" (click)="updateAddress(address!.id)" class="btt-edit" aria-label="Example icon button with a bookmark icon">
+            <mat-icon>edit</mat-icon>
+        </button>
+        
+        <button mat-fab color="primary" (click)="deleteAddress(address!.id)" class="btt-delete" aria-label="Example icon button with a delete icon">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+
+

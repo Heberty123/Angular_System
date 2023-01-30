@@ -1,0 +1,9 @@
+<form-customer (eventCustomer)="createCustomer($event)"></form-customer>
+<div class="container-address">
+    <h1>Cadastro de endereço</h1>
+    <form-address [customer]="customerData" (messageEvent)="pushAddress($event)"></form-address>
+    <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"></list-address>
+    <div class="block" [class.unlock]="addressUnlock"></div>
+</div>
+
+

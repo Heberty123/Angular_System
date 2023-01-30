@@ -1,0 +1,45 @@
+:host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    gap: 20px 0px;
+    padding: 30px;
+    background-color: rgb(137, 192, 194);
+}
+
+h1{
+  margin: 0px;
+  text-align: center;
+}
+
+.container-address{
+  height: 90%;
+  width: 100%;
+  max-width: 1500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0px;
+  position: relative;
+}
+
+
+.block{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: rgb(196, 186, 186);
+  opacity: 0.6;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.unlock{
+  height: 0%;
+  transition: 0.3s;
+}

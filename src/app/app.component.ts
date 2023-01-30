@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { InteractionService } from './resources/interaction.service';
+
 
 
 @Component({
@@ -13,12 +12,10 @@ export class AppComponent {
   showFiller: boolean = false;
   opened: boolean;
 
-  constructor(private interactionService: InteractionService){
-    this.opened = this.interactionService.getValor();
-  }
+  constructor(){}
 
   changeOpened(value: boolean): void{
-    this.opened = this.interactionService.setValor(value);
+    this.opened = value;
   }
 
   @HostListener("document:keyup.esc")
