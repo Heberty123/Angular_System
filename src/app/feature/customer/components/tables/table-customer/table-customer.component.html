@@ -1,4 +1,5 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+<div *ngIf="dataSource != undefined; else loading">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
     <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>Id</th>
@@ -25,5 +26,12 @@
         *matRowDef="let row; columns: displayedColumns;"
     ></tr>
   </table>
-  
+</div>
+
+<ng-template #loading>
+  <div class="box-spinner">
+    <mat-spinner diameter="150"/>
+  </div>
+</ng-template>
+
 

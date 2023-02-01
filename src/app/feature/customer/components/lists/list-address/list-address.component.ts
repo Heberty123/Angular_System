@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Address } from 'src/app/shared/interfaces/address';
+import { DisableComponentsService } from '../../../screens/register/services/disable-address.service';
 
 @Component({
   selector: 'list-address',
@@ -11,8 +12,22 @@ export class ListAddressComponent implements OnInit {
 
   @Input() addresses: Address[] = [];
   @Output() removeOneAddressFromList = new EventEmitter<number>();
+  subscription: Subscription;
+  listBlocked: boolean;
 
-  ngOnInit(): void {}
+  constructor(private disableComponents: DisableComponentsService){}
+
+  ngOnInit(): void {
+    this.subscription = this.disableComponents.getAddressDisabled()
+      .subscribe({
+        next: (value: boolean) => {
+          if(value)
+            this.listBlocked = true;
+          else
+            this.listBlocked = false;  
+        }
+      });
+  }
 
   addressRemoved(id: number): void {
     this.removeOneAddressFromList.emit(id);

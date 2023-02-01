@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 
-
 @NgModule({
   declarations: [
     ListAddressItemComponent,
@@ -15,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    ],
+  ],
   exports: [
     ListAddressItemComponent,
     HttpClientModule,

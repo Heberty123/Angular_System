@@ -11,17 +11,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    FormAddressComponent,
-    FormCustomerComponent,
   ],
   imports: [
     CommonModule,
     FormsBasics, 
     SharedModule,
   ],
-  exports: [
-    FormCustomerComponent,
-    FormAddressComponent,
+  exports: [    
+    FormsBasics, 
+    SharedModule,
   ],
   providers: []
 })

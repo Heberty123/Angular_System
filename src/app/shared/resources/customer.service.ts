@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../interfaces/customer';
-import { Observable } from 'rxjs';
+import { delay, first, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,11 @@ export class CustomerService {
   }
 
   findAll(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.apiUrl + "/all");
+    return this.http.get<Customer[]>(this.apiUrl + "/all")
+      .pipe(
+        first(),
+        delay(2000)
+      );
   }
 
   create(customer: any): Observable<Customer>{
