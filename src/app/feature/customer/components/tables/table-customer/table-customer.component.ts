@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { InteractionService } from '../../../screens/list/services/interaction.service';
+import { SelectedTabService } from '../../../services/selected-tab.service';
 
 @Component({
   selector: 'table-customer',
@@ -16,7 +17,8 @@ export class TableCustomerComponent {
   displayedColumns: string[] = ['id', 'name', 'cpf'];
 
   constructor(private customerService: CustomerService,
-    private interaction: InteractionService){}
+    private interaction: InteractionService,
+    private selectedTab: SelectedTabService){}
 
   ngOnInit(): void {
     this.customerService.findAll()
@@ -37,7 +39,7 @@ export class TableCustomerComponent {
     this.dataSource.filter = value.trim().toLowerCase();
   }
 
-  clickAtRow(rows: any): void {
-    console.log(rows.name)
+  clickAtRow(row: Customer): void {
+    this.selectedTab.changeToCustomerDetails(row);
   }
 }

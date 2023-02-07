@@ -1,0 +1,118 @@
+<h1 class="title" mat-dialog-title>Adicionar endereço</h1>
+<div mat-dialog-content>
+  <h2 class="subtitle">Cliente: {{customer.name}}</h2>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+    <div class="first-div">
+      <mat-form-field appearance="fill" class="cep">
+        <mat-label>CEP</mat-label>
+        <input type="text" matInput placeholder="xxxxx-xxx" maxlength="9" formControlName="cep"
+        mask="00000-000" [dropSpecialCharacters]="false">
+        <button type="button" mat-icon-button matSuffix (click)="searchByCPF()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <mat-hint>Digite o cep</mat-hint>
+        <mat-error *ngIf="cep.errors?.['required']">
+          O cep é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="cep.errors?.['mask']">
+          cep inválido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="street">
+        <mat-label>Rua</mat-label>
+        <input matInput formControlName="street">
+        <mat-hint>Digite nome da rua</mat-hint>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="neighborhood">
+        <mat-label>Bairro</mat-label>
+        <input matInput formControlName="neighborhood">
+        <mat-hint>Digite nome do bairro</mat-hint>
+      </mat-form-field>
+    </div>
+
+
+    <div class="second-div">
+      <mat-form-field appearance="fill" class="number">
+        <mat-label>Número</mat-label>
+        <input matInput formControlName="number">
+        <mat-hint>Digite o número</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="city">
+        <mat-label>Cidade</mat-label>
+        <input matInput formControlName="city">
+        <mat-hint>digite nome da cidade</mat-hint>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="uf">
+        <mat-label>UF</mat-label>
+        <input matInput formControlName="uf">
+        <mat-hint>Digite nome do estado</mat-hint>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="deliveryType">
+        <mat-label>Tipo de entrega</mat-label>
+        <mat-select formControlName="deliveryType">
+          <mat-option *ngFor="let delivery of deliveries" [value]="delivery">
+            {{delivery.name}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Selecione tipo de entrega</mat-hint>
+      </mat-form-field>
+    </div>
+
+
+    <div class="third-div">
+      <mat-form-field appearance="fill" class="cellphone1">
+        <mat-label>Celular 1</mat-label>
+        <input matInput formControlName="cellphone1" mask="(00) 00000-0000"
+        [dropSpecialCharacters]="false" prefix="+55 ">
+        <mat-hint>Digite número do celular 1</mat-hint>
+        <mat-error *ngIf="cellphone1.errors?.['mask']">
+          celular 1 inválido.
+        </mat-error>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="cellphone2">
+        <mat-label>Celular 2</mat-label>
+        <input matInput formControlName="cellphone2" mask="(00) 00000-0000"
+        [dropSpecialCharacters]="false" prefix="+55 ">
+        <mat-hint>Digite numero do celular 2</mat-hint>
+        <mat-error *ngIf="cellphone2.errors?.['mask']">
+          celular 2 inválido.
+        </mat-error>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="telephone1">
+        <mat-label>Telefone 1</mat-label>
+        <input matInput formControlName="telephone1" mask="(00) 0000-0000"
+        [dropSpecialCharacters]="false" prefix="+55 ">
+        <mat-hint>Digite número do telefone 1</mat-hint>
+        <mat-error *ngIf="telephone1.errors?.['mask']">
+          telefone 1 inválido.
+        </mat-error>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="telephone2">
+        <mat-label>Telefone 2</mat-label>
+        <input matInput formControlName="telephone2" mask="(00) 0000-0000"
+        [dropSpecialCharacters]="false" prefix="+55 ">
+        <mat-hint>Digite número do telefone 2</mat-hint>
+        <mat-error *ngIf="telephone2.errors?.['mask']">
+          telefone 2 inválido.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="div-bttns" mat-dialog-actions>
+      <button mat-raised-button color="warn" mat-button (click)="onNoClick()">Cancelar</button>
+      <button color="primary" type="submit" mat-button cdkFocusInitial mat-raised-button >Salvar</button>
+    </div>
+  </form>
+</div>
+
+

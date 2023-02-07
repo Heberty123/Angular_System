@@ -8,7 +8,7 @@ import { DeliveryType } from '../interfaces/delivery-type';
   providedIn: 'root'
 })
 export class AddressService {
-  disable$: any;
+
 
   constructor(private http:HttpClient) { }
 
@@ -26,6 +26,10 @@ export class AddressService {
 
   findAllDeliveryType(): Observable<DeliveryType[]>{
     return this.http.get<any>(this.apiUrl + "/all/deliveryType");
+  }
+
+  findAllByCustomerId(id: number): Observable<Address[]>{
+    return this.http.get<Address[]>(this.apiUrl + `/all/${id}`);
   }
   
   deleteById(id: number): Observable<unknown>{

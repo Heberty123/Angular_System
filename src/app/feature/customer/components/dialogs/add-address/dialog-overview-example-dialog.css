@@ -1,0 +1,51 @@
+.title{
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subtitle{
+    text-align: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px 0px;
+}
+
+.first-div, .second-div, .third-div {
+    display: flex;
+    gap: 0px 10px;
+}
+
+.cep{
+    flex: 1.2;
+}
+
+.street {
+    flex: 3;
+}
+
+.neighborhood{
+    flex: 2;
+}
+
+.number{
+    flex: 0.8;
+}
+
+.city{
+    flex: 2;
+}
+
+.uf {
+    flex: 0.6;
+}
+
+.deliveryType{
+    flex: 1.2;
+}
+
+.div-bttns{
+    justify-content: flex-end;
+}

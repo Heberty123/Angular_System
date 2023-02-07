@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { delay, map, Observable, Subject, tap } from 'rxjs';
 import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
@@ -13,6 +13,8 @@ import { DisableComponentsService } from './services/disable-address.service';
 })
 export class RegisterComponent implements OnInit {
 
+  @Input() value: number;
+
   private customer?: Customer;
   addresses: Address[] = [];
   addressUnlock: boolean = this.customer ? true : false;
@@ -21,7 +23,9 @@ export class RegisterComponent implements OnInit {
     private serviceAddress: AddressService,
     private disableComponents: DisableComponentsService){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.value);
+  }
 
   get customerData(): Customer | undefined {
     return this.customer;

@@ -20,8 +20,7 @@ export class CustomerService {
   findAll(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.apiUrl + "/all")
       .pipe(
-        first(),
-        delay(2000)
+        first()
       );
   }
 

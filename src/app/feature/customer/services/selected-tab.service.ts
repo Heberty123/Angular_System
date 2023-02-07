@@ -1,0 +1,21 @@
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Customer } from 'src/app/shared/interfaces/customer';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SelectedTabService {
+
+  private subjectCustomer = new Subject<Customer>();
+
+  constructor(){}
+
+  getCustomerForDetails(): Subject<Customer> {
+    return this.subjectCustomer;
+  }
+
+  changeToCustomerDetails(customer: Customer){
+    this.subjectCustomer.next(customer);
+  }
+}

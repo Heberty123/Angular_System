@@ -114,7 +114,6 @@ export class FormAddressComponent implements OnInit, OnDestroy {
         this.city.setValue(value.localidade),
         this.uf.setValue(value.uf)
       })
-      
   }
 
   onSubmit(): void{

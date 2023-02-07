@@ -1,7 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Customer } from 'src/app/shared/interfaces/customer';
 import { MaterialBasicModule } from 'src/app/shared/modules/material-basic.module';
+import { DetailsModule } from './screens/details/details.module';
 import { ListModule } from './screens/list/list.module';
 import { RegisterModule } from './screens/register/register.module';
+import { RemoveModule } from './screens/remove/remove.module';
+import { SelectedTabService } from './services/selected-tab.service';
 
 @Component({
   selector: 'customer',
@@ -12,10 +17,32 @@ import { RegisterModule } from './screens/register/register.module';
   imports: [
     MaterialBasicModule,
     RegisterModule,
-    ListModule
-  ]
+    ListModule, 
+    RemoveModule,
+    CommonModule,
+    DetailsModule
+  ],
+  providers: [SelectedTabService]
 })
-export class CustomerComponent{
+export class CustomerComponent implements OnInit{
+  indexTab: number | undefined;
+  customerSelected?: Customer;
 
-  constructor(){}
+  constructor(private selectedTab: SelectedTabService){}
+  
+  ngOnInit(): void {
+    this.selectedTab.getCustomerForDetails()
+      .subscribe({
+        next: (customer: Customer) => {
+          this.indexTab = 3;
+          this.customerSelected = customer;
+        }
+      });
+  }
+  
+  tabLeaving(event: any) {
+    if(event.index != 3 && this.indexTab === 3)
+      this.customerSelected = undefined;
+    this.indexTab = event.index;
+  }
 }
