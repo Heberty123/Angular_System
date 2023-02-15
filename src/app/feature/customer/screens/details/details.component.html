@@ -1,12 +1,9 @@
 <h1>Id: {{customerSelected!.id}}</h1>
-<h1>Id: {{customerSelected!.name}}</h1>
-<h1>Id: {{customerSelected!.cpf}}</h1>
-
 <div class="container-address">
     <dialog-add-address [customer]="customerSelected!" (messageEvent)="saveAddress($event)"/>
     <mat-list class="list">
         <mat-list-item *ngFor="let address of addresses" class="list-item">
-            <list-address-item [address]="address"></list-address-item>
+            <list-address-item [address]="address" (removeEvent)="removeAddress($event)"></list-address-item>
         </mat-list-item>
     </mat-list>
 </div>

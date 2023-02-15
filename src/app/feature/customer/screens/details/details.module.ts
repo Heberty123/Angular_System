@@ -7,10 +7,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddAddressModule } from '../../components/dialogs/add-address/add-address.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
-    DetailsComponent
+    DetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -19,10 +20,12 @@ import { AddAddressModule } from '../../components/dialogs/add-address/add-addre
     MatButtonModule,
     MatIconModule,
     ListAddressItemModule,
-    AddAddressModule
+    AddAddressModule,
+    MatSnackBarModule,
   ],
   exports: [
     DetailsComponent
-  ]
+  ],
+  providers: []
 })
 export class DetailsModule { }
