@@ -2,8 +2,8 @@
     <mat-form-field class="input-name">
       <mat-label>Nome</mat-label>
       <input matInput type="text" matInput formControlName="name"
-          [(ngModel)]="valueName"  placeholder="Nome do cliente">
-      <button *ngIf="valueName" matSuffix mat-icon-button aria-label="Clear" (click)="valueName=''"
+          placeholder="Nome do cliente">
+      <button *ngIf="name.value" matSuffix mat-icon-button aria-label="Clear" (click)="name.setValue('')"
       [disabled]="CustomerForm.status === 'DISABLED'">
           <mat-icon>close</mat-icon>
       </button>

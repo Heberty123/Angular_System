@@ -1,0 +1,9 @@
+<form-customer (eventCustomer)="saveCustomer($event)" class="form-customer" [toAddDependent]="true" />
+
+<mat-list role="list" class="list">
+  <mat-list-item role="listitem" *ngFor="let customer of customersDependents">{{customer.name}}</mat-list-item>
+</mat-list>
+
+
+
+

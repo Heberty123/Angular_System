@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { DeliveryType } from 'src/app/shared/interfaces/delivery-type';
 import { AddressService } from 'src/app/shared/resources/address.service';
-import { DisableComponentsService } from '../../../screens/register/services/disable-address.service';
 
 @Component({
   selector: 'form-address',
@@ -18,10 +17,11 @@ export class FormAddressComponent implements OnInit, OnDestroy {
   @Input() customer?: Customer;
   @Output() messageEvent = new EventEmitter<Address>();
   deliveries?: DeliveryType[];
-  subscription: Subscription;
+  private subscription: Subscription;
+  @Input() addressEmit: Observable<void>;
+  @Input() keepOpen?: boolean;
 
-  constructor(private disableComponents: DisableComponentsService,
-    private addressService: AddressService){
+  constructor(private addressService: AddressService){
       this.addressForm = new FormGroup({
       cep: new FormControl(''),
       street: new FormControl('', [Validators.required]),
@@ -38,20 +38,19 @@ export class FormAddressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.disableComponents.getAddressDisabled()
+    this.addressService.findAllDeliveryType()
       .subscribe({
-        next: (value: boolean) => {
-          if(value)
-            this.addressForm.disable();
-          else{
-            this.addressForm.enable();
-            this.addressService.findAllDeliveryType()
-              .subscribe(value => {
-                this.deliveries = value;
-              });
-          }   
+        next: (value: DeliveryType[]) => {
+          this.deliveries = value;
         }
       });
+
+    if(!this.keepOpen)
+      this.addressForm.disable();
+
+    this.subscription = this.addressEmit.subscribe(() => {
+      this.addressForm.enable();
+    })
   }
 
   ngOnDestroy() {
@@ -117,12 +116,8 @@ export class FormAddressComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void{
-  
     if(!this.addressForm.invalid){
-      this.addressService.create(this.addressForm.value, this.customer!.id)
-        .subscribe(value => {
-          this.messageEvent.emit(value);
-        });
+      this.messageEvent.next(this.addressForm.value);
     }
   }
 }

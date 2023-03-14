@@ -8,6 +8,7 @@ import { Customer } from 'src/app/shared/interfaces/customer';
 export class SelectedTabService {
 
   private subjectCustomer = new Subject<Customer>();
+  private subjectTableCustomers = new Subject<void>();
 
   constructor(){}
 
@@ -17,5 +18,13 @@ export class SelectedTabService {
 
   changeToCustomerDetails(customer: Customer){
     this.subjectCustomer.next(customer);
+  }
+
+  getTableCustomersTab(): Subject<void> {
+    return this.subjectTableCustomers;
+  }
+
+  changeToTableCustomers(){
+    this.subjectTableCustomers.next();
   }
 }

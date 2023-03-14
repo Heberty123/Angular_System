@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { delay, map, Observable, Subject, tap } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
-import { DisableComponentsService } from './services/disable-address.service';
 
 @Component({
   selector: 'register',
@@ -14,18 +13,18 @@ import { DisableComponentsService } from './services/disable-address.service';
 export class RegisterComponent implements OnInit {
 
   @Input() value: number;
-
   private customer?: Customer;
   addresses: Address[] = [];
+  customersDependents: Customer[] = [];
   addressUnlock: boolean = this.customer ? true : false;
+  stepDisabled: boolean = true;
+  eventsSubject: Subject<void> = new Subject<void>();
 
   constructor(private serviceCustomer: CustomerService,
-    private serviceAddress: AddressService,
-    private disableComponents: DisableComponentsService){}
+    private serviceAddress: AddressService){}
 
-  ngOnInit(): void {
-    console.log(this.value);
-  }
+
+  ngOnInit(): void {}
 
   get customerData(): Customer | undefined {
     return this.customer;
@@ -36,15 +35,19 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (value: Customer) => {
           this.customer = value;
-          this.disableComponents.customerCreated();
           this.addressUnlock = true; 
+          this.eventsSubject.next();
+          this.stepDisabled = false;
         },
         error: (e) => console.error(e)
       });
   }
 
   pushAddress(address: Address): void{
-    this.addresses!.push(address);
+    this.serviceAddress.create(address, this.customer!.id)
+        .subscribe({
+          next: (value: Address) => this.addresses.push(value)
+        });
   }
 
 
@@ -61,6 +64,15 @@ export class RegisterComponent implements OnInit {
           }
         },
         error: (v) => console.log(v),
+      })
+  }
+
+  addCustomerDependent(customer: Customer): void{
+    this.serviceCustomer.addDependentCustomer(customer, this.customer!.id)
+      .subscribe({
+        next: (customer: Customer) => {
+          this.customersDependents.push(customer);
+        }
       })
   }
 }

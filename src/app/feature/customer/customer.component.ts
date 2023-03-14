@@ -38,6 +38,14 @@ export class CustomerComponent implements OnInit{
           this.customerSelected = customer;
         }
       });
+
+    this.selectedTab.getTableCustomersTab()
+      .subscribe({
+        next: () => {
+          this.indexTab = 1;
+          this.customerSelected = undefined;
+        }
+      });
   }
   
   tabLeaving(event: any) {

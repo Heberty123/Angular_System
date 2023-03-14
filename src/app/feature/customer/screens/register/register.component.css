@@ -10,22 +10,17 @@
     background-color: rgb(137, 192, 194);
 }
 
-h1{
-  margin: 0px;
-  text-align: center;
-}
-
-.container-address{
+.container{
   height: 90%;
   width: 100%;
   max-width: 1500px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px 0px;
   position: relative;
+  display: flex;
 }
 
+.mat-stepper-horizontal {
+  padding: 20px;
+}
 
 .block{
   width: 100%;
@@ -35,11 +30,51 @@ h1{
   bottom: 0;
   background-color: rgb(196, 186, 186);
   opacity: 0.6;
-  border-radius: 10px;
   transition: 0.3s;
+  z-index: 10;
 }
 
 .unlock{
   height: 0%;
   transition: 0.3s;
+}
+
+::ng-deep .mat-step-header[aria-labelledby="disabled_Resi"] {
+  pointer-events: none !important;
+  cursor: not-allowed;
+}
+
+.box-address{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0px;
+}
+
+.form-address{
+  height: auto;
+}
+
+.list-address{
+  flex: 1;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  width: 30%;
+  align-self: center;
+}
+
+::ng-deep .mat-horizontal-stepper-wrapper {
+  height: 100%;
+  gap: 20px;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  flex: 1;
+  padding: 0px 0px 0px 0px !important;
+}
+
+::ng-deep .mat-horizontal-stepper-content:not(.mat-horizontal-stepper-content-inactive){
+  height: 100%;
 }

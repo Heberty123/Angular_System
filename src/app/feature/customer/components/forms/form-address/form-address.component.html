@@ -8,7 +8,7 @@
       <button type="button" mat-icon-button matSuffix [disabled]="AddressForm.status === 'DISABLED'" (click)="searchByCPF()">
         <mat-icon>search</mat-icon>
       </button>
-      <mat-hint>Digite o cep</mat-hint>
+      <mat-hint>nome do cep</mat-hint>
       <mat-error *ngIf="cep.errors?.['required']">
         O cep é obrigatório.
       </mat-error>
@@ -19,7 +19,7 @@
         <mat-label>Rua</mat-label>
         <input type="text" matInput formControlName="street"
                placeholder="Nome da rua">
-        <mat-hint>Digite o nome da rua</mat-hint>
+        <mat-hint>nome da rua</mat-hint>
         <mat-error *ngIf="street.errors?.['required']">
           O nome da rua é obrigatório.
         </mat-error>
@@ -29,7 +29,7 @@
       <mat-form-field class="input-number">
         <mat-label>Número</mat-label>
         <input type="text" matInput formControlName="number">
-        <mat-hint>Digite o número</mat-hint>
+        <mat-hint>número</mat-hint>
         <mat-error *ngIf="number.errors?.['required']">
           O número é obrigatório.
         </mat-error>
@@ -40,7 +40,7 @@
         <mat-label>Bairro</mat-label>
         <input type="text" matInput formControlName="neighborhood"
                placeholder="nome do bairro">
-        <mat-hint>Digite o nome do bairro</mat-hint>
+        <mat-hint>nome do bairro</mat-hint>
         <mat-error *ngIf="neighborhood.errors?.['required']">
           O nome do bairro é obrigatório.
         </mat-error>
@@ -51,7 +51,7 @@
         <mat-label>Cidade</mat-label>
         <input type="text" matInput formControlName="city"
                placeholder="nome da cidade">
-        <mat-hint>Digite o nome da cidade</mat-hint>
+        <mat-hint>nome da cidade</mat-hint>
         <mat-error *ngIf="city.errors?.['required']">
           O nome de uma cidade é obrigatório.
         </mat-error>
@@ -62,7 +62,7 @@
         <mat-label>Estado</mat-label>
         <input type="text" matInput formControlName="uf"
                placeholder="nome do estado">
-        <mat-hint>Digite o nome do estado</mat-hint>
+        <mat-hint>UF</mat-hint>
         <mat-error *ngIf="uf.errors?.['required']">
           O nome de um estado é obrigatório.
         </mat-error>
@@ -76,7 +76,7 @@
             {{delivery.name}}
           </mat-option>
         </mat-select>
-        <mat-hint>Selecione tipo de entrega</mat-hint>
+        <mat-hint>tipo de entrega</mat-hint>
       </mat-form-field>
 
 
@@ -84,7 +84,7 @@
         <mat-label>Celular 1</mat-label>
         <input type="text" matInput formControlName="cellphone1" 
           prefix="+55 "  mask="(00) 00000-0000" [dropSpecialCharacters]="false">
-        <mat-hint>Digite o primeiro número de celular</mat-hint>
+        <mat-hint>número de celular 1</mat-hint>
         <mat-error *ngIf="cellphone1.errors?.['mask']">
           celular 1 inválido.
         </mat-error>
@@ -95,7 +95,7 @@
         <mat-label>Celular 2</mat-label>
         <input type="text" matInput formControlName="cellphone2"
           prefix="+55 "  mask="(00) 00000-0000" [dropSpecialCharacters]="false">
-        <mat-hint>Digite o segundo número de celular</mat-hint>
+        <mat-hint>número de celular 2</mat-hint>
         <mat-error *ngIf="cellphone2.errors?.['mask']">
           celular 2 inválido.
         </mat-error>
@@ -106,7 +106,7 @@
         <mat-label>Telefone 1</mat-label>
         <input type="text" matInput formControlName="telephone1"
           prefix="+55 "  mask="(00) 0000-0000" [dropSpecialCharacters]="false">
-        <mat-hint>Digite o primeiro número de telefone</mat-hint>
+        <mat-hint>número de telefone 1</mat-hint>
         <mat-error *ngIf="telephone1.errors?.['mask']">
           telefone 1 inválido.
         </mat-error>
@@ -117,7 +117,7 @@
         <mat-label>Telefone 2</mat-label>
         <input type="text" matInput formControlName="telephone2"
           prefix="+55 "  mask="(00) 0000-0000" [dropSpecialCharacters]="false">
-        <mat-hint>Digite o segundo número de telefone</mat-hint>
+        <mat-hint>número de telefone 2</mat-hint>
         <mat-error *ngIf="telephone2.errors?.['mask']">
           telefone 2 inválido.
         </mat-error>

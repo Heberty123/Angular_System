@@ -1,9 +1,23 @@
-<form-customer (eventCustomer)="createCustomer($event)"></form-customer>
-<div class="container-address">
-    <h1>Cadastro de endereço</h1>
-    <form-address [customer]="customerData" (messageEvent)="pushAddress($event)"></form-address>
-    <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"></list-address>
+<form-customer (eventCustomer)="createCustomer($event)" [childEmit]="eventsSubject.asObservable()"></form-customer>
+
+<div class="container">
+    <mat-stepper #stepper>
+        <mat-step label="Endereços" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
+            <div class="box-address">
+                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [addressEmit]="eventsSubject.asObservable()"
+                class="form-address"/>
+                <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
+                class="list-address"/>
+            </div>
+        </mat-step>
+        <mat-step label="Sub-Clientes" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
+            <sub-customers (eventCustomerDep)="addCustomerDependent($event)" [customersDependents]="customersDependents"/>
+        </mat-step>
+    </mat-stepper>
     <div class="block" [class.unlock]="addressUnlock"></div>
 </div>
 
+
+
+    
 

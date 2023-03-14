@@ -1,9 +1,43 @@
-<h1>Id: {{customerSelected!.id}}</h1>
-<div class="container-address">
-    <dialog-add-address [customer]="customerSelected!" (messageEvent)="saveAddress($event)"/>
-    <mat-list class="list">
-        <mat-list-item *ngFor="let address of addresses" class="list-item">
-            <list-address-item [address]="address" (removeEvent)="removeAddress($event)"></list-address-item>
-        </mat-list-item>
-    </mat-list>
+<div class="container-customer">
+    <div *ngIf="toEditCustomer == false; else editCustomer">
+        <div class="id-name">
+            <h1><strong>Id:</strong> {{customerSelected.id}}</h1>
+            <h1><strong>CPF:</strong> {{customerSelected.cpf}}</h1>
+        </div>
+        <h1 class="title-name"><strong>Nome:</strong> {{customerSelected.name}}</h1>
+    </div>
+    
+    <ng-template #editCustomer>
+        <form-customer [haveCustomer]="customerSelected" (eventCustomer)="updateCustomer($event)" class="form-customer" />
+    </ng-template>
+
+    <div class="div-buttons">
+        <button mat-flat-button color="primary" (click)="toEditCustomer = !toEditCustomer">
+            {{toEditCustomer? 'Cancelar' : 'Editar'}}
+        </button>
+        <btt-remove [customer]="customerSelected" (messageEvent)="toRemove()" />
+    </div>
 </div>
+
+
+<mat-stepper #stepper class="stepper">
+    <mat-step label="Endereço">
+        <div class="box-address">
+
+            <button mat-flat-button color="primary" (click)="toAddAddress = !toAddAddress" class="btt-add-address">
+                {{toAddAddress? 'Cancelar' : 'Adicionar'}}
+            </button>
+            <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
+                *ngIf="toAddAddress == false; else toAdd" class="list-address"/>
+            <ng-template #toAdd>
+                <form-address (messageEvent)="addAddress($event)" [keepOpen]="true" class="form-address"/>
+            </ng-template>
+
+        </div>
+    </mat-step>
+    <mat-step label="Sub-Clientes">
+        <div class="box-sub-customers">
+            <sub-customers (eventCustomerDep)="addCustomerDependent($event)" [customersDependents]="customersDependents" />
+        </div>
+    </mat-step>
+</mat-stepper>

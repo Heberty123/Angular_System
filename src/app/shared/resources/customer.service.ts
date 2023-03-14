@@ -27,5 +27,22 @@ export class CustomerService {
   create(customer: any): Observable<Customer>{
     return this.http.post<Customer>(this.apiUrl + '/create', customer, {'headers': this.headers});
   }
+
+  deleteById(id: number): Observable<void>{
+    return this.http.delete<void>(this.apiUrl + `/${id}`, {'headers': this.headers});
+  }
+
+  updateById(customer: Customer): Observable<Customer>{
+    return this.http.put<Customer>(this.apiUrl + `/update/${customer.id}`, customer, {'headers': this.headers});
+  }
+
+  addDependentCustomer(customerDep: Customer,
+           customerId: number): Observable<Customer>{
+    return this.http.post<Customer>(this.apiUrl + `/create/dependent/${customerId}`, customerDep, {'headers': this.headers});
+  }
+
+  findAllDependentsCustomersById(customerId: number): Observable<Customer[]>{
+    return this.http.get<Customer[]>(this.apiUrl + `/all/dependentsCustomers/${customerId}`);
+  }
   
 }

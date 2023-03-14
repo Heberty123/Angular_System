@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { InteractionService } from '../../../screens/list/services/interaction.service';
