@@ -10,6 +10,28 @@
     background-color: rgb(137, 192, 194);
 }
 
+.container-customer{
+  width: 100%;
+  height: 10%;
+  max-width: 1500px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.btt-new{
+  position: absolute;
+  left: 0;
+  width: 100px;
+  height: calc(100% - 22px);
+  font-size: 1.2rem
+}
+
+.form-customer{
+  width: 50%;
+  max-width: 800px;
+}
+
 .container{
   height: 90%;
   width: 100%;

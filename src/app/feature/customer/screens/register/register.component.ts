@@ -18,7 +18,11 @@ export class RegisterComponent implements OnInit {
   customersDependents: Customer[] = [];
   addressUnlock: boolean = this.customer ? true : false;
   stepDisabled: boolean = true;
-  eventsSubject: Subject<void> = new Subject<void>();
+  newButtonDisabled: boolean = true;
+  eventsCustomerOpened: Subject<boolean> = new Subject<boolean>();
+  eventsCustomerReset: Subject<void> = new Subject<void>();
+  eventsAddressOpened: Subject<boolean> = new Subject<boolean>();
+  eventsAddressReset: Subject<void> = new Subject<void>();
 
   constructor(private serviceCustomer: CustomerService,
     private serviceAddress: AddressService){}
@@ -30,14 +34,29 @@ export class RegisterComponent implements OnInit {
     return this.customer;
   }
 
+  reset(): void {
+    this.customer = undefined;
+    this.addresses = [];
+    this.customersDependents = [];
+    this.eventsCustomerOpened.next(true);
+    this.eventsCustomerReset.next();
+    this.eventsAddressOpened.next(false);
+    this.eventsAddressReset.next();
+    this.addressUnlock = false;
+    this.stepDisabled = true;
+    this.newButtonDisabled = true;
+  }
+
   createCustomer(customer: Customer): void {
     this.serviceCustomer.create(customer)
       .subscribe({
         next: (value: Customer) => {
           this.customer = value;
-          this.addressUnlock = true; 
-          this.eventsSubject.next();
+          this.addressUnlock = true;
+          this.eventsCustomerOpened.next(false);
+          this.eventsAddressOpened.next(true);
           this.stepDisabled = false;
+          this.newButtonDisabled = false;
         },
         error: (e) => console.error(e)
       });
@@ -63,7 +82,7 @@ export class RegisterComponent implements OnInit {
             })
           }
         },
-        error: (v) => console.log(v),
+        error: (v) => console.error(v),
       })
   }
 

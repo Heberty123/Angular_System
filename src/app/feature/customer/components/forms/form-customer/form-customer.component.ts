@@ -19,7 +19,8 @@ export class FormCustomerComponent implements OnInit, OnDestroy{
   private customerForm!: FormGroup;
   @Output() eventCustomer = new EventEmitter<Customer>();
   private subscription: Subscription;
-  @Input() childEmit: Observable<void>;
+  @Input() $formOpened: Observable<boolean>;
+  @Input() $resetForm: Observable<void>;
 
   constructor(private _service: CustomerService){
     console.log(this.haveCustomer);
@@ -34,8 +35,15 @@ export class FormCustomerComponent implements OnInit, OnDestroy{
       })
     });
 
-    this.subscription = this.childEmit.subscribe(() => {
-      this.CustomerForm.disable();
+    this.subscription = this.$formOpened.subscribe((value: boolean) => {
+      if(value)
+        this.customerForm.enable();
+      else
+        this.customerForm.disable();
+    })
+
+    this.subscription = this.$resetForm.subscribe(() => {
+      this.customerForm.reset();
     })
   }
 

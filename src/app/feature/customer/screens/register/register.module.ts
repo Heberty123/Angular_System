@@ -6,6 +6,7 @@ import { FormCustomerModule } from '../../components/forms/form-customer/form-cu
 import { ListAddressModule } from '../../components/lists/list-address/list-address.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SubCustomersModule } from '../../components/trees/sub-customers/sub-customers.module';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -19,7 +20,8 @@ import { SubCustomersModule } from '../../components/trees/sub-customers/sub-cus
     FormAddressModule,
     ListAddressModule,
     MatStepperModule,
-    SubCustomersModule
+    SubCustomersModule,
+    MatButtonModule
   ],
   exports: [
     RegisterComponent

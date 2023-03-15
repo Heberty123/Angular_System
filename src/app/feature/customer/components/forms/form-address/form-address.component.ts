@@ -18,7 +18,8 @@ export class FormAddressComponent implements OnInit, OnDestroy {
   @Output() messageEvent = new EventEmitter<Address>();
   deliveries?: DeliveryType[];
   private subscription: Subscription;
-  @Input() addressEmit: Observable<void>;
+  @Input() $formOpen: Observable<boolean>;
+  @Input() $resetForm: Observable<void>;
   @Input() keepOpen?: boolean;
 
   constructor(private addressService: AddressService){
@@ -48,8 +49,15 @@ export class FormAddressComponent implements OnInit, OnDestroy {
     if(!this.keepOpen)
       this.addressForm.disable();
 
-    this.subscription = this.addressEmit.subscribe(() => {
-      this.addressForm.enable();
+    this.subscription = this.$formOpen.subscribe((value: boolean) => {
+      if(value)
+        this.addressForm.enable();
+      else
+        this.addressForm.disable();
+    });
+
+    this.subscription = this.$resetForm.subscribe(() => {
+      this.addressForm.reset();
     })
   }
 

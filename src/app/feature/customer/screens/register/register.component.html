@@ -1,11 +1,15 @@
-<form-customer (eventCustomer)="createCustomer($event)" [childEmit]="eventsSubject.asObservable()"></form-customer>
+<div class="container-customer">
+    <button mat-flat-button color="primary" (click)="reset()" [disabled]="newButtonDisabled" class="btt-new">Novo</button>
+    <form-customer (eventCustomer)="createCustomer($event)" [$formOpened]="eventsCustomerOpened.asObservable()" 
+    [$resetForm]="eventsCustomerReset.asObservable()" class="form-customer"/>
+</div>
 
 <div class="container">
     <mat-stepper #stepper>
         <mat-step label="Endereços" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
             <div class="box-address">
-                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [addressEmit]="eventsSubject.asObservable()"
-                class="form-address"/>
+                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [$formOpen]="eventsAddressOpened.asObservable()"
+                [$resetForm]="eventsAddressReset.asObservable()" class="form-address"/>
                 <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
                 class="list-address"/>
             </div>
