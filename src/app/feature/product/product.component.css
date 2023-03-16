@@ -1,0 +1,16 @@
+.mat-tabGroup{
+    background-color: rgb(190, 196, 196);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex: 1;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper{
+  height: 100%;
+}
+  
+:host ::ng-deep .mat-tab-body.mat-tab-body-active {
+  height: 100%;
+  
+}

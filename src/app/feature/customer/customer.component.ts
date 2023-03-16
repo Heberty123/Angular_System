@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { MaterialBasicModule } from 'src/app/shared/modules/material-basic.module';
 import { DetailsModule } from './screens/details/details.module';
@@ -15,11 +15,11 @@ import { SelectedTabService } from './services/selected-tab.service';
   standalone: true,
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [
+    CommonModule,
     MaterialBasicModule,
     RegisterModule,
     ListModule, 
     RemoveModule,
-    CommonModule,
     DetailsModule
   ],
   providers: [SelectedTabService]

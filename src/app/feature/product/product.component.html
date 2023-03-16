@@ -1,0 +1,51 @@
+<mat-tab-group [@.disabled]="true" #MatTabGroup class="mat-tabGroup" mat-stretch-tabs="false"
+mat-align-tabs="center" animationDuration="500ms" >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">add_box</mat-icon>
+        Adicionar produto
+      </ng-template>
+
+      <ng-template matTabContent>
+        <register />
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">list</mat-icon>
+        Lista
+      </ng-template>
+
+      <ng-template matTabContent>
+        <list />
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">delete</mat-icon>
+        Excluir
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <remove />
+      </ng-template>
+    </mat-tab>
+
+    <!--
+    <mat-tab disabled *ngIf="customerSelected != undefined">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person</mat-icon>
+        Cliente
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <details-customer [customerSelected]="customerSelected"></details-customer>
+      </ng-template>
+    </mat-tab>
+    -->
+</mat-tab-group>
+
+
+
