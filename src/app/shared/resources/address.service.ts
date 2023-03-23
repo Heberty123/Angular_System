@@ -21,19 +21,19 @@ export class AddressService {
 
   
   searchByCPF(cep: string): Observable<any>{
-    return this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`);
+    return this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`, { headers: this.headers });
   }
 
   findAllDeliveryType(): Observable<DeliveryType[]>{
-    return this.http.get<any>(this.apiUrl + "/all/deliveryType");
+    return this.http.get<DeliveryType[]>(this.apiUrl + "/all/deliveryType", { headers: this.headers });
   }
 
   findAllByCustomerId(id: number): Observable<Address[]>{
-    return this.http.get<Address[]>(this.apiUrl + `/all/${id}`);
+    return this.http.get<Address[]>(this.apiUrl + `/all/${id}`, { headers: this.headers });
   }
   
   deleteById(id: number): Observable<unknown>{
-    return this.http.delete(this.apiUrl + `/delete/${id}`, {observe: 'response'})
+    return this.http.delete(this.apiUrl + `/delete/${id}`, { observe: 'response', headers: this.headers })
       .pipe(
         take(1),
         catchError(this.handleError)

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from './register.component';
+import { FormProductModule } from '../../components/forms/form-product/form-product.module';
 
 
 
@@ -9,7 +10,8 @@ import { RegisterComponent } from './register.component';
     RegisterComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormProductModule
   ],
   exports: [
     RegisterComponent

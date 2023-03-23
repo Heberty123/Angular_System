@@ -42,7 +42,7 @@ export class CustomerService {
   }
 
   findAllDependentsCustomersById(customerId: number): Observable<Customer[]>{
-    return this.http.get<Customer[]>(this.apiUrl + `/all/dependentsCustomers/${customerId}`);
+    return this.http.get<Customer[]>(this.apiUrl + `/all/dependentsCustomers/${customerId}`, { headers: this.headers });
   }
   
 }
