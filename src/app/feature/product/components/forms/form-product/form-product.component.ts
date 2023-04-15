@@ -18,6 +18,7 @@ export class FormProductComponent implements OnInit {
   private productForm!: FormGroup;
   brands: Brand[] = [];
   productTypes: ProductType[] = [];
+  chipValue: string
 
   constructor(private brandService: BrandService,
     private productService: ProductService,
@@ -76,7 +77,8 @@ export class FormProductComponent implements OnInit {
   }
 
   chipChange(chipEvent: MatChipListboxChange): void{
-    this.name.setValue(chipEvent.value);
+    let value: string = this.name.value;
+    this.chipValue = chipEvent.value;
   }
 
   onSubmit(): void{
