@@ -19,6 +19,7 @@ export class FormProductComponent implements OnInit {
   brands: Brand[] = [];
   productTypes: ProductType[] = [];
   chipValue: string
+  chipRemovable: boolean = false;
 
   constructor(private brandService: BrandService,
     private productService: ProductService,
@@ -30,6 +31,7 @@ export class FormProductComponent implements OnInit {
         barcode: new FormControl(''),
         brand: new FormControl(''),
         price: new FormControl('', [Validators.required]),
+        productType: new FormControl('')
       });
   }
 
@@ -68,12 +70,42 @@ export class FormProductComponent implements OnInit {
     return this.productForm.get('price')!;
   }
 
+  get productType(){
+    return this.productForm.get('productType')!;
+  }
+
   get ProductForm(): FormGroup{
     return this.productForm;
   }
 
-  addChip(): void{
-    console.log("Adicionar mais chip");
+  addNewChip(value: string): void{
+    let obj: ProductType = { 
+      id: undefined,
+      name: value
+    };
+    this.productTypeService.create(obj)
+      .subscribe({
+        next: (value: ProductType) => {
+          this.productTypes.push(value)
+        }
+      });
+  }
+
+  removeChip(obj: ProductType): void{
+    this.productTypeService.delete(obj)
+      .subscribe({
+        next: () => {       
+          this.productTypes.filter((value, index) => {
+            if(value.id! === obj.id!){
+              this.productTypes.splice(index, 1);
+            }
+          })
+        }
+      })
+  }
+
+  editChip(obj: ProductType): void{
+    console.log(obj)
   }
 
   chipChange(chipEvent: MatChipListboxChange): void{
@@ -85,7 +117,12 @@ export class FormProductComponent implements OnInit {
     if(!this.productForm.invalid){
       this.productService.save(this.productForm.value)
         .subscribe({
-          next: (value: Product) => { console.log(`o valor foi persistido no banco de dados: ${value}`) }
+          next: (value: Product) => {
+            console.log('o valor foi persistido no banco de dados: ');
+            console.log(value);
+            this.productForm.reset();
+            this.productForm.clearValidators();
+          }
         })
     }
   }

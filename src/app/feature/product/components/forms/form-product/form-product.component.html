@@ -1,19 +1,24 @@
-<mat-chip-listbox aria-label="Fish selection" (change)="chipChange($event)">
-    <mat-chip-option *ngFor="let product of productTypes">
-      {{product.name}}
-    </mat-chip-option>
-
-    <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
-     class="btt-chip-add" (click)="addChip()">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon"
-    class="btt-chip-add">
-      <mat-icon>edit</mat-icon>
-    </button>
-</mat-chip-listbox>    
-
 <form (ngSubmit)="onSubmit()" [formGroup]="ProductForm" #formDir="ngForm" class="form-product">   
+
+    <mat-chip-listbox aria-label="Fish selection" (change)="chipChange($event)" formControlName="productType">
+        <mat-chip-option *ngFor="let product of productTypes" [value]="product"
+          [removable]="chipRemovable" (removed)="removeChip(product)">
+          {{product.name}}
+          <mat-icon *ngIf="chipRemovable" matChipRemove>cancel</mat-icon>
+        </mat-chip-option>
+
+        <btt-add-chip (messageEvent)="addNewChip($event)"/>
+
+        <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon"
+          class="btt-chip-add">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon"
+          (click)="chipRemovable = !chipRemovable"  class="btt-chip-add">
+          <mat-icon>delete</mat-icon>
+        </button>
+    </mat-chip-listbox>
 
     <mat-form-field appearance="fill" class="input-name">
       <mat-label>Nome</mat-label>

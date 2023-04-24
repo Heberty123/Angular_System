@@ -4,9 +4,7 @@ export interface Product {
     description: string,
     reference: string,
     barcode: number,
-    brand: {
-        id: number,
-        name: string
-    },
+    brand: string,
+    productType: string,
     price: string
 }

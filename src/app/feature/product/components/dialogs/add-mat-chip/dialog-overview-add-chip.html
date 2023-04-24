@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Adicionar tipo de produto</h1>
+<div mat-dialog-content>
+    <h2>Digite o nome do tipo de produto</h2>
+    <mat-form-field>
+        <input type="text" matInput [(ngModel)]="data" placeholder="nome do tipo de produto"/>
+        <mat-hint>Nome</mat-hint>
+    </mat-form-field>
+</div>
+<div class="div-bttns" mat-dialog-actions>
+    <button color="warn" mat-button (click)="onNoClick()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

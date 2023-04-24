@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
@@ -10,7 +10,7 @@ import { SelectedTabService } from '../../../services/selected-tab.service';
   templateUrl: './table-customer.component.html',
   styleUrls: ['./table-customer.component.css']
 })
-export class TableCustomerComponent {
+export class TableCustomerComponent implements OnInit {
 
   dataSource: MatTableDataSource<Customer>;
   displayedColumns: string[] = ['id', 'name', 'cpf'];

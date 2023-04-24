@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormProductComponent } from './form-product.component';
 import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { MatChipsModule } from '@angular/material/chips';
+import { AddMatChipModule } from '../../dialogs/add-mat-chip/add-mat-chip.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [
     CommonModule,
     FormsBasics,
-    MatChipsModule
+    MatChipsModule,
+    AddMatChipModule
   ],
   exports: [
     FormProductComponent
