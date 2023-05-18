@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Product } from 'src/app/shared/interfaces/product';
 
 @Component({
   selector: 'list',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class ListComponent {
 
+  rowClicked(row: Product): void {
+    console.log(row);
+  }
 }

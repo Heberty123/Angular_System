@@ -1,0 +1,42 @@
+<mat-form-field class="example-form-field">
+  <mat-label>nome</mat-label>
+  <input matInput type="text" [(ngModel)]="value" (input)="applyFilter()">
+  <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''; applyFilter()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+
+<div *ngIf="dataSource != undefined; else loading" class="box-table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table sticky-header">
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>price</th>
+      <td mat-cell *matCellDef="let element">{{element.price}}</td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row (click)="clickAtRow(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+
+
+<ng-template #loading>
+  <div class="box-spinner">
+    <mat-spinner diameter="150" />
+  </div>
+</ng-template>

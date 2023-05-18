@@ -1,6 +1,12 @@
 :host {
     background-color: powderblue;
     display: flex;
+    flex-direction: column;
     height: 100%;
     padding: 30px;
+}
+
+table-product{
+    width: 50%;
+    height: 50%;
 }

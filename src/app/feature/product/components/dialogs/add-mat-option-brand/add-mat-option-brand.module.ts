@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DialogOverviewAddChipComponent } from './add-mat-chip.component';
+import { DialogOverviewAddOptionComponent } from './add-mat-option-brand.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
 
 
 @NgModule({
   declarations: [
-    DialogOverviewAddChipComponent,
+    DialogOverviewAddOptionComponent
   ],
   imports: [
     CommonModule,
     MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
+    MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule
   ],
 })
-export class AddMatChipModule { }
+export class AddMatOptionBrandModule { }

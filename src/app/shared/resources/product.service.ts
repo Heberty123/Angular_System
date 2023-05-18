@@ -21,4 +21,8 @@ export class ProductService {
   save(product: Product): Observable<Product>{
     return this.http.post<Product>(this.apiUrl + "/", product, { headers: this.headers });
   }
+
+  findByBarcode(value: string): Observable<Product>{
+    return this.http.get<Product>(this.apiUrl + `/barcode/${value}`, { headers: this.headers })
+  }
 }

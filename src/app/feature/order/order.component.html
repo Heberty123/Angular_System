@@ -1,0 +1,9 @@
+<table-product (messageClicked)="addProduct($event)" />
+
+<div class="customer">
+    customer
+</div>
+
+<table-order [products]="products" (updateItem)="updateItem($event)" (deleteEvent)="deleteItems($event)" />
+
+<order-section />

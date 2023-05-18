@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatChipListboxChange } from '@angular/material/chips';
 import { Brand } from 'src/app/shared/interfaces/brand';
 import { ProductType } from 'src/app/shared/interfaces/productType';
 import { Product } from 'src/app/shared/interfaces/product';
 import { BrandService } from 'src/app/shared/resources/brand.service';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { ProductTypeService } from 'src/app/shared/resources/product-type.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogOverviewAddChipComponent } from '../../dialogs/add-mat-chip/add-mat-chip.component';
+import { DialogOverviewAddOptionComponent } from '../../dialogs/add-mat-option-brand/add-mat-option-brand.component';
 
 @Component({
   selector: 'form-product',
@@ -18,12 +20,13 @@ export class FormProductComponent implements OnInit {
   private productForm!: FormGroup;
   brands: Brand[] = [];
   productTypes: ProductType[] = [];
-  chipValue: string
   chipRemovable: boolean = false;
 
-  constructor(private brandService: BrandService,
+  constructor(
+    private brandService: BrandService,
     private productService: ProductService,
-    private productTypeService: ProductTypeService){
+    private productTypeService: ProductTypeService,
+    private dialog: MatDialog){
       this.productForm = new FormGroup({
         name: new FormControl('', [Validators.required]),
         description: new FormControl('', [Validators.required]),
@@ -78,15 +81,14 @@ export class FormProductComponent implements OnInit {
     return this.productForm;
   }
 
-  addNewChip(value: string): void{
-    let obj: ProductType = { 
-      id: undefined,
-      name: value
-    };
-    this.productTypeService.create(obj)
-      .subscribe({
-        next: (value: ProductType) => {
-          this.productTypes.push(value)
+  addChip(): void {
+    const dialogRef = this.dialog.open(DialogOverviewAddChipComponent);
+      dialogRef.afterClosed().subscribe((newProductType: string) => {
+        if (newProductType) {
+          this.productTypeService.create({name: newProductType})
+            .subscribe({
+              next: (productType: ProductType) => this.productTypes.push(productType)
+            })
         }
       });
   }
@@ -108,9 +110,25 @@ export class FormProductComponent implements OnInit {
     console.log(obj)
   }
 
-  chipChange(chipEvent: MatChipListboxChange): void{
-    let value: string = this.name.value;
-    this.chipValue = chipEvent.value;
+  addBrand(value: string): void{
+    this.brandService.save({ name: value })
+      .subscribe({
+        next: (brand: Brand) => {
+          this.brands.push(brand)
+        }
+      })
+  }
+
+  openDialogAddBrand(): void{
+    const dialogRef = this.dialog.open(DialogOverviewAddOptionComponent);
+      dialogRef.afterClosed().subscribe((newBrand: string) => {
+        if (newBrand) {
+          this.brandService.save({name: newBrand})
+            .subscribe({
+              next: (brand: Brand) => this.brands.push(brand)
+            })
+        }
+      });
   }
 
   onSubmit(): void{
@@ -118,8 +136,6 @@ export class FormProductComponent implements OnInit {
       this.productService.save(this.productForm.value)
         .subscribe({
           next: (value: Product) => {
-            console.log('o valor foi persistido no banco de dados: ');
-            console.log(value);
             this.productForm.reset();
             this.productForm.clearValidators();
           }

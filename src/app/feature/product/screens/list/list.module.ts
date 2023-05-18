@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './list.component';
-import { ListProductsModule } from '../../components/lists/list-products/list-products.module';
+import { TableProductModule } from 'src/app/shared/components/tables/table-product/table-product.module';
+
 
 
 
@@ -11,7 +12,7 @@ import { ListProductsModule } from '../../components/lists/list-products/list-pr
   ],
   imports: [
     CommonModule,
-    ListProductsModule
+    TableProductModule
   ],
   exports: [
     ListComponent
