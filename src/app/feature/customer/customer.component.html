@@ -1,13 +1,13 @@
-<mat-tab-group [selectedIndex]="indexTab" [@.disabled]="true" #MatTabGroup (focusChange)="tabLeaving($event)"
-class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="500ms" >
-    <mat-tab>
+<mat-tab-group [@.disabled]="true" [(selectedIndex)]="selectedTabIndex"
+class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab #tabRegister>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">person_add</mat-icon>
         Adicionar cliente
       </ng-template>
 
       <ng-template matTabContent>
-        <register [value]="indexTab!"></register>
+        <register/>
       </ng-template>
     </mat-tab>
   
@@ -18,7 +18,7 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center" animationD
       </ng-template>
 
       <ng-template matTabContent>
-        <list [value]="indexTab!"></list>
+        <list/>
       </ng-template>
     </mat-tab>
   
@@ -29,18 +29,18 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center" animationD
       </ng-template>
   
       <ng-template matTabContent>
-        <remove [value]="indexTab!"></remove>
+        <remove/>
       </ng-template>
     </mat-tab>
 
-    <mat-tab disabled *ngIf="customerSelected != undefined">
+    <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">person</mat-icon>
         Cliente
       </ng-template>
   
       <ng-template matTabContent>
-        <details-customer [customerSelected]="customerSelected"></details-customer>
+        <details-customer [chosenCustomer]="selectedCustomer!"></details-customer>
       </ng-template>
     </mat-tab>
 </mat-tab-group>

@@ -7,9 +7,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RemoveComponent implements OnInit {
 
-  @Input() value: number;
+
+  constructor(){}
 
   ngOnInit(): void {
-    console.log(this.value);
   }
 }

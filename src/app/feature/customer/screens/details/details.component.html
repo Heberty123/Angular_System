@@ -1,26 +1,26 @@
-<div class="container-customer">
+<div class="container-customer" *ngIf="chosenCustomer != null">
     <div *ngIf="toEditCustomer == false; else editCustomer">
         <div class="id-name">
-            <h1><strong>Id:</strong> {{customerSelected.id}}</h1>
-            <h1><strong>CPF:</strong> {{customerSelected.cpf}}</h1>
+            <h1><strong>Id:</strong> {{chosenCustomer.id}}</h1>
+            <h1><strong>CPF:</strong> {{chosenCustomer.cpf}}</h1>
         </div>
-        <h1 class="title-name"><strong>Nome:</strong> {{customerSelected.name}}</h1>
+        <h1 class="title-name"><strong>Nome:</strong> {{chosenCustomer.name}}</h1>
     </div>
     
     <ng-template #editCustomer>
-        <form-customer [haveCustomer]="customerSelected" (eventCustomer)="updateCustomer($event)" class="form-customer" />
+        <form-customer [haveCustomer]="chosenCustomer" (eventCustomer)="updateCustomer($event)" class="form-customer" />
     </ng-template>
 
     <div class="div-buttons">
         <button mat-flat-button color="primary" (click)="toEditCustomer = !toEditCustomer">
             {{toEditCustomer? 'Cancelar' : 'Editar'}}
         </button>
-        <btt-remove [customer]="customerSelected" (messageEvent)="toRemove()" />
+        <btt-remove [customer]="chosenCustomer" (messageEvent)="toRemove()" />
     </div>
 </div>
 
 
-<mat-stepper #stepper class="stepper">
+<mat-stepper #stepper class="stepper" *ngIf="chosenCustomer != null">
     <mat-step label="Endereço">
         <div class="box-address">
 

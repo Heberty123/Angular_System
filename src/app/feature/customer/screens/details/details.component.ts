@@ -5,7 +5,7 @@ import { Customer } from 'src/app/shared/interfaces/customer';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { AddressDeletedComponent } from '../../components/snackbar/address-deleted/address-deleted.component';
-import { SelectedTabService } from '../../services/selected-tab.service';
+import { ManagementTabGroupService } from '../../services/management-tab-group.service';
 
 let snackBarRef: any;
 
@@ -18,7 +18,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  @Input() customerSelected: Customer;
+  @Input() chosenCustomer: Customer;
   addresses: Address[] = [];
   customersDependents: Customer[] = [];
   toAddAddress: boolean = false;
@@ -27,26 +27,27 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(private _serviceCustomer: CustomerService,
     private _serviceAddress: AddressService,
     private _snackBar: MatSnackBar,
-    private selectedTab: SelectedTabService){}
+    private _managementeTab: ManagementTabGroupService){}
 
   ngOnInit(): void {
-    this._serviceAddress.findAllByCustomerId(this.customerSelected.id)
+    this._serviceAddress.findAllByCustomerId(this.chosenCustomer.id)
       .subscribe({
         next: (addresses: Address[]) => { this.addresses = addresses }
       });
-    this._serviceCustomer.findAllDependentsCustomersById(this.customerSelected.id)
+    this._serviceCustomer.findAllDependentsCustomersById(this.chosenCustomer.id)
       .subscribe({
         next: (customers: Customer[]) => { this.customersDependents = customers }
       })
   }
 
   ngOnDestroy(): void {
-    snackBarRef.dismiss();
+    snackBarRef && snackBarRef.dismiss();
+    this._managementeTab.setSubDetails(null);
   }
 
 
   addAddress(data: Address){
-    this._serviceAddress.create(data, this.customerSelected.id)
+    this._serviceAddress.create(data, this.chosenCustomer.id)
       .subscribe({
         next: (value: Address) => { 
           this.addresses.push(value);
@@ -60,17 +61,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this._serviceCustomer.updateById(value)
       .subscribe({
         next: (value: Customer) => {
-          this.customerSelected = value;
+          this.chosenCustomer = value;
           this.toEditCustomer = false;
         }
       })
   }
 
   toRemove(): void{
-    this._serviceCustomer.deleteById(this.customerSelected.id)
+    this._serviceCustomer.deleteById(this.chosenCustomer.id)
       .subscribe({
-        next: () => this.selectedTab.changeToTableCustomers()
-      })
+        next: () => this._managementeTab.setSubDetails(null)
+      });
   }
 
   private openSnackBar(address: Address) {
@@ -114,7 +115,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   addCustomerDependent(customer: Customer): void{
-    this._serviceCustomer.addDependentCustomer(customer, this.customerSelected.id)
+    this._serviceCustomer.addDependentCustomer(customer, this.chosenCustomer.id)
       .subscribe({
         next: (customer: Customer) => {
           this.customersDependents.push(customer);
