@@ -6,5 +6,5 @@ export interface Product {
     barcode: number,
     brand: string,
     productType: string,
-    price: string
+    price: number
 }

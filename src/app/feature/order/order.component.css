@@ -2,32 +2,34 @@
     box-sizing: border-box;
     background-color: burlywood;
     display: grid;
-    grid-template-columns: 40% auto;
+    grid-template-columns: auto 40%;
     grid-template-rows: 50% auto;
     grid-template-areas: 
-        "a c"
-        "b d";
+        "a a"
+        "b c";
     width: 100%;
     height: 100%;
     padding: 20px;
     gap: 20px 20px;
 }
 
-table-product{
+
+table-order{
     grid-area: a;
 }
 
-.customer{
+customer-section{
     grid-area: b;
-    background-color: rgb(139, 109, 73);
-}
-
-table-order{
-    grid-area: c;
 }
 
 order-section{
-    grid-area: d;
+    grid-area: c;
 }
+
+kind-payment-section{
+}
+
+
+
 
 

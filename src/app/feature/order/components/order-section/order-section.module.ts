@@ -6,18 +6,19 @@ import { MatIconModule } from '@angular/material/icon';
 
 
 
-
 @NgModule({
   declarations: [
-    OrderSectionComponent
+    OrderSectionComponent,
   ],
   imports: [
     CommonModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
   exports: [
     OrderSectionComponent
-  ]
+  ],
+  providers: [],
+  bootstrap: [OrderSectionComponent],
 })
 export class OrderSectionModule { }

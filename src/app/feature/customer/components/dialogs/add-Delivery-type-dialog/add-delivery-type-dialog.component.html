@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Adicionar tipo de entrega</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <input type="text" matInput [(ngModel)]="data" placeholder="descrição do tipo de entrega"/>
+        <mat-hint>Tipo de entrega</mat-hint>
+    </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="onNoClick()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

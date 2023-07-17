@@ -72,6 +72,13 @@
       <mat-form-field appearance="fill" class="input-deliveryType">
         <mat-label>Tipo de entrega</mat-label>
         <mat-select formControlName="deliveryType">
+          <mat-option (click)="addDeliveryType()">
+            <mat-icon>
+              add
+            </mat-icon>
+            Adicionar
+          </mat-option>
+
           <mat-option *ngFor="let delivery of deliveries" [value]="delivery">
             {{delivery.name}}
           </mat-option>

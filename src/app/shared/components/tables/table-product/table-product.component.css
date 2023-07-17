@@ -3,12 +3,6 @@
     flex-direction: column;
 }
 
-.sticky-header {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
 .box-table {
     width: 100%;
     height: 100%;

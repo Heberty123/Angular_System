@@ -8,8 +8,8 @@
     <mat-stepper #stepper>
         <mat-step label="Endereços" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
             <div class="box-address">
-                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [$formOpen]="eventsAddressOpened.asObservable()"
-                [$resetForm]="eventsAddressReset.asObservable()" class="form-address"/>
+                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [formOpen$]="eventsAddressOpened.asObservable()"
+                [resetForm$]="eventsAddressReset.asObservable()" class="form-address"/>
                 <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
                 class="list-address"/>
             </div>

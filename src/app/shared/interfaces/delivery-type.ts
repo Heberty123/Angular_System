@@ -1,4 +1,4 @@
 export interface DeliveryType {
-    id: number,
+    id?: number,
     name: string
 }

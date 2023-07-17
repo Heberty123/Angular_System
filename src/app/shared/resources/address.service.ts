@@ -19,13 +19,8 @@ export class AddressService {
     return this.http.post<Address>(this.apiUrl + `/create/${customerId}`, address, {'headers': this.headers});
   }
 
-  
   searchByCPF(cep: string): Observable<any>{
     return this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`, { headers: this.headers });
-  }
-
-  findAllDeliveryType(): Observable<DeliveryType[]>{
-    return this.http.get<DeliveryType[]>(this.apiUrl + "/all/deliveryType", { headers: this.headers });
   }
 
   findAllByCustomerId(id: number): Observable<Address[]>{

@@ -1,9 +1,7 @@
-<table-product (messageClicked)="addProduct($event)" />
+<table-order [products]="products" (changeQty)="changeQuantity($event)" (updateList)="updateList()" (deleteEvent)="deleteItems($event)" />
 
-<div class="customer">
-    customer
-</div>
+<order-section [orderDetails]="orderDetails" (saveOrder)="saveOrder()"/>
 
-<table-order [products]="products" (updateItem)="updateItem($event)" (deleteEvent)="deleteItems($event)" />
+<customer-section (customerEvent)="customerSelected($event)" />
 
-<order-section />
+<table-product (messageClicked)="produtoChamado($event)" />

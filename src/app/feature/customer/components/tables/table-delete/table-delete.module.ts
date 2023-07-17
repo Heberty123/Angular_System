@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TablesModule } from '../tables.module';
 import { TableDeleteComponent } from './table-delete.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
 
 
@@ -10,7 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   declarations: [TableDeleteComponent],
   imports: [
     CommonModule,
-    TablesModule,
+    MatTableModule,
     MatCheckboxModule
   ],
   exports: [TableDeleteComponent]

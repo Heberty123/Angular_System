@@ -1,0 +1,61 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2{
+  margin: 0px;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+  padding-right: 10px;
+}
+
+.div-quantity .input-quantity{
+  width: 300px;
+}
+
+.box{
+  margin-top: 20px;
+  display: flex;
+  gap: 0px 20px;
+}
+
+.results{
+  background-color: rgb(211, 211, 211);
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px 0px;
+  justify-content: center;
+}
+
+.information{
+  margin-bottom: 20px;
+}
+
+.information .buttons{
+  display: flex;
+  gap: 0px 10px;
+}
+
+.inputs{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.inputs .input-valor{
+  width: 250px;
+}
+
+.inputs .input-netValue{
+  width: 250px;
+}

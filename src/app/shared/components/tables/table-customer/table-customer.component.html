@@ -1,0 +1,48 @@
+<mat-form-field>
+  <mat-label>Nome ou CPF</mat-label>
+  <input matInput type="text" [(ngModel)]="value" (input)="filterByValue()">
+  <button *ngIf="value" matSuffix mat-icon-button aria-label="Limpar" (click)="value='';filterByValue()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-hint>Digite o nome do cliente</mat-hint>
+</mat-form-field>
+
+<cdk-virtual-scroll-viewport itemSize="18" *ngIf="dataSource != undefined; else loading" class="box-table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="cpf">
+      <th mat-header-cell *matHeaderCellDef>CPF</th>
+      <td mat-cell *matCellDef="let element">{{element.cpf}}</td>
+    </ng-container>
+  
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+
+    <tr
+        mat-row
+        (click)="rowClicked.emit(row)"
+        *matRowDef="let row; columns: displayedColumns;"
+    ></tr>
+    
+  </table>
+</cdk-virtual-scroll-viewport>
+
+<ng-template #loading>
+  <div class="box-spinner">
+    <mat-spinner diameter="150"/>
+  </div>
+</ng-template>
+
+

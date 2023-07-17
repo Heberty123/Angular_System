@@ -17,6 +17,10 @@ export class CustomerService {
     return this.http.get<boolean>(this.apiUrl + `/exist/${cpf}`);
   }
 
+  findById(id: number): Observable<Customer>{
+    return this.http.get<Customer>(this.apiUrl + `/${id}`, {'headers': this.headers});
+  }
+
   findAll(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.apiUrl + "/all")
       .pipe(

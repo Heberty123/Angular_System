@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Produto: {{data.name}}</h1>
+<div mat-dialog-content>
+    <h1>Tipo de produto: {{data.productType}}</h1>
+    <h1>Descrição: {{data.description}}</h1>
+    <h1>Marca: {{data.brand}}</h1>
+    <h1>Preço: {{data.price}}</h1>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="onNoClick()">Cancelar</button>
+    <button color="primary" mat-button cdkFocusInitial (click)="onNoClick()">Ok</button>
+</mat-dialog-actions>
