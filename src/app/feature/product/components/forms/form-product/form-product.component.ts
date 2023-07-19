@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Brand } from 'src/app/shared/interfaces/brand';
 import { ProductType } from 'src/app/shared/interfaces/productType';

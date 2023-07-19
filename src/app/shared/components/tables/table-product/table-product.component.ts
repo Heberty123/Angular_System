@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Product } from 'src/app/shared/interfaces/product';
+import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
 import { ProductService } from 'src/app/shared/resources/product.service';
 
 @Component({
@@ -11,9 +11,9 @@ import { ProductService } from 'src/app/shared/resources/product.service';
 export class TableProductComponent {
 
   value: string | undefined;
-  dataSource: MatTableDataSource<Product>;
+  dataSource: MatTableDataSource<SimpleProduct>;
   displayedColumns: string[];
-  @Output() messageClicked = new EventEmitter<Product>();
+  @Output() messageClicked = new EventEmitter<SimpleProduct>();
   @Input() justShow?: boolean;
 
   constructor(private productService: ProductService){}
@@ -21,8 +21,8 @@ export class TableProductComponent {
   ngOnInit(): void {
     this.productService.findAll()
       .subscribe({
-        next: (products: Product[]) => {
-          this.dataSource = new MatTableDataSource<Product>(products);
+        next: (products: SimpleProduct[]) => {
+          this.dataSource = new MatTableDataSource<SimpleProduct>(products);
         }
       })
       this.displayedColumns = this.justShow ? ['id', 'name', 'price'] : ['name'];
@@ -32,7 +32,7 @@ export class TableProductComponent {
     this.dataSource.filter = this.value!.trim().toLowerCase();
   }
 
-  clickAtRow(row: Product): void {
+  clickAtRow(row: SimpleProduct): void {
     this.messageClicked.emit(row);
   }
 }

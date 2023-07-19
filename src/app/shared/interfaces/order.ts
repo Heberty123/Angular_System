@@ -11,4 +11,5 @@ export interface Order {
     discounts?: number,
     productsOrders: ProductOrderPost[] | ProductOrderResponse[],
     payments?: Payment[],
+    createdAt?: string,
 }

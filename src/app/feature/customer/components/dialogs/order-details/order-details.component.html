@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Adicionar tipo de entrega</h2>
+<div mat-dialog-content>
+    <h2>{{data.status}}</h2>
+    <h2>{{data.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</h2>
+    <h2>{{data.grossAmount | currency }}</h2>
+    <h2>{{data.netAmount | currency }}</h2>
+    <h2>{{data.discounts | percent: '1.2-2' }}</h2>
+
+    <h1>Produtos</h1>
+
+    <table-order/>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

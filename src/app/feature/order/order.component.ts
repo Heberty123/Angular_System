@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit } from '@angular/core';
 import { TableProductModule } from 'src/app/shared/components/tables/table-product/table-product.module';
 import { OrderSectionModule } from './components/order-section/order-section.module';
-import { TableOrderModule } from './components/table-order/table-order.module';
+import { TableOrderModule } from '../../shared/components/tables/table-order/table-order.module';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { Subscription } from 'rxjs';
 import { ControlBarcodeReaderService } from 'src/app/services/control-barcode-reader.service';
@@ -14,6 +14,7 @@ import { OrderService } from 'src/app/shared/resources/order.service';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
 import { Product } from 'src/app/shared/interfaces/product';
 import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
+import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
 
 @Component({
   selector: 'app-order',
@@ -62,13 +63,9 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.customerChoosed = customer;
   }
 
-  addProduct(product: ProductForOrder): void {
-    product.quantity = 1;
-
+  addProduct(product: Product): void {
     if (!this.products.some((obj) => obj.id === product.id)) {
-      product.grossAmount = product.price * product.quantity;
-      product.netAmount = product.grossAmount;
-      this.products = [...this.products, product];
+      this.products = [...this.products, this.toProductForOrder(product)];
       this.updateDetails();
     }
     else {
@@ -83,7 +80,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   findByBarcode(barcodeText: string) {
     this.productService.findByBarcode(barcodeText)
       .subscribe({
-        next: (product: ProductForOrder) => {
+        next: (product: Product) => {
           this.addProduct(product);
         }
       })
@@ -156,27 +153,23 @@ export class OrderComponent implements OnInit, OnDestroy {
       })
   }
 
-
-  produtoChamado(product: Product) {
-    let productOrder: ProductForOrder = {
-      id: product.id,
-      barcode: product.barcode,
-      brand: product.brand,
-      description: product.description,
-      discounts: 0,
-      isRefund: false,
-      name: product.name,
-      price: product.price,
-      productType: product.productType,
-      quantity: 1,
-      reference: product.reference,
-      grossAmount: 0,
-      netAmount: 0,
-      promotion: 0
-    }
-    this.addProduct(productOrder);
+  produtoChamado(product: SimpleProduct) {
+    this.addProduct(Object.assign(product));
   }
 
+  toProductForOrder(product: Product): ProductForOrder{
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      grossAmount: product.price,
+      netAmount: product.price,
+      discounts: 0,
+      promotion: 0,
+      quantity: 1,
+      isRefund: false
+    }
+  }
 
   ngOnDestroy(): void {
     this.controlBarcodeService.setComponentReader(false);

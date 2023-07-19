@@ -3,8 +3,9 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
-import { DiscountsDialogComponent } from '../dialogs/discounts/discounts-dialog.component';
+import { DiscountsDialogComponent } from '../../../../feature/order/components/dialogs/discounts/discounts-dialog.component';
 import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
+import { ProductOrderResponse } from '../../../interfaces/productOrderResponse';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class TableOrderComponent implements OnChanges {
   @Output() updateList = new EventEmitter<ProductForOrder>();
   @Output() deleteEvent = new EventEmitter<ProductForOrder[]>();
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'])

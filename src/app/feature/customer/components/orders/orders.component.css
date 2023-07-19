@@ -1,0 +1,32 @@
+:host{
+    display: flex;
+    flex-direction: column;
+}
+
+.box-table {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: rgb(228, 228, 228);
+}
+
+.demo-row-is-clicked {
+    font-weight: bold;
+}
+
+.box-spinner {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.15);
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}

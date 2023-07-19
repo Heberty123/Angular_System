@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductForOrder } from '../interfaces/productForOrder';
+import { Product } from '../interfaces/product';
+import { SimpleProduct } from '../interfaces/simpleProduct';
 
 
 @Injectable({
@@ -14,15 +16,19 @@ export class ProductService {
   private apiUrl: string = 'api/product';
   private headers = { 'content-type': 'application/json'}
 
-  findAll(): Observable<ProductForOrder[]>{
-    return this.http.get<ProductForOrder[]>(this.apiUrl + "/all", { headers: this.headers });
+  findById(id: number): Observable<Product>{
+    return this.http.get<Product>(this.apiUrl + `/${id}`, { headers: this.headers })
   }
 
-  save(product: ProductForOrder): Observable<ProductForOrder>{
-    return this.http.post<ProductForOrder>(this.apiUrl + "/", product, { headers: this.headers });
+  findAll(): Observable<SimpleProduct[]>{
+    return this.http.get<SimpleProduct[]>(this.apiUrl + "/all", { headers: this.headers });
   }
 
-  findByBarcode(value: string): Observable<ProductForOrder>{
-    return this.http.get<ProductForOrder>(this.apiUrl + `/barcode/${value}`, { headers: this.headers })
+  save(product: Product): Observable<Product>{
+    return this.http.post<Product>(this.apiUrl + "/", product, { headers: this.headers });
+  }
+
+  findByBarcode(value: string): Observable<Product>{
+    return this.http.get<Product>(this.apiUrl + `/barcode/${value}`, { headers: this.headers })
   }
 }

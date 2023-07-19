@@ -1,11 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { AddressDeletedComponent } from '../../components/snackbar/address-deleted/address-deleted.component';
-import { ManagementTabGroupService } from '../../services/management-tab-group.service';
+import { OrderService } from 'src/app/shared/resources/order.service';
+import { Order } from 'src/app/shared/interfaces/order';
 
 let snackBarRef: any;
 
@@ -19,15 +20,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   @Input() chosenCustomer: Customer;
+  @Output() eraseCustomer: EventEmitter<void> = new EventEmitter<void>()
+  @Output() toList: EventEmitter<void> = new EventEmitter<void>()
   addresses: Address[] = [];
   customersDependents: Customer[] = [];
+  orders: Order[];
   toAddAddress: boolean = false;
-  toEditCustomer: boolean = false;
 
   constructor(private _serviceCustomer: CustomerService,
     private _serviceAddress: AddressService,
-    private _snackBar: MatSnackBar,
-    private _managementeTab: ManagementTabGroupService){}
+    private _orderService: OrderService,
+    private _snackBar: MatSnackBar){}
 
   ngOnInit(): void {
     this._serviceAddress.findAllByCustomerId(this.chosenCustomer.id)
@@ -38,11 +41,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (customers: Customer[]) => { this.customersDependents = customers }
       })
+    this._orderService.findByCustomerId(this.chosenCustomer.id)
+      .subscribe({
+        next: (orders: Order[]) => {
+          this.orders = orders;
+        }
+      })
   }
 
   ngOnDestroy(): void {
     snackBarRef && snackBarRef.dismiss();
-    this._managementeTab.setSubDetails(null);
   }
 
 
@@ -62,7 +70,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (value: Customer) => {
           this.chosenCustomer = value;
-          this.toEditCustomer = false;
         }
       })
   }
@@ -70,7 +77,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   toRemove(): void{
     this._serviceCustomer.deleteById(this.chosenCustomer.id)
       .subscribe({
-        next: () => this._managementeTab.setSubDetails(null)
+        next: () => this.eraseCustomer.emit()
       });
   }
 

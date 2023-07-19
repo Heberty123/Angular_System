@@ -1,43 +1,63 @@
-<div class="container-customer" *ngIf="chosenCustomer != null">
-    <div *ngIf="toEditCustomer == false; else editCustomer">
-        <div class="id-name">
-            <h1><strong>Id:</strong> {{chosenCustomer.id}}</h1>
-            <h1><strong>CPF:</strong> {{chosenCustomer.cpf}}</h1>
-        </div>
-        <h1 class="title-name"><strong>Nome:</strong> {{chosenCustomer.name}}</h1>
-    </div>
-    
-    <ng-template #editCustomer>
-        <form-customer [haveCustomer]="chosenCustomer" (eventCustomer)="updateCustomer($event)" class="form-customer" />
-    </ng-template>
+<div class="main-container" *ngIf="chosenCustomer != null; else isThereNot">
+    <div class="container-customer" >
 
-    <div class="div-buttons">
-        <button mat-flat-button color="primary" (click)="toEditCustomer = !toEditCustomer">
-            {{toEditCustomer? 'Cancelar' : 'Editar'}}
-        </button>
-        <btt-remove [customer]="chosenCustomer" (messageEvent)="toRemove()" />
+            <div class="id-name">
+                <h1><strong>Id:</strong> {{chosenCustomer.id}}</h1>
+                <h1><strong>CPF:</strong> {{chosenCustomer.cpf}}</h1>
+            </div>
+            <h1 class="title-name"><strong>Nome:</strong> {{chosenCustomer.name}}</h1>
+
+
+        <div class="div-buttons">
+            <button mat-flat-button color="primary">
+                Editar
+            </button>
+            <btt-remove [customer]="chosenCustomer" (messageEvent)="toRemove()" />
+        </div>
     </div>
+
+
+    <mat-stepper #stepper class="container-stepper">
+
+        <!--
+        <mat-step label="Endereço">
+
+                <button mat-flat-button color="primary" (click)="toAddAddress = !toAddAddress" class="btt-add-address">
+                    {{toAddAddress? 'Cancelar' : 'Adicionar'}}
+                </button>
+                <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
+                    *ngIf="toAddAddress == false; else toAdd" class="list-address" />
+                <ng-template #toAdd>
+                    <form-address (messageEvent)="addAddress($event)" [keepOpen]="true" class="form-address" />
+                </ng-template>
+
+        </mat-step>
+
+        <mat-step label="Sub-Clientes">
+                <sub-customers (eventCustomerDep)="addCustomerDependent($event)"
+                    [customersDependents]="customersDependents" />
+        </mat-step>
+        -->
+
+        <mat-step label="Pagamentos">
+            <ng-template matStepContent>
+                <payments />
+            </ng-template>
+        </mat-step>
+
+        <mat-step label="Pedidos">
+            <ng-template matStepContent>
+                <orders [orders]="orders" />
+            </ng-template>
+        </mat-step>
+        
+    </mat-stepper>
 </div>
 
-
-<mat-stepper #stepper class="stepper" *ngIf="chosenCustomer != null">
-    <mat-step label="Endereço">
-        <div class="box-address">
-
-            <button mat-flat-button color="primary" (click)="toAddAddress = !toAddAddress" class="btt-add-address">
-                {{toAddAddress? 'Cancelar' : 'Adicionar'}}
-            </button>
-            <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
-                *ngIf="toAddAddress == false; else toAdd" class="list-address"/>
-            <ng-template #toAdd>
-                <form-address (messageEvent)="addAddress($event)" [keepOpen]="true" class="form-address"/>
-            </ng-template>
-
-        </div>
-    </mat-step>
-    <mat-step label="Sub-Clientes">
-        <div class="box-sub-customers">
-            <sub-customers (eventCustomerDep)="addCustomerDependent($event)" [customersDependents]="customersDependents" />
-        </div>
-    </mat-step>
-</mat-stepper>
+<ng-template #isThereNot>
+    <div class="auto-reply-message">
+      <h1>Cliente não foi selecionado !</h1>
+      <strong>Por favor, selecione o cliente</strong>
+      <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
+    </div>
+</ng-template>

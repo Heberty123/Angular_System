@@ -4,6 +4,8 @@ import { MaterialBasicModule } from 'src/app/shared/modules/material-basic.modul
 import { ListModule } from './screens/list/list.module';
 import { RegisterModule } from './screens/register/register.module';
 import { RemoveModule } from './screens/remove/remove.module';
+import { DetailsModule } from './screens/details/details.module';
+import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
 
 @Component({
   selector: 'product',
@@ -16,9 +18,15 @@ import { RemoveModule } from './screens/remove/remove.module';
     MaterialBasicModule,
     RegisterModule,
     ListModule,
-    RemoveModule
+    RemoveModule,
+    DetailsModule
   ]
 })
 export class ProductComponent {
+
+  selectedProduct: SimpleProduct | null;
+
+  constructor(){}
+
 
 }

@@ -7,8 +7,6 @@ import { ListModule } from './screens/list/list.module';
 import { RegisterModule } from './screens/register/register.module';
 import { RemoveModule } from './screens/remove/remove.module';
 import { Subscription } from 'rxjs';
-import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
-import { ManagementTabGroupService } from './services/management-tab-group.service';
 
 @Component({
   selector: 'customer',
@@ -24,29 +22,18 @@ import { ManagementTabGroupService } from './services/management-tab-group.servi
     RemoveModule,
     DetailsModule
   ],
-  providers: [ManagementTabGroupService]
+  providers: []
 })
 export class CustomerComponent implements OnInit, OnDestroy{
   selectedCustomer: Customer | null;
   selectedTabIndex: number;
-  private subscription: Subscription;
 
-  constructor(private _managementTab: ManagementTabGroupService){}
+  constructor(){}
   
   ngOnInit(): void {
-    this.subscription = this._managementTab.getSubDetails()
-      .subscribe({
-        next: (customer: Customer | null) => {
-          if(customer){
-            this.selectedCustomer = customer;
-            this.selectedTabIndex = 3;
-          }
-        } 
-      })
   }
 
 
   ngOnDestroy(): void {
-    this.subscription && this.subscription.unsubscribe();
   }
 }

@@ -1,6 +1,8 @@
-import { Product } from "./product";
+import { SimpleProduct } from "./simpleProduct";
 
 export interface ProductOrderResponse {
-    product: Product, 
-    quantity: number
+    product: SimpleProduct, 
+    quantity: number,
+    discounts: number,
+    isRefund: boolean,
 }

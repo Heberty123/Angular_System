@@ -1,4 +1,4 @@
-<mat-tab-group [@.disabled]="true" [(selectedIndex)]="selectedTabIndex"
+<mat-tab-group #tabGroup [@.disabled]="true" [(selectedIndex)]="selectedTabIndex"
 class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
     <mat-tab #tabRegister>
       <ng-template mat-tab-label>
@@ -18,7 +18,7 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
       </ng-template>
 
       <ng-template matTabContent>
-        <list/>
+        <list (rowClicked)="selectedCustomer = $event; tabGroup.selectedIndex = 3"/>
       </ng-template>
     </mat-tab>
   
@@ -40,7 +40,8 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
       </ng-template>
   
       <ng-template matTabContent>
-        <details-customer [chosenCustomer]="selectedCustomer!"></details-customer>
+        <details-customer [chosenCustomer]="selectedCustomer!" (eraseCustomer)="selectedCustomer = null"
+        (toList)="selectedTabIndex = 1" />
       </ng-template>
     </mat-tab>
 </mat-tab-group>

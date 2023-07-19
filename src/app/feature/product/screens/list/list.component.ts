@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Product } from 'src/app/shared/interfaces/product';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
 
 @Component({
   selector: 'list',
@@ -8,7 +8,5 @@ import { Product } from 'src/app/shared/interfaces/product';
 })
 export class ListComponent {
 
-  rowClicked(row: Product): void {
-    console.log(row);
-  }
+  @Output() rowClicked: EventEmitter<SimpleProduct> = new EventEmitter<SimpleProduct>();
 }

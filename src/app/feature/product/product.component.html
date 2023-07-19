@@ -1,5 +1,5 @@
-<mat-tab-group [@.disabled]="true" #MatTabGroup class="mat-tabGroup" mat-stretch-tabs="false"
-mat-align-tabs="center" animationDuration="500ms" >
+<mat-tab-group #tabGroup [@.disabled]="true" class="mat-tabGroup" mat-stretch-tabs="false"
+mat-align-tabs="center">
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">add_box</mat-icon>
@@ -18,7 +18,7 @@ mat-align-tabs="center" animationDuration="500ms" >
       </ng-template>
 
       <ng-template matTabContent>
-        <list />
+        <list (rowClicked)="selectedProduct = $event; tabGroup.selectedIndex = 3" />
       </ng-template>
     </mat-tab>
   
@@ -33,18 +33,18 @@ mat-align-tabs="center" animationDuration="500ms" >
       </ng-template>
     </mat-tab>
 
-    <!--
-    <mat-tab disabled *ngIf="customerSelected != undefined">
+    <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">person</mat-icon>
-        Cliente
+        <mat-icon class="example-tab-icon">inbox</mat-icon>
+        Produto
       </ng-template>
   
       <ng-template matTabContent>
-        <details-customer [customerSelected]="customerSelected"></details-customer>
+        <details-product [productId]="selectedProduct!.id" (eraseProduct)="selectedProduct = null"
+        (toList)="tabGroup.selectedIndex = 1" />
       </ng-template>
-    </mat-tab>
-    -->
+    </mat-tab>    
+
 </mat-tab-group>
 
 

@@ -13,6 +13,8 @@ import { SubCustomersModule } from '../../components/trees/sub-customers/sub-cus
 import { RemoveCustomerModule } from '../../components/dialogs/remove-customer/remove-customer.module';
 import { FormAddressModule } from '../../components/forms/form-address/form-address.module';
 import { FormCustomerModule } from '../../components/forms/form-customer/form-customer.module';
+import { OrdersModule } from '../../components/orders/orders.module';
+import { PaymentsModule } from '../../components/payments/payments.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { FormCustomerModule } from '../../components/forms/form-customer/form-cu
     SubCustomersModule,
     RemoveCustomerModule,
     FormAddressModule,
-    FormCustomerModule
+    FormCustomerModule,
+    OrdersModule,
+    PaymentsModule
   ],
   exports: [
     DetailsComponent

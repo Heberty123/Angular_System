@@ -1,0 +1,19 @@
+<div *ngIf="choosenProduct != null; else isThereNot">
+    <h1>Id: {{choosenProduct.id}}</h1>
+    <h1>Nome: {{choosenProduct.name}}</h1>
+    <h1>Descrição: {{choosenProduct.description}}</h1>
+    <h1>Referência: {{choosenProduct.reference}}</h1>
+    <h1>Código de barras: {{choosenProduct.barcode}}</h1>
+    <h1>Marca: {{choosenProduct.brand}}</h1>
+    <h1>Tipo de produto: {{choosenProduct.productType}}</h1>
+    <h1>Preço: {{choosenProduct.price}}</h1>
+</div>
+
+
+<ng-template #isThereNot>
+    <div class="auto-reply-message">
+        <h1>Produto não foi selecionado !</h1>
+        <strong>Por favor, selecione o produto</strong>
+        <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
+    </div>
+</ng-template>
