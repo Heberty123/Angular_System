@@ -32,9 +32,13 @@ export class OrderDetailsComponent {
   constructor(public dialogRef: MatDialogRef<OrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Order){
       data.productsOrders.forEach(p => {
-        this.productsOrdered.push({
-          //id: p.product
-        })
+/*        this.productsOrdered.push({
+          id: p.product.id,
+          name: p.product.name,
+          price: p.product.price,
+          grossAmount: p.product.price * p.quantity,
+
+        })*/
       })
     }
 }

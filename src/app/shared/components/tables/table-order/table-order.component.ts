@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
 import { DiscountsDialogComponent } from '../../../../feature/order/components/dialogs/discounts/discounts-dialog.component';
 import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
-import { ProductOrderResponse } from '../../../interfaces/productOrderResponse';
 
 
 @Component({

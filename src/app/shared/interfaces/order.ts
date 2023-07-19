@@ -1,6 +1,5 @@
 import { Payment } from "./payment";
-import { ProductOrderPost } from "./productOrderPost";
-import { ProductOrderResponse } from "./productOrderResponse";
+import { ProductOrder } from "./productOrder";
 
 export interface Order {
     id?: number,
@@ -9,7 +8,7 @@ export interface Order {
     netAmount?: number,
     grossAmount?: number,
     discounts?: number,
-    productsOrders: ProductOrderPost[] | ProductOrderResponse[],
+    productsOrders: ProductOrder[],
     payments?: Payment[],
     createdAt?: string,
 }

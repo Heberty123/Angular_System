@@ -9,12 +9,12 @@ import { ControlBarcodeReaderService } from 'src/app/services/control-barcode-re
 import { CustomerSectionModule } from './components/customer-section/customer-section.module';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { Order } from 'src/app/shared/interfaces/order';
-import { ProductOrderPost } from 'src/app/shared/interfaces/productOrderPost';
 import { OrderService } from 'src/app/shared/resources/order.service';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
 import { Product } from 'src/app/shared/interfaces/product';
 import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
 import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
+import { ProductOrder } from 'src/app/shared/interfaces/productOrder';
 
 @Component({
   selector: 'app-order',
@@ -137,8 +137,12 @@ export class OrderComponent implements OnInit, OnDestroy {
       netAmount: this.orderDetails.netAmount,
       discounts: this.orderDetails.discounts,
       productsOrders: this.products.map((value) => {
-        let productOrder: ProductOrderPost = {
-          productId: value.id,
+        let productOrder: ProductOrder = {
+          product: {
+            id: value.id,
+            name: value.name,
+            price: value.price
+          },
           quantity: value.quantity,
           discounts: value.discounts,
           isRefund: value.isRefund
