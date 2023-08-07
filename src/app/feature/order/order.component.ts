@@ -15,9 +15,10 @@ import { Product } from 'src/app/shared/interfaces/product';
 import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
 import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
 import { ProductOrder } from 'src/app/shared/interfaces/productOrder';
+import { Payment } from 'src/app/shared/interfaces/payment';
 
 @Component({
-  selector: 'app-order',
+  selector: 'order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css'],
   standalone: true,
@@ -36,6 +37,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   customerChoosed: Customer;
   products: ProductForOrder[] = [];
   orderDetails: OrderDetails;
+  payments: Payment[] = [];
   private subscription: Subscription;
 
   constructor(private productService: ProductService,
@@ -148,13 +150,23 @@ export class OrderComponent implements OnInit, OnDestroy {
           isRefund: value.isRefund
         }
         return productOrder;
+      }),
+      payments: this.payments.map((value) => {
+        let payment: Payment  = {
+          amount: value.amount,
+          paymentDate: value.paymentDate,
+          paymentType: value.paymentType
+        }
+        return payment;
       })
     }
+
 
     this.orderService.save(order)
       .subscribe({
         next: (value: Order) => console.log(value)
       })
+    
   }
 
   produtoChamado(product: SimpleProduct) {
@@ -178,5 +190,9 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.controlBarcodeService.setComponentReader(false);
     this.subscription && this.subscription.unsubscribe();
+  }
+
+  Teste(): void {
+    console.log(this.payments);
   }
 }

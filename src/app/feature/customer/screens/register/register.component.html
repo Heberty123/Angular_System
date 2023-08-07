@@ -1,27 +1,21 @@
 <div class="container-customer">
-    <button mat-flat-button color="primary" (click)="reset()" [disabled]="newButtonDisabled" class="btt-new">Novo</button>
-    <form-customer (eventCustomer)="createCustomer($event)" [$formOpened]="eventsCustomerOpened.asObservable()" 
-    [$resetForm]="eventsCustomerReset.asObservable()" class="form-customer"/>
+    <button mat-flat-button color="primary" (click)="reset()" [disabled]="locked" class="btt-new">Novo</button>
+    <form-customer (submited)="newCustomer($event)" [disabled$]="!locked"/>
 </div>
 
 <div class="container">
-    <mat-stepper #stepper>
-        <mat-step label="Endereços" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
-            <div class="box-address">
-                <form-address [customer]="customerData" (messageEvent)="pushAddress($event)" [formOpen$]="eventsAddressOpened.asObservable()"
-                [resetForm$]="eventsAddressReset.asObservable()" class="form-address"/>
-                <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
-                class="list-address"/>
-            </div>
+    <mat-stepper #stepper class="stepper">
+
+        <mat-step label="Endereços">
+            <form-address (submited)="newAddress($event)" [disabled$]="locked" />
+            <list-address [data]="addresses" [editable]="true" />
         </mat-step>
-        <mat-step label="Sub-Clientes" [aria-labelledby]="stepDisabled ? 'disabled_Resi' : 'null'">
-            <sub-customers (eventCustomerDep)="addCustomerDependent($event)" [customersDependents]="customersDependents"/>
+
+        <mat-step label="Dependentes">         
+            <sub-customers [customerId]="customer?.id" [data]="dependents"/>           
         </mat-step>
+        
     </mat-stepper>
-    <div class="block" [class.unlock]="addressUnlock"></div>
+
+    <div class="block" [class.unlock]="!locked"></div>
 </div>
-
-
-
-    
-

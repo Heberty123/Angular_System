@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../interfaces/customer';
 import { delay, first, Observable } from 'rxjs';
+import { FullCustomer } from '../interfaces/full-customer';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class CustomerService {
       );
   }
 
+  findFullById(id: number): Observable<FullCustomer> {
+    return this.http.get<FullCustomer>(this.apiUrl + `/full/${id}`, {'headers': this.headers});
+  }
+
   create(customer: any): Observable<Customer>{
     return this.http.post<Customer>(this.apiUrl + '/create', customer, {'headers': this.headers});
   }
@@ -36,13 +41,12 @@ export class CustomerService {
     return this.http.delete<void>(this.apiUrl + `/${id}`, {'headers': this.headers});
   }
 
-  updateById(customer: Customer): Observable<Customer>{
-    return this.http.put<Customer>(this.apiUrl + `/update/${customer.id}`, customer, {'headers': this.headers});
+  update(customer: Customer): Observable<Customer>{
+    return this.http.put<Customer>(this.apiUrl, customer, {'headers': this.headers});
   }
 
-  addDependentCustomer(customerDep: Customer,
-           customerId: number): Observable<Customer>{
-    return this.http.post<Customer>(this.apiUrl + `/create/dependent/${customerId}`, customerDep, {'headers': this.headers});
+  addDependent(dependent: Customer, customerId: number): Observable<Customer>{
+    return this.http.post<Customer>(this.apiUrl + `/create/dependent/${customerId}`, dependent, {'headers': this.headers});
   }
 
   findAllDependentsCustomersById(customerId: number): Observable<Customer[]>{

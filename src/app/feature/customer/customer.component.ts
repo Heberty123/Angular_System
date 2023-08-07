@@ -6,7 +6,6 @@ import { DetailsModule } from './screens/details/details.module';
 import { ListModule } from './screens/list/list.module';
 import { RegisterModule } from './screens/register/register.module';
 import { RemoveModule } from './screens/remove/remove.module';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'customer',

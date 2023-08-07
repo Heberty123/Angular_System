@@ -1,1 +1,8 @@
-<button mat-flat-button color="accent" (click)="removeCustomer()">Excluir</button>
+<h2 mat-dialog-title>Tem certeza remove {{data.id}} ?</h2>
+<div mat-dialog-content>
+    <h1>Deseja remover cliente: {{data.name}} ?</h1>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Não</button>
+    <button color="primary" mat-button [mat-dialog-close]="true" cdkFocusInitial>Sim</button>
+</mat-dialog-actions>

@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Order } from 'src/app/shared/interfaces/order';
 import { OrderDetailsComponent } from '../dialogs/order-details/order-details.component';
 
+let snackBarRef: any;
+
 @Component({
   selector: 'orders',
   templateUrl: './orders.component.html',
@@ -11,7 +13,7 @@ import { OrderDetailsComponent } from '../dialogs/order-details/order-details.co
 })
 export class OrdersComponent implements OnInit {
 
-  @Input() orders: Order[]
+  @Input() data: Order[]
 
   dataSource: MatTableDataSource<Order>;
   displayedColumns: string[] = ['status', 'createdAt', 'grossAmount', 'netAmount'];
@@ -20,7 +22,12 @@ export class OrdersComponent implements OnInit {
   constructor(public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Order>(this.orders);
+    this.dataSource = new MatTableDataSource<Order>(this.data);
+  }
+
+  ngOnDestroy(): void {
+    snackBarRef && snackBarRef.dismiss();
+    console.log("Fui destruído")
   }
   
   applyFilter(): void {

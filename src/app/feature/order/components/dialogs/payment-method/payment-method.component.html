@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>{{data.paymentMethod === "INCASH" ? 'Á vista' : 'parcelado'}}</h1>
+<div mat-dialog-content class="content">
+
+  <order-details-view [data]="data" />
+
+
+  <ng-container *ngIf="data.paymentMethod === 'INCASH' else INSTALLMENT"
+    [formGroup]="myGroup">
+    
+    <h1>pagamento á vista</h1>
+
+    <table-payment [payments]="payments" [height]="'200px'" />
+
+    <advance-chip-listbox [source]="paymentTypes" formControlName="paymentType" [displayProperty]="'name'" />
+  </ng-container>
+
+
+  <ng-template #INSTALLMENT [formGroup]="myGroup">
+    <input-customizable [label]="'Parcelas'" placeholder="Digite parcelas aqui" [hint]="'Parcelas'"
+      formControlName="installments" [type]="'number'" />
+
+    <table-payment [payments]="payments" [height]="'200px'" />
+
+    <!--
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel class="mat-accordion-initial-payment">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Pagamento inicial
+          </mat-panel-title>
+          <mat-panel-description>
+            Informe valor aqui
+            <mat-icon>attach_money</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <input-customizable [label]="'Valor fixo'" formControlName="fixedValue" [type]="'number'" />
+
+        
+        <input-customizable [label]="'Porcentagem'" formControlName="percentage"
+          [type]="'number'" />
+
+        <advance-chip-listbox [source]="paymentTypes" formControlName="paymentType" [displayProperty]="'name'" />
+      </mat-expansion-panel>
+    </mat-accordion>
+    -->
+  </ng-template>
+
+</div>
+<mat-dialog-actions align="end">
+  <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="payments">Salvar</button>
+</mat-dialog-actions>

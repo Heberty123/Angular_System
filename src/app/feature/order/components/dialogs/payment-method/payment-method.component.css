@@ -1,0 +1,15 @@
+h1{
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.mat-accordion-initial-payment{
+  margin-top: 20px;
+  background-color: bisque;
+}

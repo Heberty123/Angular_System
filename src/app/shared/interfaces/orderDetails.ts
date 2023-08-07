@@ -5,4 +5,5 @@ export interface OrderDetails {
     qtyRefund: number,
     returnValue: number
     discounts: number,
+    paymentMethod?: string
 }

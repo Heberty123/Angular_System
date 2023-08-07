@@ -1,53 +1,23 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Customer } from 'src/app/shared/interfaces/customer';
 
 @Component({
-  selector: 'btt-remove',
+  selector: 'remove-customer',
   templateUrl: './remove-customer.component.html',
-  styleUrls: ['./remove-customer.component.css']
+  styleUrls: ['./remove-customer.component.css'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+  ]
 })
 export class RemoveCustomerComponent {
 
-  @Input() customer: Customer;
-  @Output() messageEvent = new EventEmitter<void>();
-  constructor(public dialog: MatDialog){}
-
-  removeCustomer(): void {
-    const dialogRef = this.dialog.open(DialogOverviewRemoveCustomer, {
-      data: this.customer
-    })
-
-    dialogRef.afterClosed().subscribe({
-        next: (result: Boolean) => {
-          if(result)
-            this.messageEvent.emit();
-        }
-    });        
-  }
-}
-
-
-@Component({
-  selector: 'dialog-overview-remove-customer',
-  templateUrl: 'dialog-overview-remove-customer.html',
-  styleUrls: ['dialog-overview-remove-customer.css']
-})
-export class DialogOverviewRemoveCustomer {
-
-  customer: Customer;
-  
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewRemoveCustomer>,
-    @Inject(MAT_DIALOG_DATA) public data: Customer
-  ) {this.customer = data;}
-
-
-  onNoClick(): void{
-    this.dialogRef.close();
-  }
-
-  toRemove(): void{
-    this.dialogRef.close(true);
-  }
+  constructor(public dialogRef: MatDialogRef<RemoveCustomerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Customer) { }
 }

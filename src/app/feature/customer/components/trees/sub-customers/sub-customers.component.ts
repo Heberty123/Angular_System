@@ -1,32 +1,31 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { Customer } from "src/app/shared/interfaces/customer";
+import { CustomerService } from "src/app/shared/resources/customer.service";
 
+let snackBarRef: any;
 
 @Component({
   selector: 'sub-customers',
   templateUrl: './sub-customers.component.html',
   styleUrls: ['./sub-customers.component.css']
 })
-export class SubCustomersComponent {
-  dataSource: MatTableDataSource<Customer>;
-  displayedColumns: string[] = ['id', 'name', 'cpf'];
-  @Input() customersDependents: Customer[];
-  @Output() eventCustomerDep = new EventEmitter<Customer>();
+export class SubCustomersComponent implements OnInit, OnDestroy {
+  @Input() customerId?: number;
+  @Input() data: Customer[];
 
-  constructor(){}
+  constructor(private _customerService: CustomerService){}
 
-  ngOnInit(): void {
-    /*
-    this.dataSource = new MatTableDataSource<Customer>(this.customersDependents);
-    */
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    snackBarRef && snackBarRef.dismiss();
+    console.log("Fui destruído")
   }
 
-  saveCustomer(customer: Customer){
-    this.eventCustomerDep.emit(customer);
-  }
-
-  clickAtRow(row: Customer): void {
-    console.log(row);
+  push(value: Customer): void {
+    this._customerService.addDependent(value, this.customerId!)
+      .subscribe({
+        next: (customer: Customer) => this.data.push(customer)
+      })
   }
 }

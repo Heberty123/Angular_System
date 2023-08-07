@@ -142,4 +142,8 @@ export class FormProductComponent implements OnInit {
         })
     }
   }
+
+  teste(): void {
+    console.log(this.productType.value);
+  }
 }

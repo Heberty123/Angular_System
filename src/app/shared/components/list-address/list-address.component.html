@@ -1,0 +1,38 @@
+<div class="item" *ngFor="let item of data">
+    <div class="first-col">
+        <div class="container-div">
+            <span class="id"><strong>Id:</strong> {{item!.id}}</span>
+            <span class="cep"><strong>Cep:</strong> {{item!.cep}}</span>
+        </div>
+        <span class="street"><strong>Rua:</strong> {{item!.street}}</span>
+        <span class="number"><strong>Número:</strong> {{item!.number}}</span>
+    </div>
+    
+    <div class="second-col">
+        <div class="container-div">
+            <span class="neighborhood"><strong>Bairro:</strong> {{item!.neighborhood}}</span>
+            <span class="city"><strong>Cidade:</strong> {{item!.city}}</span>
+            <span class="uf"><strong>Estado:</strong> {{item!.uf}}</span>
+        </div>
+        <span class="deliveryType-name"><strong>Tipo de Entrega:</strong> {{item!.deliveryType.name}}</span>
+    </div>
+    
+    <div class="third-col">
+        <div class="container-div">
+            <span class="cellphone1"><strong>Cel 1:</strong> {{item!.cellphone1}}</span>
+            <span class="cellphone2"><strong>Cel 2:</strong> {{item!.cellphone2}}</span>
+            <span class="telephone1"><strong>Tel 1:</strong> {{item!.telephone1}}</span>
+            <span class="telephone2"><strong>Tel 2:</strong> {{item!.telephone2}}</span>
+        </div>
+        
+        <div class="div-bttns" *ngIf="editable">
+            <button mat-fab color="accent" (click)="updateItem(item!.id)" class="btt-edit">
+                <mat-icon>edit</mat-icon>
+            </button>
+            
+            <button mat-fab color="primary" (click)="deleteItem(item!.id)" class="btt-delete">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

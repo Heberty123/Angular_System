@@ -1,4 +1,4 @@
-<div *ngIf="dataSource != undefined; else loading" class="box-table">
+<div *ngIf="dataSource.data.length > 0; else empty" class="box-table">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table sticky-header">
         <!-- status Column -->
         <ng-container matColumnDef="status">
@@ -15,13 +15,13 @@
         <!-- gross Amount Column -->
         <ng-container matColumnDef="grossAmount">
             <th mat-header-cell *matHeaderCellDef>Valor bruto</th>
-            <td mat-cell *matCellDef="let element">{{element.grossAmount}}</td>
+            <td mat-cell *matCellDef="let element">{{element.grossAmount | currency }}</td>
         </ng-container>
 
         <!-- net Amount Column -->
         <ng-container matColumnDef="netAmount">
             <th mat-header-cell *matHeaderCellDef>Valor líquido</th>
-            <td mat-cell *matCellDef="let element">{{element.netAmount}}</td>
+            <td mat-cell *matCellDef="let element">{{element.netAmount | currency }}</td>
         </ng-container>
 
 
@@ -30,8 +30,8 @@
     </table>
 </div>
 
-<ng-template #loading>
-    <div class="box-spinner">
-        <mat-spinner diameter="150" />
+<ng-template #empty>
+    <div class="message-empty">
+        <h1>Pedidos vazios</h1>
     </div>
 </ng-template>

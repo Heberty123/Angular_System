@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { existCPF } from 'src/app/shared/validations/exist-CPF';
@@ -10,45 +9,35 @@ import { existCPF } from 'src/app/shared/validations/exist-CPF';
   templateUrl: './form-customer.component.html',
   styleUrls: ['./form-customer.component.css']
 })
-export class FormCustomerComponent implements OnInit, OnDestroy{
+export class FormCustomerComponent implements OnInit{
   
   private regexCPF: string = "^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$";
 
-  @Input() haveCustomer?: Customer;
-  @Input() toAddDependent?: boolean;
-  private customerForm!: FormGroup;
-  @Output() eventCustomer = new EventEmitter<Customer>();
-  private subscription: Subscription;
-  @Input() $formOpened: Observable<boolean>;
-  @Input() $resetForm: Observable<void>;
+  @Input() hasCustomer?: Customer;
+  @Output('hasCustomerChange') emitter = new EventEmitter<Customer>();
+  @Input() forDependents?: boolean;
+  private customerForm: FormGroup;
+  @Output() submited = new EventEmitter<Customer>();
 
-  constructor(private _service: CustomerService){
-    console.log(this.haveCustomer);
-  }
+  constructor(private _service: CustomerService){}
 
   ngOnInit(): void {
     this.customerForm = new FormGroup({
-      name: new FormControl(this.haveCustomer ? this.haveCustomer.name : '', [Validators.required]),
-      cpf: new FormControl(this.haveCustomer ? this.haveCustomer.cpf : '', {
+      name: new FormControl(this.hasCustomer?.name || null, [Validators.required]),
+      cpf: new FormControl(this.hasCustomer?.cpf || null, {
         validators: [Validators.required, Validators.pattern(this.regexCPF)],
-        asyncValidators: [existCPF(this._service, this.haveCustomer?.cpf)],
+        asyncValidators: [existCPF(this._service, this.hasCustomer?.cpf)],
       })
     });
 
-    this.subscription = this.$formOpened.subscribe((value: boolean) => {
-      if(value)
-        this.customerForm.enable();
-      else
-        this.customerForm.disable();
-    })
-
-    this.subscription = this.$resetForm.subscribe(() => {
-      this.customerForm.reset();
-    })
-  }
-
-  ngOnDestroy() {
-    this.subscription && this.subscription.unsubscribe();
+    if(this.hasCustomer){
+      this.customerForm.valueChanges.subscribe({
+        next: (value: Customer) => {
+          value.id = this.hasCustomer!.id;
+          this.emitter.emit(value);
+        }
+      })
+    }
   }
 
   get name() {
@@ -66,18 +55,26 @@ export class FormCustomerComponent implements OnInit, OnDestroy{
   onSubmit(){
     if(!this.customerForm.invalid && !this.customerForm.disabled){
 
-      if(this.haveCustomer){
+      if(this.hasCustomer){
         let customer: Customer = this.customerForm.value;
-        customer.id = this.haveCustomer.id;
-        this.eventCustomer.emit(customer);
+        customer.id = this.hasCustomer.id;
+        this.submited.emit(customer);
       }
-      else if(this.toAddDependent){
-        this.eventCustomer.emit(this.customerForm.value);
+      else if(this.forDependents){
+        this.submited.emit(this.customerForm.value);
         this.customerForm.reset();
       }
       else
-        this.eventCustomer.emit(this.customerForm.value);
+        this.submited.emit(this.customerForm.value);
     }
+  }
 
+  @Input() set disabled$(value: boolean) {
+    if(value)
+      this.customerForm.disable();
+    else{
+      this.customerForm.enable();
+      this.customerForm.reset();
+    }
   }
 }

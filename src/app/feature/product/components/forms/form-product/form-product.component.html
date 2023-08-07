@@ -23,6 +23,9 @@
         </button>
     </mat-chip-listbox>
 
+    <advance-chip-listbox [source]="productTypes" formControlName="productType"
+      [displayProperty]="'name'"/>
+
     <mat-form-field appearance="fill" class="input-name">
       <mat-label>Nome</mat-label>
       <input type="text" matInput placeholder="Digite o nome do produto..."  formControlName="name">
@@ -84,3 +87,5 @@
       <button mat-raised-button type="submit">Salvar</button>
 
 </form>
+
+<button (click)="teste()">Teste do formcontroloaccess</button>

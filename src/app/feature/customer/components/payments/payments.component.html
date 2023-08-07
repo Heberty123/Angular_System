@@ -1,1 +1,7 @@
-<p>payments works!</p>
+<table-payment [payments]="payments" *ngIf="payments.length > 0; else empty" />
+
+<ng-template #empty>
+    <div class="message-empty">
+        <h1>Não tem pagamentos</h1>
+    </div>
+</ng-template>

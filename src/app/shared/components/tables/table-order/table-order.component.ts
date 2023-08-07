@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
@@ -12,9 +12,10 @@ import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
   templateUrl: './table-order.component.html',
   styleUrls: ['./table-order.component.css']
 })
-export class TableOrderComponent implements OnChanges {
+export class TableOrderComponent implements OnInit, OnChanges {
 
   @Input() products: ProductForOrder[];
+  @Input() editable?: boolean;
   displayedColumns: string[] = ['name', 'price', 'grossAmount', 'netValue', 'discounts', 'promotion', 'quantity', 'options'];
   dataSource = new MatTableDataSource<ProductForOrder>([]);
   selection = new SelectionModel<ProductForOrder>(true, []);
@@ -23,6 +24,11 @@ export class TableOrderComponent implements OnChanges {
   @Output() deleteEvent = new EventEmitter<ProductForOrder[]>();
 
   constructor(public dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    if(!this.editable)
+      this.displayedColumns.pop()    
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'])

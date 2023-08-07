@@ -1,14 +1,18 @@
-<h2 mat-dialog-title>Adicionar tipo de entrega</h2>
+<h2 mat-dialog-title>Detalhes do pedido {{data.id}}</h2>
 <div mat-dialog-content>
-    <h2>{{data.status}}</h2>
-    <h2>{{data.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</h2>
-    <h2>{{data.grossAmount | currency }}</h2>
-    <h2>{{data.netAmount | currency }}</h2>
-    <h2>{{data.discounts | percent: '1.2-2' }}</h2>
+    <div class="details">
+        <h2>Status: {{data.status}}</h2>
+        <h2>{{data.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</h2>
+        <h2>Valor bruto: {{data.grossAmount | currency }}</h2>
+        <h2>Valor líquido: {{data.netAmount | currency }}</h2>
+        <h2>Descontos: {{data.discounts | percent: '1.2-2' }}</h2>
+        <h2>Promoção: 0</h2>
+    </div>
 
-    <h1>Produtos</h1>
-
-    <table-order/>
+    <div class="table">
+        <h1>Produtos</h1>
+        <table-order [products]="productsOrdered" [editable]="false"/>
+    </div>
 </div>
 <mat-dialog-actions align="end">
     <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>

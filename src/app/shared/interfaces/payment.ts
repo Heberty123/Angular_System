@@ -1,5 +1,8 @@
+import { PaymentType } from "./paymentType"
+
 export interface Payment{
-    id: number,
-    paymentDate: Date,
-    amount: string,
+    id?: number
+    amount: number
+    paymentDate?: Date
+    paymentType?: PaymentType
 }

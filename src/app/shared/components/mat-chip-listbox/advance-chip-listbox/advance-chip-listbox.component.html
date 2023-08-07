@@ -1,0 +1,5 @@
+<mat-chip-listbox aria-label="Fish selection" (change)="onChange($event.value)">
+    <mat-chip-option *ngFor="let value of source" [value]="value">
+      {{ value[displayProperty] }}
+    </mat-chip-option>
+</mat-chip-listbox>

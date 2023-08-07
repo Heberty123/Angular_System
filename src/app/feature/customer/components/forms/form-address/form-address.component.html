@@ -130,5 +130,5 @@
         </mat-error>
       </mat-form-field>
           
-      <button mat-raised-button type="submit" [disabled]="AddressForm.status === 'DISABLED'"  class="btt-form-address">Salvar</button>
+      <button mat-raised-button type="submit" [disabled]="AddressForm.status === 'DISABLED'" *ngIf="!hasAddress"  class="btt-form-address">Salvar</button>
 </form>

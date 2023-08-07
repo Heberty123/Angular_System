@@ -32,6 +32,20 @@
   max-width: 800px;
 }
 
+.stepper ::ng-deep .mat-horizontal-stepper-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0px;
+}
+
+list-address {
+  height: auto;
+}
+
+list-address {
+  flex: 1;
+}
+
 .container{
   height: 90%;
   width: 100%;

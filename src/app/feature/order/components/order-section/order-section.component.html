@@ -1,19 +1,19 @@
 <div class="container">
     <div class="top">
         <div class="actions">
-            <button mat-raised-button color="primary">Á vista</button>
-            <button mat-raised-button color="primary">Crédito</button>
+            <button mat-raised-button color="primary" (click)="paymentMethod('INCASH')">Á vista</button>
+            <button mat-raised-button color="primary" (click)="paymentMethod('INSTALLMENT')">Parcelado</button>
             <button mat-raised-button color="primary" (click)="saveOrder.emit()">Salvar</button>
         </div>
     </div>
 
     <div class="body">
-        <h1>Quantidade itens: {{orderDetails?.quantity}}</h1>
-        <h1 [ngStyle]="{'color': orderDetails?.returnValue ? 'red' : ''}">Devolução: {{orderDetails?.qtyRefund}}</h1>
-        <h1 [ngStyle]="{'color': orderDetails?.returnValue ? 'red' : ''}">Valor devolutivo: {{orderDetails?.returnValue | currency}}</h1>
-        <h1>Desconto: {{(orderDetails?.discounts ? orderDetails?.discounts : 0) | percent: '1.2-2' }}</h1>
-        <h1>Valor Bruto: {{orderDetails?.grossAmount | currency}}</h1>
-        <h1>Valor líquido: {{orderDetails?.netAmount | currency}}</h1>
+        <h1>Quantidade itens: {{orderDetails.quantity}}</h1>
+        <h1 [ngStyle]="{'color': orderDetails.returnValue ? 'red' : ''}">Devolução: {{orderDetails.qtyRefund}}</h1>
+        <h1 [ngStyle]="{'color': orderDetails.returnValue ? 'red' : ''}">Valor devolutivo: {{orderDetails.returnValue | currency}}</h1>
+        <h1>Desconto: {{(orderDetails.discounts ? orderDetails.discounts : 0) | percent: '1.2-2' }}</h1>
+        <h1>Valor Bruto: {{orderDetails.grossAmount | currency}}</h1>
+        <h1>Valor líquido: {{orderDetails.netAmount | currency}}</h1>
     </div>
 </div>
 

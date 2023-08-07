@@ -1,0 +1,11 @@
+.details{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    margin-bottom: 20px;
+}
+
+.table h1{
+    font-weight: bold;
+    color: black
+}

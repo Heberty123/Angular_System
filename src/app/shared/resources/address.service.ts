@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, take, throwError } from 'rxjs';
 import { Address } from '../interfaces/address';
-import { DeliveryType } from '../interfaces/delivery-type';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,10 @@ export class AddressService {
 
   findAllByCustomerId(id: number): Observable<Address[]>{
     return this.http.get<Address[]>(this.apiUrl + `/all/${id}`, { headers: this.headers });
+  }
+
+  update(address: Address): Observable<Address>{
+    return this.http.put<Address>(this.apiUrl , address, {'headers': this.headers});
   }
   
   deleteById(id: number): Observable<unknown>{

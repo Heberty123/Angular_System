@@ -1,63 +1,61 @@
-<div class="main-container" *ngIf="chosenCustomer != null; else isThereNot">
-    <div class="container-customer" >
+<ng-container *ngIf="customer != null; else isThereNot">
+    <div class="container-customer">
 
-            <div class="id-name">
-                <h1><strong>Id:</strong> {{chosenCustomer.id}}</h1>
-                <h1><strong>CPF:</strong> {{chosenCustomer.cpf}}</h1>
-            </div>
-            <h1 class="title-name"><strong>Nome:</strong> {{chosenCustomer.name}}</h1>
+        <h1>Id: {{customer.id}}</h1>
+        <h1>CPF: {{customer.cpf}}</h1>
+        <h1>Name: {{customer.name}}</h1>
 
 
-        <div class="div-buttons">
-            <button mat-flat-button color="primary">
-                Editar
-            </button>
-            <btt-remove [customer]="chosenCustomer" (messageEvent)="toRemove()" />
-        </div>
+        <button mat-flat-button color="primary" (click)="openEditCustomer()">
+            Editar
+        </button>
+
+        <button mat-flat-button color="warn" (click)="openRemoveCustomer()">
+            Excluir
+        </button>
     </div>
 
-
-    <mat-stepper #stepper class="container-stepper">
-
-        <!--
+    <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="false" *ngIf="fullCustomer; else loading">        
         <mat-step label="Endereço">
-
-                <button mat-flat-button color="primary" (click)="toAddAddress = !toAddAddress" class="btt-add-address">
-                    {{toAddAddress? 'Cancelar' : 'Adicionar'}}
-                </button>
-                <list-address [addresses]="addresses" (removeOneAddressFromList)="removeAddress($event)"
-                    *ngIf="toAddAddress == false; else toAdd" class="list-address" />
-                <ng-template #toAdd>
-                    <form-address (messageEvent)="addAddress($event)" [keepOpen]="true" class="form-address" />
-                </ng-template>
-
+            <ng-template matStepContent>
+                <addresses-details [customerId]="fullCustomer.id"
+                    *ngIf="stepper.selectedIndex === 0"
+                    [data]="fullCustomer.addresses"/>
+            </ng-template>          
         </mat-step>
 
-        <mat-step label="Sub-Clientes">
-                <sub-customers (eventCustomerDep)="addCustomerDependent($event)"
-                    [customersDependents]="customersDependents" />
+        <mat-step label="Dependentes">
+            <ng-template matStepContent>
+                <sub-customers [customerId]="fullCustomer.id"
+                    *ngIf="stepper.selectedIndex === 1"
+                    [data]="fullCustomer.dependents"/>
+            </ng-template>
         </mat-step>
-        -->
 
         <mat-step label="Pagamentos">
             <ng-template matStepContent>
-                <payments />
+                <payments [orders]="fullCustomer.orders"
+                    *ngIf="stepper.selectedIndex === 2"/>
             </ng-template>
         </mat-step>
 
         <mat-step label="Pedidos">
             <ng-template matStepContent>
-                <orders [orders]="orders" />
+                <orders [data]="fullCustomer.orders"
+                    *ngIf="stepper.selectedIndex === 3"/>-
             </ng-template>
         </mat-step>
-        
-    </mat-stepper>
-</div>
+    </mat-horizontal-stepper>
+
+    <ng-template #loading>
+        <mat-spinner></mat-spinner>
+    </ng-template>
+</ng-container>
 
 <ng-template #isThereNot>
     <div class="auto-reply-message">
-      <h1>Cliente não foi selecionado !</h1>
-      <strong>Por favor, selecione o cliente</strong>
-      <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
+        <h1>Cliente não foi selecionado !</h1>
+        <strong>Por favor, selecione o cliente</strong>
+        <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
     </div>
 </ng-template>

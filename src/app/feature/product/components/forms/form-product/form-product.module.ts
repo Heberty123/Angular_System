@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AddMatChipModule } from '../../dialogs/add-mat-chip/add-mat-chip.module';
 import { AddMatOptionBrandModule } from '../../dialogs/add-mat-option-brand/add-mat-option-brand.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 
 
 
@@ -19,7 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatChipsModule,
     AddMatChipModule,
     AddMatOptionBrandModule,
-    MatDialogModule
+    MatDialogModule,
+    AdvanceChipListboxComponent
   ],
   exports: [
     FormProductComponent
