@@ -1,7 +1,8 @@
 <mat-form-field appearance="fill" class="input-name">
     <mat-label>{{label}}</mat-label>
     <input type="{{type}}" matInput placeholder="{{placeholder}}"
-        [(ngModel)]="value" (ngModelChange)="onChange($event)">
+        [(ngModel)]="value" (ngModelChange)="onChange($event)"
+        [disabled]="isDisabled">
     <mat-hint>{{hint}}</mat-hint>
     <!--
     <mat-error *ngIf="name.errors?.['required']">

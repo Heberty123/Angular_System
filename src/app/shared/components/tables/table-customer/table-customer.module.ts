@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     FormsModule,
     MatIconModule,
     MatButtonModule,
-    ScrollingModule
+    MatSortModule
   ],
   exports: [
     TableCustomerComponent

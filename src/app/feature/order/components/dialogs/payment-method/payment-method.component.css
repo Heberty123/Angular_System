@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 h1{
     margin-bottom: 0px;
     margin-right: 10px;
@@ -12,4 +18,51 @@ input[type=number]::-webkit-outer-spin-button {
 .mat-accordion-initial-payment{
   margin-top: 20px;
   background-color: bisque;
+}
+
+.content{
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: 
+  "a a"
+  "b c";
+  gap: 20px 20px;
+}
+
+order-details-view {
+  grid-area: a;
+}
+
+.controls {
+  grid-area: b;
+  display: flex;
+  flex-direction: column;
+}
+
+.matBttnToggle{
+  margin-bottom: 10px;
+}
+
+.container-details{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.input-bttn{
+  display: flex;
+}
+
+.result{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+
+table-payment {
+  grid-area: c;
 }

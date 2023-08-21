@@ -1,6 +1,10 @@
 :host {
-    background-color: aqua;
     display: flex;
+    flex-direction: column;
+}
+
+.bttn-toggle-group {
+    width: 150px;
 }
 
 table-payment {

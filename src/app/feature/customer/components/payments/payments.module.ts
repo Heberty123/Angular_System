@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaymentsComponent } from './payments.component';
-import { TablePaymentModule } from 'src/app/shared/components/tables/table-payment/table-payment.module';
-
+import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -11,7 +11,8 @@ import { TablePaymentModule } from 'src/app/shared/components/tables/table-payme
   ],
   imports: [
     CommonModule,
-    TablePaymentModule
+    TablePaymentComponent,
+    MatButtonToggleModule
   ],
   exports: [
     PaymentsComponent

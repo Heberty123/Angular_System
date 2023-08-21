@@ -1,7 +1,7 @@
 :host {
     display: flex;
     flex-direction: column;
-    background-color: aquamarine;
+    overflow-y: auto;
 }
 
 .sticky-header {
@@ -10,6 +10,60 @@
     z-index: 1;
 }
 
-table{
+table {
     overflow-y: auto;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.mat-form-field-amount ::ng-deep .mat-mdc-form-field-subscript-wrapper,
+.mat-form-field-amount ::ng-deep .mat-mdc-form-field-bottom-align {
+    display: none !important;
+}
+
+.mat-form-field-amount {
+    width: 140px;
+    padding: 10px 0px;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.make-green {
+    background-color: rgb(71, 255, 95);
+}
+
+tr.make-green:hover {
+    background-color: rgb(71, 255, 95) !important;
 }

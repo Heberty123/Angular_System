@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatButtonToggleChange, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { Order } from 'src/app/shared/interfaces/order';
 import { Payment } from 'src/app/shared/interfaces/payment';
 
@@ -13,9 +14,9 @@ export class PaymentsComponent implements OnInit {
 
   @Input() orders: Order[];
   payments: Payment[] = [];
+  displayedColumns: string[] = ['amount', 'paymentDate'];
 
   constructor(){}
-
 
   ngOnInit(): void {
     this.orders.forEach(v => {
@@ -27,4 +28,12 @@ export class PaymentsComponent implements OnInit {
     snackBarRef && snackBarRef.dismiss();
     console.log("Fui destruído")
   }
+
+  bttnToggleChange(bttn: MatButtonToggleChange){
+    if(bttn.value === '1')
+      this.displayedColumns.splice(-3);
+    else
+      this.displayedColumns.push('paymentType', 'payedAt', 'amountPayed');
+  }
+
 }

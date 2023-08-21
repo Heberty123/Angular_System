@@ -10,6 +10,7 @@ import { PaymentsModule } from '../../components/payments/payments.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AddressesDetailsModule } from '../../components/addresses-details/addresses-details.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DependentsModule } from '../../components/dependents/dependents.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormCustomerModule,
     OrdersModule,
     PaymentsModule,
+    DependentsModule,
     AddressesDetailsModule,
     MatProgressSpinnerModule
   ],

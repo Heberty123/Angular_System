@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
 import { PaymentType } from 'src/app/shared/interfaces/paymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
 import { Payment } from 'src/app/shared/interfaces/payment';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { TablePaymentModule } from 'src/app/shared/components/tables/table-payment/table-payment.module';
-import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { OrderDetailsViewModule } from 'src/app/shared/components/view/order-details-view/order-details-view.module';
-import { InputCustomizableModule } from 'src/app/shared/components/input-customizable/input-customizable.module';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { InputCustomizableModule } from 'src/app/shared/components/inputs/input-customizable/input-customizable.module';
+import * as moment from 'moment';
+import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
+import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'payment-method',
@@ -27,78 +27,109 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatButtonModule,
     MatIconModule,
     AdvanceChipListboxComponent,
-    TablePaymentModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
+    TablePaymentComponent,
     OrderDetailsViewModule,
     InputCustomizableModule,
-    MatExpansionModule
+    ReactiveFormsModule,
+    MatButtonToggleModule,
   ]
 })
 export class PaymentMethodComponent implements OnInit {
 
   payments: Payment[] = [];
-  paymentTypes?: PaymentType[];
-  myGroup: FormGroup;
+  paymentTypes: PaymentType[];
+  paymentType = new FormControl();
+  inputValue: FormControl<number> = new FormControl();
+  displayedColumns: string[];
+  paymentMethod: string;
+  changeAmount: number;
+  missing: number;
+
 
   constructor(public dialogRef: MatDialogRef<PaymentMethodComponent>,
     @Inject(MAT_DIALOG_DATA) public data: OrderDetails,
+    public dialog: MatDialog,
     private paymentTypeService: PaymentTypeService) {
-    this.myGroup = new FormGroup({
-      installments: new FormControl(null),
-      paymentType: new FormControl(null),
-      fixedValue: new FormControl(null),
-      percentage: new FormControl(null)
-    });
-
-    if(data.paymentMethod === 'INCASH')
-      this.payments.push({amount: data.netAmount})
-
-    this.installments.valueChanges.subscribe(e => this.updateInstallments())
-    this.paymentType.valueChanges.subscribe({
-      next: (value: PaymentType) => {
-        if(this.payments[0])
-          this.payments[0].paymentType = value
-      }
-    })
   }
+
 
   ngOnInit(): void {
     this.paymentTypeService.findAll()
       .subscribe({
         next: (paymentTypes: PaymentType[]) => this.paymentTypes = paymentTypes
       })
+
+    this.inputValue.valueChanges.subscribe({
+      next: (value: number) => {
+        this.changePaymentFunction(0, 0);
+        if (this.paymentMethod === 'inCash') 
+          this.changePaymentFunction(this.data.netAmount, value);
+        else 
+          this.updateInstallments(+value);
+      }
+    })
+
+    this.paymentType.valueChanges.subscribe({
+      next: (value: PaymentType) => this.payments[0].paymentType = value
+    })
   }
 
-  get installments() {
-    return this.myGroup.get('installments')!;
-  }
 
-  get paymentType() {
-    return this.myGroup.get('paymentType')!;
-  }
-
-  get fixedValue() {
-    return this.myGroup.get('fixedValue')!;
-  }
-
-  get percentage() {
-    return this.myGroup.get('percentage')!;
-  }
-
-  updateInstallments(): void {
+  async updateInstallments(qty: number): Promise<void> {
     this.payments = [];
     let value: number =
-      this.data.netAmount / Number(this.installments.value);
+      this.data.netAmount / qty;
+    let date: moment.Moment = moment();
+    date.add(1, 'month');
 
-    for (let i: number = 0; i < Number(this.installments.value); i++) {
+    for (let i: number = 0; i < qty; i++) {
       this.payments.push({
-        amount: value
+        amount: value,
+        paymentDate: date.format()
       })
+      date = moment(date.add(1, 'month'));
     }
-    this.payments = [...this.payments];
   }
 
+  resetPayments(): void {
+    this.updateInstallments(+this.inputValue.value);
+  }
 
+  changePaymentFunction(total: number, value: number): void {
+    
+    let result = total - value;
+    if (Math.sign(result) === -1)
+      this.changeAmount = result * (-1)
+    else
+      this.changeAmount = 0;
+
+    if (Math.sign(result) === 1)
+      this.missing = result
+    else
+      this.missing = 0;
+  }
+
+  cashPayment(): void {
+    let payment: Payment = this.payments[0];
+    if (payment.paymentType != undefined && payment.amount <= +this.inputValue.value) {
+
+      payment.amountPayed = +this.inputValue.value;
+    }
+  }
+
+  changeBttnToggle(event: MatButtonToggleChange) {
+    this.paymentMethod = event.value
+    this.payments = [];
+    this.inputValue.reset()
+    if (event.value === "inCash") {
+      this.payments.push({
+        amount: this.data.netAmount,
+        paymentDate: moment().format()
+      })
+      this.displayedColumns = ['amount', 'paymentDate', 'paymentType'];
+    }
+    else {
+      this.displayedColumns = ['amount', 'paymentDate', 'paymentType', 'options', 'expand'];
+    }
+  }
 }

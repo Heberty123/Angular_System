@@ -1,8 +1,7 @@
 <div class="container">
     <div class="top">
         <div class="actions">
-            <button mat-raised-button color="primary" (click)="paymentMethod('INCASH')">Á vista</button>
-            <button mat-raised-button color="primary" (click)="paymentMethod('INSTALLMENT')">Parcelado</button>
+            <button mat-raised-button color="primary" [disabled]="orderDetails.quantity <= 0" (click)="paymentMethod()">Pagamentos</button>
             <button mat-raised-button color="primary" (click)="saveOrder.emit()">Salvar</button>
         </div>
     </div>

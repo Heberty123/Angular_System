@@ -1,50 +1,44 @@
-<h1 mat-dialog-title>{{data.paymentMethod === "INCASH" ? 'Á vista' : 'parcelado'}}</h1>
+<h1 mat-dialog-title>Escolhe forma de pagamento !</h1>
+
 <div mat-dialog-content class="content">
 
   <order-details-view [data]="data" />
 
+  <div class="controls">
 
-  <ng-container *ngIf="data.paymentMethod === 'INCASH' else INSTALLMENT"
-    [formGroup]="myGroup">
-    
-    <h1>pagamento á vista</h1>
+    <mat-button-toggle-group (change)="changeBttnToggle($event)" class="matBttnToggle">
+      <mat-button-toggle value="inCash">Á Vista</mat-button-toggle>
+      <mat-button-toggle value="installments">Parcelado</mat-button-toggle>
+    </mat-button-toggle-group>
 
-    <table-payment [payments]="payments" [height]="'200px'" />
+    <div class="container-details">
+      <div class="input-bttn">
+        <input-customizable hint="valor" label="{{paymentMethod === 'inCash' ? 'Digite o valor' : 'Digite as parcelas'}}"
+          [formControl]="inputValue" type="number" />
+          <button *ngIf="paymentMethod === 'installments'" mat-icon-button color="accent" (click)="resetPayments()">
+            <mat-icon>autorenew</mat-icon>
+          </button>
+      </div>
 
-    <advance-chip-listbox [source]="paymentTypes" formControlName="paymentType" [displayProperty]="'name'" />
-  </ng-container>
+      <div class="result">
+        <h1>Troco: {{ changeAmount || 0 | currency}}</h1>
+        <h1>Faltando: {{ missing || 0 | currency}}</h1>
+      </div>
+
+      <ng-container *ngIf="paymentMethod === 'inCash'">
+        <advance-chip-listbox [source]="paymentTypes" [formControl]="paymentType" />
+        <button mat-raised-button color="primary" (click)="cashPayment()">
+          Pagar
+        </button>
+      </ng-container>
+    </div>
 
 
-  <ng-template #INSTALLMENT [formGroup]="myGroup">
-    <input-customizable [label]="'Parcelas'" placeholder="Digite parcelas aqui" [hint]="'Parcelas'"
-      formControlName="installments" [type]="'number'" />
+  </div>
 
-    <table-payment [payments]="payments" [height]="'200px'" />
+  <table-payment [payments]="payments" [editable]="paymentMethod === 'inCash' ? false : true" [paintPayed]="true"
+    [displayColumns]="displayedColumns" [paymentTypes]="paymentTypes" [changePayment]="changePaymentFunction.bind(this)"/>
 
-    <!--
-    <mat-accordion class="example-headers-align" multi>
-      <mat-expansion-panel class="mat-accordion-initial-payment">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Pagamento inicial
-          </mat-panel-title>
-          <mat-panel-description>
-            Informe valor aqui
-            <mat-icon>attach_money</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <input-customizable [label]="'Valor fixo'" formControlName="fixedValue" [type]="'number'" />
-
-        
-        <input-customizable [label]="'Porcentagem'" formControlName="percentage"
-          [type]="'number'" />
-
-        <advance-chip-listbox [source]="paymentTypes" formControlName="paymentType" [displayProperty]="'name'" />
-      </mat-expansion-panel>
-    </mat-accordion>
-    -->
-  </ng-template>
 
 </div>
 <mat-dialog-actions align="end">

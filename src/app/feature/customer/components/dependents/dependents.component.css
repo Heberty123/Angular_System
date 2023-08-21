@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 20px 0px;
+}
+
+form-customer {
+    height: auto;
+}
+
+sub-customers {
+    width: 100%;
+    flex: 1;
+}

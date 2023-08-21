@@ -31,5 +31,7 @@
     </mat-form-field>
         
     <button *ngIf="!hasCustomer" [disabled]="CustomerForm.status === 'DISABLED'"
-     mat-raised-button type="submit" class="btt-form-customer">Salvar</button>
+     mat-raised-button type="submit" class="btt-form-customer">
+      {{forDependents ? 'Adicionar' : 'Salvar'}}
+    </button>
 </form>

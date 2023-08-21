@@ -26,9 +26,9 @@
 
         <mat-step label="Dependentes">
             <ng-template matStepContent>
-                <sub-customers [customerId]="fullCustomer.id"
-                    *ngIf="stepper.selectedIndex === 1"
-                    [data]="fullCustomer.dependents"/>
+                <dependents [customerId]="fullCustomer.id"
+                    [data]="fullCustomer.dependents"
+                    *ngIf="stepper.selectedIndex === 1"/>
             </ng-template>
         </mat-step>
 

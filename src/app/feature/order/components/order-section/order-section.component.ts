@@ -13,17 +13,18 @@ export class OrderSectionComponent {
 
   @Input() orderDetails: OrderDetails;
   @Input() payments: Payment[];
-  @Output() updatePayments: EventEmitter<Payment[]> = new EventEmitter<Payment[]>();
+  @Output() updatePayments = new EventEmitter<Payment[]>();
   @Output() saveOrder = new EventEmitter<void>();
 
   constructor(public dialog: MatDialog) {}
 
-  paymentMethod(paymentMethod: string): void {
-    this.orderDetails.paymentMethod = 
-      paymentMethod
-
+  paymentMethod(): void {
     const dialogRef = this.dialog.open(PaymentMethodComponent, {
-      data: this.orderDetails
+      data: this.orderDetails,
+      width: '80%',
+      height: '80%',
+      maxWidth: '1000px',
+      maxHeight: '700px',
     });
     
     dialogRef.afterClosed().subscribe({

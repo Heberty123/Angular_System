@@ -1,4 +1,10 @@
-<table-payment [payments]="payments" *ngIf="payments.length > 0; else empty" />
+<mat-button-toggle-group class="bttn-toggle-group" value="1" (change)="bttnToggleChange($event)">
+    <mat-button-toggle value="1">Á Pagar </mat-button-toggle>
+    <mat-button-toggle value="2">Já Pago</mat-button-toggle>
+</mat-button-toggle-group>
+
+<table-payment [payments]="payments" [displayColumns]="displayedColumns"
+    *ngIf="payments.length > 0; else empty" />
 
 <ng-template #empty>
     <div class="message-empty">

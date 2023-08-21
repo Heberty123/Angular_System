@@ -155,13 +155,15 @@ export class OrderComponent implements OnInit, OnDestroy {
         let payment: Payment  = {
           amount: value.amount,
           paymentDate: value.paymentDate,
-          paymentType: value.paymentType
+          paymentType: value.paymentType,
+          payedAt: value.payedAt,
+          amountPayed: value.amountPayed
         }
         return payment;
       })
     }
 
-
+    
     this.orderService.save(order)
       .subscribe({
         next: (value: Order) => console.log(value)

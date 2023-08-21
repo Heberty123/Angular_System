@@ -13,7 +13,6 @@ import { RemoveCustomerComponent } from '../../components/dialogs/remove-custome
 })
 export class DetailsComponent implements OnInit {
 
-  selectedIndex: number = 0;
   @Input() customer: Customer;
   @Output() eraseCustomer = new EventEmitter<void>()
   @Output() toList = new EventEmitter<void>()

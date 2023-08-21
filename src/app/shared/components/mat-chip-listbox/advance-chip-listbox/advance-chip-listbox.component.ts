@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 
@@ -33,10 +33,10 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty> implement
   @Input() displayProperty: keyof T = 'name';
   onChange: (value: T) => void
   onTouched: () => void;
-  disabled: boolean;
+  isDisabled: boolean;
 
   constructor(){}
-
+  
   writeValue(obj: T): void {
   }
   registerOnChange(fn: any): void {
@@ -46,6 +46,6 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty> implement
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.isDisabled = isDisabled;
   }
 }
