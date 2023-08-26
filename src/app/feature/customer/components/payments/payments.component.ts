@@ -1,7 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatButtonToggleChange, MatButtonToggleGroup } from '@angular/material/button-toggle';
-import { Order } from 'src/app/shared/interfaces/order';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { Customer } from 'src/app/shared/interfaces/customer';
 import { Payment } from 'src/app/shared/interfaces/payment';
+import { PaymentService } from 'src/app/shared/resources/payment.service';
+import { PaymentDetailComponent } from '../dialogs/payment-detail/payment-detail.component';
 
 let snackBarRef: any;
 
@@ -12,28 +16,61 @@ let snackBarRef: any;
 })
 export class PaymentsComponent implements OnInit {
 
-  @Input() orders: Order[];
-  payments: Payment[] = [];
+  @Input() customer: Customer;
+  // index 0 -> payments unpaid;
+  // index 1 -> payments paid;
+  data: [Payment[]?, Payment[]?] = [];
   displayedColumns: string[] = ['amount', 'paymentDate'];
 
-  constructor(){}
+  constructor(private _paymentService: PaymentService,
+    public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this.orders.forEach(v => {
-      v.payments?.forEach(p => this.payments.push(p));
+    // Primeiro pagamentos pendentes
+    this._paymentService.findAllByCustomerId(this.customer.id, false)
+      .subscribe({ 
+        next: (data: Payment[]) => this.data[0] = data,
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 404)
+            this.data[0] = [];
+        }
+      })
+  }
+
+  bttnToggleChange(bttn: MatButtonToggleChange){
+    if(bttn.value === '0')
+      this.displayedColumns.splice(-3);
+    else{
+      // Pagamentos já pagos
+      this.displayedColumns.push('paymentType', 'payedAt', 'amountPayed');
+      if(!this.data[1])
+        this._paymentService.findAllByCustomerId(this.customer.id, true)
+          .subscribe({ 
+            next: (data: Payment[]) => this.data[1] = data,
+            error: (error: HttpErrorResponse) => {
+              if (error.status === 404)
+                this.data[1] = [];
+            }
+          })
+    }
+  }
+
+  rowClicked(payment: Payment){
+    const dialogRef = this.dialog.open(PaymentDetailComponent, {
+      data: payment
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (result: Payment) => {
+        if(result)
+          console.log(result);
+      }
     });
   }
 
   ngOnDestroy(): void {
     snackBarRef && snackBarRef.dismiss();
     console.log("Fui destruído")
-  }
-
-  bttnToggleChange(bttn: MatButtonToggleChange){
-    if(bttn.value === '1')
-      this.displayedColumns.splice(-3);
-    else
-      this.displayedColumns.push('paymentType', 'payedAt', 'amountPayed');
   }
 
 }

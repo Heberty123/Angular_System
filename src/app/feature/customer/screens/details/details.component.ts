@@ -16,15 +16,11 @@ export class DetailsComponent implements OnInit {
   @Input() customer: Customer;
   @Output() eraseCustomer = new EventEmitter<void>()
   @Output() toList = new EventEmitter<void>()
-  fullCustomer: FullCustomer;
 
   constructor(private _customerService: CustomerService,
     public dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this._customerService.findFullById(this.customer.id)
-      .subscribe({ next: (value: FullCustomer) => this.fullCustomer = value })
-  }
+  ngOnInit(): void {}
 
   openEditCustomer(): void {
     const dialogRef = this.dialog.open(EditCustomerComponent, {

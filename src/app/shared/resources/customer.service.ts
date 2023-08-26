@@ -29,10 +29,6 @@ export class CustomerService {
       );
   }
 
-  findFullById(id: number): Observable<FullCustomer> {
-    return this.http.get<FullCustomer>(this.apiUrl + `/full/${id}`, {'headers': this.headers});
-  }
-
   create(customer: any): Observable<Customer>{
     return this.http.post<Customer>(this.apiUrl + '/create', customer, {'headers': this.headers});
   }
@@ -49,7 +45,7 @@ export class CustomerService {
     return this.http.post<Customer>(this.apiUrl + `/create/dependent/${customerId}`, dependent, {'headers': this.headers});
   }
 
-  findAllDependentsCustomersById(customerId: number): Observable<Customer[]>{
+  findAllDependentsById(customerId: number): Observable<Customer[]>{
     return this.http.get<Customer[]>(this.apiUrl + `/all/dependentsCustomers/${customerId}`, { headers: this.headers });
   }
   

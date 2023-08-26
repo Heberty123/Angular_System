@@ -11,10 +11,9 @@ table-payment {
     flex: 1;
 }
 
-.message-empty{
+.loading{
     display: flex;
-    width: 100%;
-    background-color: antiquewhite;
+    flex: 1;
     justify-content: center;
     align-items: center;
 }

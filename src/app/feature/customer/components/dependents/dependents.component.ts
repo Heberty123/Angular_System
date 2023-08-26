@@ -11,12 +11,17 @@ let snackBarRef: any;
 })
 export class DependentsComponent {
 
-  @Input() customerId?: number;
-  @Input() data: Customer[];
+  @Input() customer: Customer;
+  dependents: Customer[] = [];
 
   constructor(private _customerService: CustomerService){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._customerService.findAllDependentsById(this.customer.id)
+      .subscribe({
+        next: (data: Customer[]) => this.dependents = data
+      })
+  }
 
   ngOnDestroy(): void {
     //snackBarRef && snackBarRef.dismiss();
@@ -24,9 +29,9 @@ export class DependentsComponent {
   }
 
   push(value: Customer): void {
-    this._customerService.addDependent(value, this.customerId!)
+    this._customerService.addDependent(value, this.customer.id)
       .subscribe({
-        next: (customer: Customer) => this.data.push(customer)
+        next: (customer: Customer) => this.dependents.push(customer)
       })
   }
 }

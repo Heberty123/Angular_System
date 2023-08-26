@@ -15,41 +15,37 @@
         </button>
     </div>
 
-    <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="false" *ngIf="fullCustomer; else loading">        
+    <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="false">        
         <mat-step label="Endereço">
             <ng-template matStepContent>
-                <addresses-details [customerId]="fullCustomer.id"
-                    *ngIf="stepper.selectedIndex === 0"
-                    [data]="fullCustomer.addresses"/>
+                <addresses-details [customer]="customer" />
             </ng-template>          
         </mat-step>
 
         <mat-step label="Dependentes">
             <ng-template matStepContent>
-                <dependents [customerId]="fullCustomer.id"
-                    [data]="fullCustomer.dependents"
-                    *ngIf="stepper.selectedIndex === 1"/>
+                <dependents [customer]="customer" />
             </ng-template>
         </mat-step>
 
         <mat-step label="Pagamentos">
             <ng-template matStepContent>
-                <payments [orders]="fullCustomer.orders"
-                    *ngIf="stepper.selectedIndex === 2"/>
+                <payments [customer]="customer" />
             </ng-template>
         </mat-step>
 
         <mat-step label="Pedidos">
             <ng-template matStepContent>
-                <orders [data]="fullCustomer.orders"
-                    *ngIf="stepper.selectedIndex === 3"/>-
+                <orders [customer]="customer" />
             </ng-template>
         </mat-step>
     </mat-horizontal-stepper>
 
+    <!--
     <ng-template #loading>
         <mat-spinner></mat-spinner>
     </ng-template>
+    -->
 </ng-container>
 
 <ng-template #isThereNot>

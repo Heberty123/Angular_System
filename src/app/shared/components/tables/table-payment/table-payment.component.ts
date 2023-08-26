@@ -53,9 +53,8 @@ import { PaymentType } from 'src/app/shared/interfaces/paymentType';
     FormsModule
   ],
 })
-export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
+export class TablePaymentComponent implements OnInit, AfterViewInit {
 
-  @Input() payments: Payment[];
   @Input() paymentTypes?: PaymentType[];
   @Input() paintPayed?: boolean;
   @Input() changePayment: (total: number, value: number) => void;
@@ -79,8 +78,6 @@ export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.dataSource.data = this.payments;
-
     this.chipPaymentType.valueChanges.subscribe({
       next: (value: PaymentType) => this.expandedElement!.paymentType = value
     })
@@ -92,9 +89,9 @@ export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
     })
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['payments'])
-      this.dataSource.data = this.payments;
+  @Input() set payments(payments: Payment[] | undefined) {
+    if(payments)
+      this.dataSource.data = payments
   }
 
   startEditing(payment: Payment, index: number): void {
@@ -104,7 +101,7 @@ export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
 
   lostEditing(): void {
     this.businessLogicService.updateInstallments(
-      this.payments,
+      this.dataSource.data,
       +this.inputAmount.value,
       this.indexToEditAmount!
     );
@@ -120,6 +117,7 @@ export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
     this.columnsToDisplayWithExpand = value;
   }
 
+
   expandedCanceled(): void {
     this.expandedElement!.paymentType = undefined;
     this.inputInstallment.reset();
@@ -131,6 +129,7 @@ export class TablePaymentComponent implements OnInit, OnChanges, AfterViewInit {
         this.expandedElement!.amount <= +this.inputInstallment.value) {
 
       this.expandedElement!.amountPayed = +this.inputInstallment.value;
+      this.expandedElement!.paid = true;
       this.expandedElement = null;
       this.inputInstallment.reset();
     }

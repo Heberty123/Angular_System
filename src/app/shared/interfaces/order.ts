@@ -3,7 +3,7 @@ import { ProductOrder } from "./productOrder";
 
 export interface Order {
     id?: number,
-    status: string,
+    paid: boolean,
     customerId: number,
     netAmount?: number,
     grossAmount?: number,

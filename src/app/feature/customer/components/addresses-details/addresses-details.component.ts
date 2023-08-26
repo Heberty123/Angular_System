@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Address } from 'src/app/shared/interfaces/address';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { EditAddressComponent } from '../dialogs/edit-address/edit-address.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AddressDeletedComponent } from '../snackbar/address-deleted/address-deleted.component';
+import { Customer } from 'src/app/shared/interfaces/customer';
 
 let snackBarRef: any;
 
@@ -13,17 +14,24 @@ let snackBarRef: any;
   templateUrl: './addresses-details.component.html',
   styleUrls: ['./addresses-details.component.css']
 })
-export class AddressesDetailsComponent implements OnDestroy {
+export class AddressesDetailsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  @Input() customerId: number;
-  @Input() data: Address[];
+  @Input() customer: Customer;
+  @Input() addresses: Address[] = [];
   formOpened: boolean = false;
 
   constructor(private _addressService: AddressService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this._addressService.findAllByCustomerId(this.customer.id)
+      .subscribe({
+        next: (data: Address[]) => this.addresses = data
+      })
+  }
 
   ngOnDestroy(): void {
     snackBarRef && snackBarRef.dismiss();
@@ -31,10 +39,10 @@ export class AddressesDetailsComponent implements OnDestroy {
   }
 
   newAddress(value: Address): void {
-    this._addressService.create(value, this.customerId)
+    this._addressService.create(value, this.customer.id)
       .subscribe({
         next: (address: Address) => {
-          this.data.push(address);
+          this.addresses.push(address);
           this.formOpened = false;
         }
       })
@@ -42,7 +50,7 @@ export class AddressesDetailsComponent implements OnDestroy {
 
   updateById(id: number): void {
     let value: Address | undefined =
-      this.data.find(value => value.id === id);
+      this.addresses.find(value => value.id === id);
 
     const dialogRef = this.dialog.open(EditAddressComponent, {
       data: value
@@ -54,9 +62,9 @@ export class AddressesDetailsComponent implements OnDestroy {
           this._addressService.update(editedAddress)
             .subscribe({
               next: (address: Address) => {
-                this.data.find((value, index) => {
+                this.addresses.find((value, index) => {
                   if (value.id === address.id)
-                    this.data[index] = address;
+                    this.addresses[index] = address;
                   return;
                 })
               }
@@ -67,9 +75,9 @@ export class AddressesDetailsComponent implements OnDestroy {
   }
 
   removeById(id: number): void {
-    this.data.filter((value: Address, index: number) => {
+    this.addresses.filter((value: Address, index: number) => {
       if (value.id === id) {
-        this.data.splice(index, 1);
+        this.addresses.splice(index, 1);
         this.openSnackBar(value);
       }
     });
@@ -85,7 +93,7 @@ export class AddressesDetailsComponent implements OnDestroy {
         address,
         onRetrieve: () => {
           haveRetrieved = true;
-          this.data.push(address);
+          this.addresses.push(address);
           snackBarRef.dismiss();
         },
         onClose: () => {

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TableOrderModule } from 'src/app/shared/components/tables/table-order/table-order.module';
+import { TableProductOrderModule } from 'src/app/shared/components/tables/table-product-order/table-product-order.module';
 import { Order } from 'src/app/shared/interfaces/order';
 import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
 
@@ -22,7 +22,7 @@ import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
     MatIconModule,
     MatInputModule,
     FormsModule,
-    TableOrderModule
+    TableProductOrderModule
   ]
 })
 export class OrderDetailsComponent implements OnInit {

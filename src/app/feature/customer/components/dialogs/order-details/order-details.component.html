@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Detalhes do pedido {{data.id}}</h2>
 <div mat-dialog-content>
     <div class="details">
-        <h2>Status: {{data.status}}</h2>
+        <h2>Status: {{data.paid}}</h2>
         <h2>{{data.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</h2>
         <h2>Valor bruto: {{data.grossAmount | currency }}</h2>
         <h2>Valor líquido: {{data.netAmount | currency }}</h2>
@@ -11,7 +11,7 @@
 
     <div class="table">
         <h1>Produtos</h1>
-        <table-order [products]="productsOrdered" [editable]="false"/>
+        <table-product-order [products]="productsOrdered" [editable]="false"/>
     </div>
 </div>
 <mat-dialog-actions align="end">

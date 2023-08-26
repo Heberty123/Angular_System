@@ -13,8 +13,8 @@ export class OrderService {
   private apiUrl: string = 'api/order';
   private headers = { 'content-type': 'application/json'}
 
-  findByCustomerId(id: number): Observable<Order[]>{
-    return this.http.get<Order[]>(this.apiUrl + `/customer/${id}`, { headers: this.headers })
+  findAllByCustomerId(id: number, paid: boolean): Observable<Order[]>{
+    return this.http.get<Order[]>(this.apiUrl + `/customer/${id}/${paid}`, { headers: this.headers })
   }
 
   save(order: Order): Observable<Order>{

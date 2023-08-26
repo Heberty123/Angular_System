@@ -13,7 +13,7 @@ export class PaymentService {
   private apiUrl: string = 'api/payment';
   private headers = { 'content-type': 'application/json'}
 
-  findAllByOrderCustomerId(id: number): Observable<Payment[]>{
-    return this.http.get<Payment[]>( this.apiUrl + `/${id}`, { headers: this.headers })
+  findAllByCustomerId(id: number, paid: boolean): Observable<Payment[]>{
+    return this.http.get<Payment[]>( this.apiUrl + `/${id}/${paid}`, { headers: this.headers })
   }
 }

@@ -8,10 +8,10 @@
 
 <!--  Template for List !  -->
 
-<list-address [data]="data" [editable]="true"
+<list-address [data]="addresses" [editable]="true"
     (updateById)="updateById($event)"
     (removeById)="removeById($event)"
-    *ngIf="data.length > 0; else empty"/>
+    *ngIf="addresses.length > 0; else empty"/>
 
 <ng-template #empty>
     <div class="message-empty">

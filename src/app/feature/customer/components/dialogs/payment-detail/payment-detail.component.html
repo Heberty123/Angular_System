@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Pagamento {{payment.id}}</h2>
+<div mat-dialog-content>
+    <h2>Valor: {{payment.amount| currency }}</h2>
+    <h2>Valor a pagar: {{payment.paymentDate| date: 'dd/MM/yyyy' }}</h2>
+    <h2>Tipo de pagamento: {{payment.paymentType?.name || 'A definir' }}</h2>
+    <h2>Valor pago: {{payment.amountPayed || 'A definir' }}</h2>
+    <h2>payment realizada: {{payment.payedAt | date: 'dd/MM/yyyy'}}</h2>
+    <advance-chip-listbox [source]="paymentTypes" [formControl]="paymentTypeControl" />
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="undefined" cdkFocusInitial>Pagar</button>
+</mat-dialog-actions>

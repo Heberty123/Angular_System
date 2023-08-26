@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersComponent } from './orders.component';
-import { MatTableModule } from '@angular/material/table';
+import { TableOrderModule } from 'src/app/shared/components/tables/table-order/table-order.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main-load.module';
 
 
 
@@ -11,7 +13,9 @@ import { MatTableModule } from '@angular/material/table';
   ],
   imports: [
     CommonModule,
-    MatTableModule,
+    TableOrderModule,
+    MatButtonToggleModule,
+    MainLoadModule,
   ],
   exports: [
     OrdersComponent

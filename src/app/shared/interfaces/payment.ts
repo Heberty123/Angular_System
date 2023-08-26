@@ -7,5 +7,5 @@ export interface Payment{
     paymentType?: PaymentType
     payedAt?: string
     amountPayed?: number
-    payed?: boolean
+    paid: boolean
 }

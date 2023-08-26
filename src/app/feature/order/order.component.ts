@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit } from '@angular/core';
 import { TableProductModule } from 'src/app/shared/components/tables/table-product/table-product.module';
 import { OrderSectionModule } from './components/order-section/order-section.module';
-import { TableOrderModule } from '../../shared/components/tables/table-order/table-order.module';
+import { TableProductOrderModule } from '../../shared/components/tables/table-product-order/table-product-order.module';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { Subscription } from 'rxjs';
 import { ControlBarcodeReaderService } from 'src/app/services/control-barcode-reader.service';
@@ -28,7 +28,7 @@ import { Payment } from 'src/app/shared/interfaces/payment';
     TableProductModule,
     OrderSectionModule,
     CustomerSectionModule,
-    TableOrderModule,
+    TableProductOrderModule,
     TableProductModule
   ]
 })
@@ -133,7 +133,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   saveOrder(): void {
     let order: Order = {
-      status: "pending",
+      paid: false,
       customerId: this.customerChoosed.id,
       grossAmount: this.orderDetails.grossAmount,
       netAmount: this.orderDetails.netAmount,
@@ -157,7 +157,8 @@ export class OrderComponent implements OnInit, OnDestroy {
           paymentDate: value.paymentDate,
           paymentType: value.paymentType,
           payedAt: value.payedAt,
-          amountPayed: value.amountPayed
+          amountPayed: value.amountPayed,
+          paid: value.paid
         }
         return payment;
       })
@@ -192,9 +193,5 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.controlBarcodeService.setComponentReader(false);
     this.subscription && this.subscription.unsubscribe();
-  }
-
-  Teste(): void {
-    console.log(this.payments);
   }
 }

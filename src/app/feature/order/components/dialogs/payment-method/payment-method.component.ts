@@ -85,7 +85,8 @@ export class PaymentMethodComponent implements OnInit {
     for (let i: number = 0; i < qty; i++) {
       this.payments.push({
         amount: value,
-        paymentDate: date.format()
+        paymentDate: date.format(),
+        paid: false
       })
       date = moment(date.add(1, 'month'));
     }
@@ -114,6 +115,7 @@ export class PaymentMethodComponent implements OnInit {
     if (payment.paymentType != undefined && payment.amount <= +this.inputValue.value) {
 
       payment.amountPayed = +this.inputValue.value;
+      payment.paid = true;
     }
   }
 
@@ -124,7 +126,8 @@ export class PaymentMethodComponent implements OnInit {
     if (event.value === "inCash") {
       this.payments.push({
         amount: this.data.netAmount,
-        paymentDate: moment().format()
+        paymentDate: moment().format(),
+        paid: false
       })
       this.displayedColumns = ['amount', 'paymentDate', 'paymentType'];
     }

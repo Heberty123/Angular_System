@@ -1,9 +1,8 @@
-<table-order [products]="products" [editable]="true" (changeQty)="changeQuantity($event)" (updateList)="updateList()" (deleteEvent)="deleteItems($event)" />
+<table-product-order [products]="products" [editable]="true" (changeQty)="changeQuantity($event)"
+    (updateList)="updateList()" (deleteEvent)="deleteItems($event)" />
 
 <order-section [orderDetails]="orderDetails" [payments]="payments" (updatePayments)="payments = $event" (saveOrder)="saveOrder()"/>
 
 <customer-section (customerEvent)="customerSelected($event)" />
 
 <table-product (messageClicked)="produtoChamado($event)" />
-
-<button (click)="Teste()">teste</button>
