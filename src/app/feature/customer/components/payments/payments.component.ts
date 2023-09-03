@@ -23,12 +23,12 @@ export class PaymentsComponent implements OnInit {
   displayedColumns: string[] = ['amount', 'paymentDate'];
 
   constructor(private _paymentService: PaymentService,
-    public dialog: MatDialog){}
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Primeiro pagamentos pendentes
     this._paymentService.findAllByCustomerId(this.customer.id, false)
-      .subscribe({ 
+      .subscribe({
         next: (data: Payment[]) => this.data[0] = data,
         error: (error: HttpErrorResponse) => {
           if (error.status === 404)
@@ -37,15 +37,15 @@ export class PaymentsComponent implements OnInit {
       })
   }
 
-  bttnToggleChange(bttn: MatButtonToggleChange){
-    if(bttn.value === '0')
+  bttnToggleChange(bttn: MatButtonToggleChange) {
+    if (bttn.value === '0')
       this.displayedColumns.splice(-3);
-    else{
+    else {
       // Pagamentos já pagos
       this.displayedColumns.push('paymentType', 'payedAt', 'amountPayed');
-      if(!this.data[1])
+      if (!this.data[1])
         this._paymentService.findAllByCustomerId(this.customer.id, true)
-          .subscribe({ 
+          .subscribe({
             next: (data: Payment[]) => this.data[1] = data,
             error: (error: HttpErrorResponse) => {
               if (error.status === 404)
@@ -55,15 +55,27 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
-  rowClicked(payment: Payment){
+  rowClicked(payment: Payment) {
     const dialogRef = this.dialog.open(PaymentDetailComponent, {
       data: payment
     });
 
     dialogRef.afterClosed().subscribe({
       next: (result: Payment) => {
-        if(result)
-          console.log(result);
+        if (result && result.paid) {
+          this._paymentService.payNow(result)
+            .subscribe({
+              next: (dataUpdated: Payment) => {
+                this.data[0]!.find((value, index) => {
+                    if (value.id === dataUpdated.id){
+                      this.data[1]!.push(...this.data[0]!.splice(index, 1))
+                      this.data[0] = [...this.data[0]!]
+                      return;
+                    }
+                })
+              }
+            })
+        }
       }
     });
   }

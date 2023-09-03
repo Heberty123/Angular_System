@@ -65,11 +65,11 @@ export class TablePaymentComponent implements OnInit, AfterViewInit {
   isEditable: boolean = false;
   inputAmount = new FormControl();
   inputInstallment = new FormControl();
-  chipPaymentType = new FormControl();
+  chipPaymentType: FormControl
   indexToEditAmount: number | null;
   expandedElement: Payment | null;
 
-  constructor(private businessLogicService: BusinessLogicServiceService) { }
+  constructor(private businessLogicService: BusinessLogicServiceService) {}
 
   @ViewChild(MatSort) private sort: MatSort;
 
@@ -78,6 +78,8 @@ export class TablePaymentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.chipPaymentType = new FormControl(this.paymentTypes)
+
     this.chipPaymentType.valueChanges.subscribe({
       next: (value: PaymentType) => this.expandedElement!.paymentType = value
     })

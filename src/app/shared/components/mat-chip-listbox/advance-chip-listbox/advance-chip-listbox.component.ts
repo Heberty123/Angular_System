@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { MatChipListbox, MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 
 
 export interface HasDisplayProperty {
@@ -27,17 +27,25 @@ export interface HasDisplayProperty {
     }
   ]
 })
-export class AdvanceChipListboxComponent<T extends HasDisplayProperty> implements ControlValueAccessor {
+export class AdvanceChipListboxComponent<T extends HasDisplayProperty>
+  implements ControlValueAccessor, AfterViewInit {
 
-  @Input() source?: T[];
+  @ViewChild('matChip') matChip: MatChipListbox
+  @Input() data: T[];
   @Input() displayProperty: keyof T = 'name';
   onChange: (value: T) => void
   onTouched: () => void;
   isDisabled: boolean;
 
   constructor(){}
+
+  ngAfterViewInit(): void {
+    this.matChip.change.subscribe({
+      next: ({value}: MatChipListboxChange) => this.onChange(value)
+    })
+  }
   
-  writeValue(obj: T): void {
+  writeValue(obj: T[]): void {
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;

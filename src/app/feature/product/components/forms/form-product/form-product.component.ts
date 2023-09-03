@@ -45,7 +45,7 @@ export class FormProductComponent implements OnInit {
       });
     this.productTypeService.findAll()
       .subscribe({
-        next: (value: ProductType[]) => { this.productTypes = value }
+        next: (value: ProductType[]) => this.productType.setValue(value)
       });
   }
 

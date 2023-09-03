@@ -1,6 +1,6 @@
-<mat-chip-listbox aria-label="Fish selection" (change)="onChange($event.value)"
+<mat-chip-listbox aria-label="Fish selection" #matChip
   [disabled]="isDisabled">
-    <mat-chip-option *ngFor="let value of source" [value]="value">
+    <mat-chip-option *ngFor="let value of data" [value]="value">
       {{ value[displayProperty] }}
     </mat-chip-option>
 </mat-chip-listbox>
