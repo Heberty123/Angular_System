@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Escolhe forma de pagamento !</h1>
+
+<div mat-dialog-content class="content">
+
+  <order-details-view [data]="data" />
+
+  <div class="controls">
+
+    <mat-button-toggle-group (change)="changeBttnToggle($event)" class="matBttnToggle">
+      <mat-button-toggle value="inCash">Á Vista</mat-button-toggle>
+      <mat-button-toggle value="installments">Parcelado</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div class="container-details">
+      <div class="input-bttn">
+        <input-customizable hint="valor" label="{{paymentMethod === 'inCash' ? 'Digite o valor' : 'Digite as parcelas'}}"
+          [formControl]="inputValue" type="number" />
+          <button *ngIf="paymentMethod === 'installments'" mat-icon-button color="accent" (click)="resetPayments()">
+            <mat-icon>autorenew</mat-icon>
+          </button>
+      </div>
+
+      <div class="result">
+        <h1>Troco: {{ changeAmount || 0 | currency}}</h1>
+        <h1>Faltando: {{ missing || 0 | currency}}</h1>
+      </div>
+
+      <ng-container *ngIf="paymentMethod === 'inCash'">
+        <advance-chip-listbox [source]="paymentTypes" [formControl]="paymentType" />
+        <button mat-raised-button color="primary" (click)="cashPayment()">
+          Pagar
+        </button>
+      </ng-container>
+    </div>
+
+
+  </div>
+
+  <table-payment [payments]="payments" [editable]="paymentMethod === 'inCash' ? false : true" [paintPayed]="true"
+    [displayColumns]="displayedColumns" [paymentTypes]="paymentTypes" [changePayment]="changePaymentFunction.bind(this)"/>
+
+
+</div>
+<mat-dialog-actions align="end">
+  <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="payments">Salvar</button>
+</mat-dialog-actions>

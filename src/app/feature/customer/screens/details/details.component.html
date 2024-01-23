@@ -1,0 +1,57 @@
+<ng-container *ngIf="customer != null; else isThereNot">
+    <div class="container-customer">
+
+        <h1>Id: {{customer.id}}</h1>
+        <h1>CPF: {{customer.cpf}}</h1>
+        <h1>Name: {{customer.name}}</h1>
+
+
+        <button mat-flat-button color="primary" (click)="openEditCustomer()">
+            Editar
+        </button>
+
+        <button mat-flat-button color="warn" (click)="openRemoveCustomer()">
+            Excluir
+        </button>
+    </div>
+
+    <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="false">        
+        <mat-step label="Endereço">
+            <ng-template matStepContent>
+                <addresses-details [customer]="customer" />
+            </ng-template>          
+        </mat-step>
+
+        <mat-step label="Dependentes">
+            <ng-template matStepContent>
+                <dependents [customer]="customer" />
+            </ng-template>
+        </mat-step>
+
+        <mat-step label="Pagamentos">
+            <ng-template matStepContent>
+                <payments [customer]="customer" />
+            </ng-template>
+        </mat-step>
+
+        <mat-step label="Pedidos">
+            <ng-template matStepContent>
+                <orders [customer]="customer" />
+            </ng-template>
+        </mat-step>
+    </mat-horizontal-stepper>
+
+    <!--
+    <ng-template #loading>
+        <mat-spinner></mat-spinner>
+    </ng-template>
+    -->
+</ng-container>
+
+<ng-template #isThereNot>
+    <div class="auto-reply-message">
+        <h1>Cliente não foi selecionado !</h1>
+        <strong>Por favor, selecione o cliente</strong>
+        <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
+    </div>
+</ng-template>

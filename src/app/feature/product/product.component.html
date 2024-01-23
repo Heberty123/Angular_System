@@ -1,0 +1,51 @@
+<mat-tab-group #tabGroup [@.disabled]="true" class="mat-tabGroup" mat-stretch-tabs="false"
+mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">add_box</mat-icon>
+        Adicionar produto
+      </ng-template>
+
+      <ng-template matTabContent>
+        <register />
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">list</mat-icon>
+        Lista
+      </ng-template>
+
+      <ng-template matTabContent>
+        <list (rowClicked)="selectedProduct = $event; tabGroup.selectedIndex = 3" />
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">delete</mat-icon>
+        Excluir
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <remove />
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">inbox</mat-icon>
+        Produto
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <details-product [productId]="selectedProduct!.id" (eraseProduct)="selectedProduct = null"
+        (toList)="tabGroup.selectedIndex = 1" />
+      </ng-template>
+    </mat-tab>    
+
+</mat-tab-group>
+
+
+

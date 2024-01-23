@@ -1,0 +1,10 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.btt-chip-add{
+    margin-left: 10px;
+}

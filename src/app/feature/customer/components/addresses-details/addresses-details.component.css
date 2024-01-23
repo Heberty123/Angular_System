@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-empty{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+}
+
+.message-empty span{
+    font-weight: bold;
+}

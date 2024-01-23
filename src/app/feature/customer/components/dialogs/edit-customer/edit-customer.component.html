@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Editar cliente {{data.id}}</h2>
+<div mat-dialog-content>
+    <form-customer [(hasCustomer)]="data" />
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Salvar</button>
+</mat-dialog-actions>

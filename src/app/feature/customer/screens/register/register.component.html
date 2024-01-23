@@ -1,0 +1,21 @@
+<div class="container-customer">
+    <button mat-flat-button color="primary" (click)="reset()" [disabled]="locked" class="btt-new">Novo</button>
+    <form-customer (submited)="newCustomer($event)" [disabled$]="!locked"/>
+</div>
+
+<div class="container">
+    <mat-stepper #stepper class="stepper">
+
+        <mat-step label="Endereços">
+            <form-address (submited)="newAddress($event)" [disabled$]="locked" />
+            <list-address [data]="addresses" [editable]="true" />
+        </mat-step>
+
+        <mat-step label="Dependentes">         
+            <!--<sub-customers [customerId]="customer?.id" [data]="dependents"/>-->        
+        </mat-step>
+        
+    </mat-stepper>
+
+    <div class="block" [class.unlock]="!locked"></div>
+</div>

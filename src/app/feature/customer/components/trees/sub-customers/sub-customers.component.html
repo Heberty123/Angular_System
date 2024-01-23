@@ -1,0 +1,11 @@
+<mat-list role="list" class="list" *ngIf="data.length > 0; else empty">
+  <mat-list-item role="listitem" *ngFor="let customer of data">{{customer.name}}</mat-list-item>
+</mat-list>
+
+<ng-template #empty>
+  <div class="message-empty">
+    <h1>Não tem nenhum dependentes...</h1>
+  </div>
+</ng-template>
+
+

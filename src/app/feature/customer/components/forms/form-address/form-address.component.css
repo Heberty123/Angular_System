@@ -1,0 +1,67 @@
+.form-address{
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "input-cep input-cep input-street input-street input-street input-street input-number input-neighborhood input-neighborhood input-neighborhood input-city input-city input-uf"
+                       "input-deliveryType input-deliveryType input-cellphone1 input-cellphone1 input-cellphone1 input-cellphone2 input-cellphone2 input-cellphone2 input-telephone1 input-telephone1 input-telephone2 input-telephone2 btt-address"                
+  ;
+  gap: 10px 20px;
+}
+
+input {
+    height: 100% !important;
+}
+
+.input-cep{
+    grid-area: input-cep;
+}
+
+.input-street{
+  grid-area: input-street;
+}
+
+.input-number{
+    grid-area: input-number;
+}
+
+.input-neighborhood{
+    grid-area: input-neighborhood;
+}
+
+.input-city{
+    grid-area: input-city;
+}
+
+.input-uf{
+    grid-area: input-uf;
+}
+
+.input-deliveryType{
+    grid-area: input-deliveryType;
+}
+
+.input-cellphone1{
+    grid-area: input-cellphone1;
+}
+
+.input-cellphone2{
+    grid-area: input-cellphone2;
+}
+
+.input-telephone1{
+    grid-area: input-telephone1;
+}
+
+.input-telephone2{
+    grid-area: input-telephone2;
+}
+
+.btt-form-address{
+  height: calc(100% - 22px);
+  width: 100%;
+  grid-area: btt-address;
+  align-items: center;
+  font-size: 1.2rem;
+}

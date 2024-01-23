@@ -1,0 +1,21 @@
+<!--  Template for Form !  -->
+
+<form-address (submited)="newAddress($event)" *ngIf="formOpened; else formClosed"/>
+
+<ng-template #formClosed>
+    <button mat-raised-button color="primary" (click)="formOpened = true">Novo</button>
+</ng-template>
+
+<!--  Template for List !  -->
+
+<list-address [data]="addresses" [editable]="true"
+    (updateById)="updateById($event)"
+    (removeById)="removeById($event)"
+    *ngIf="addresses.length > 0; else empty"/>
+
+<ng-template #empty>
+    <div class="message-empty">
+        <h1>Endereços estão vazios</h1>
+        <span>Crie um endereço aqui mesmo !</span>
+    </div>
+</ng-template>

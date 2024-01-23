@@ -1,35 +1,46 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <button class="box-button-menu" (click)="changeOpened(!opened)">
-      <mat-icon >menu</mat-icon>
+      <mat-icon>menu</mat-icon>
       <h1>Amélia Revendedora</h1>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" [(opened)]="opened" mode="side" >
+  <mat-drawer #drawer class="example-sidenav" [(opened)]="opened" mode="side">
     <div class="drawer-area">
-    <mat-list>
-      <mat-list-item>
-        <button [routerLink]="['/home']" routerLinkActive="LinkActive" class="sidenav-btt">
-          <mat-icon>home</mat-icon>
-          <a>Home</a>
-        </button>
-      </mat-list-item>
-      <mat-list-item>
-        <button [routerLink]="['/client']" routerLinkActive="LinkActive" class="sidenav-btt">
-          <mat-icon>person</mat-icon>
-          <a>Cliente</a>
-        </button>
-      </mat-list-item>
-      <mat-list-item>
-        <button [routerLink]="['/product']" routerLinkActive="LinkActive" class="sidenav-btt">
-          <mat-icon>sell</mat-icon>
-          <a>Produto</a>
-        </button>
-      </mat-list-item>
-     </mat-list>
+      <mat-list>
+
+        <mat-list-item>
+          <button [routerLink]="['/home']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon>home</mat-icon>
+            <a>Home</a>
+          </button>
+        </mat-list-item>
+
+        <mat-list-item>
+          <button [routerLink]="['/client']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon>person</mat-icon>
+            <a>Cliente</a>
+          </button>
+        </mat-list-item>
+
+        <mat-list-item>
+          <button [routerLink]="['/product']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon>sell</mat-icon>
+            <a>Produto</a>
+          </button>
+        </mat-list-item>
+
+        <mat-list-item>
+          <button [routerLink]="['/order']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon>border_all</mat-icon>
+            <a>Pedido</a>
+          </button>
+        </mat-list-item>
+        
+      </mat-list>
     </div>
   </mat-drawer>
   <mat-drawer-content (click)="changeOpened(false)">

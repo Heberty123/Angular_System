@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.js",
+    "start": "ng serve --proxy-config src/app/core/config/proxy.conf.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -11,17 +11,20 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.1.2",
-    "@angular/cdk": "^15.1.1",
+    "@angular/cdk": "^15.2.9",
     "@angular/common": "^15.1.2",
     "@angular/compiler": "^15.1.2",
     "@angular/core": "^15.1.2",
     "@angular/forms": "^15.1.2",
     "@angular/material": "^15.1.1",
+    "@angular/material-moment-adapter": "^15.2.9",
     "@angular/platform-browser": "^15.1.2",
     "@angular/platform-browser-dynamic": "^15.1.2",
     "@angular/router": "^15.1.2",
+    "ngx-mask": "^15.0.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "usb": "^2.9.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -29,6 +32,7 @@
     "@angular/cli": "^15.1.2",
     "@angular/compiler-cli": "^15.1.2",
     "@types/jasmine": "~4.0.0",
+    "@types/module-alias": "^2.0.1",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

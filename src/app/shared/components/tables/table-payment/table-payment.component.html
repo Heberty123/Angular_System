@@ -1,0 +1,119 @@
+<table mat-table [dataSource]="dataSource" matSort
+    matSortActive="paymentDate" matSortDirection="asc" class="mat-elevation-z8" multiTemplateDataRows>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> valor </th>
+        <td mat-cell *matCellDef="let element; let i = dataIndex">
+            <ng-container *ngIf="isEditable && i === indexToEditAmount; else displayAmount">
+                <mat-form-field appearance="fill" class="mat-form-field-amount">
+                    <mat-label>Edite o valor</mat-label>
+                    <input type="number" matInput [formControl]="inputAmount" (blur)="lostEditing()">
+                </mat-form-field>
+            </ng-container>
+
+            <ng-template #displayAmount>
+                {{element.amount | currency}}
+            </ng-template>
+        </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="paymentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> data </th>
+        <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="isEditable; else displayDate">
+                <input-date [(value)]="element.paymentDate" />
+            </ng-container>
+
+            <ng-template #displayDate>
+                {{element.paymentDate | date: 'dd/MM/yyyy'}}
+            </ng-template>
+        </td>
+    </ng-container>
+
+    <!-- Payment Type Column -->
+    <ng-container matColumnDef="paymentType">
+        <th mat-header-cell *matHeaderCellDef> Tipo de pagamento </th>
+        <td mat-cell *matCellDef="let element"> {{element.paymentType?.name || 'Não definido'}} </td>
+    </ng-container>
+
+    <!-- Payed At Column -->
+    <ng-container matColumnDef="payedAt">
+        <th mat-header-cell *matHeaderCellDef> Data Pago </th>
+        <td mat-cell *matCellDef="let element"> {{element.payedAt | date: 'dd/MM/yyyy - HH:mm'}} </td>
+    </ng-container>
+
+    <!-- Amount Payed Column -->
+    <ng-container matColumnDef="amountPayed">
+        <th mat-header-cell *matHeaderCellDef> Valor Pago </th>
+        <td mat-cell *matCellDef="let element"> {{element.amountPayed | currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+        </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div *ngIf="element == expandedElement" [@fadeInOut]>
+                        <mat-form-field appearance="fill" class="mat-form-field-amount">
+                            <mat-label>Edite o valor</mat-label>
+                            <input type="number" matInput [formControl]="inputInstallment">
+                        </mat-form-field>
+
+                        <advance-chip-listbox [formControl]="chipPaymentType"/>
+
+                        <button mat-button color="warn" (click)="expandedCanceled()">Cancelar</button>
+
+                        <button mat-raised-button color="primary" (click)="expandedPayNow()">Pagar</button>
+                    </div>
+                </div>
+        </td>
+    </ng-container>
+
+    <!-- Options Column -->
+    <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef>Options</th>
+        <td mat-cell *matCellDef="let element; let i = dataIndex">
+
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="startEditing(element, i)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar valor</span>
+                </button>
+                <button mat-menu-item (click)="expandedElement = expandedElement === element ? expandedCanceled() : element">
+                    <mat-icon>{{expandedElement === element ? 'cancel' : 'attach_money'}}</mat-icon>
+                    <span>{{expandedElement === element ? 'Cancelar' : 'Pagar já'}}</span>
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>notifications_off</mat-icon>
+                    <span>Não sei</span>
+                </button>
+            </mat-menu>
+
+        </td>
+    </ng-container>
+
+
+
+
+
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand; sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand; let i = dataIndex"
+        class="example-element-row" 
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="rowClicked.emit(element)"
+        [ngClass]="{'make-green' : paintPayed && element.amountPayed}">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+</table>

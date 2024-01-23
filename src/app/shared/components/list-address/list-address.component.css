@@ -1,0 +1,46 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    overflow-y: auto;
+    flex: 1;
+    gap: 10px 0px;
+    background-color: beige;
+}
+
+.item{
+    background-color: aquamarine;
+}
+
+.first-col, .second-col, .third-col{
+    display: flex;
+    width: 100%;
+    gap: 0px 10px;
+    justify-content: space-between;
+}
+
+.third-col{
+    align-items: center;
+}
+
+.container-div{
+    display: flex;
+    gap: 0px 30px;
+}
+
+
+.number{
+    padding-right: 10px;
+}
+
+
+.deliveryType-name{
+    padding-right: 10px;
+}
+
+
+.div-bttns{
+    display: flex;
+    gap: 0px 10px;
+    justify-content: flex-end;
+}

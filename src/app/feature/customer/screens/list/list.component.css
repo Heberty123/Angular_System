@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aquamarine;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    gap: 20px 0px;
+}
+
+table-customer{
+    width: 70%;
+    height: 70%;
+}

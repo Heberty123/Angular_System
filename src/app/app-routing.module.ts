@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { ClientComponent } from './pages/client/client.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ProductComponent } from './pages/product/product.component';
+import { CustomerComponent } from './feature/customer/customer.component';
+import { ProductComponent } from './feature/product/product.component';
+import { OrderComponent } from './feature/order/order.component';
 
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'client', component: ClientComponent },
+   /* { path: 'home', component: HomeComponent }, */
+    { path: 'client', component: CustomerComponent },
     { path: 'product', component: ProductComponent },
+    { path: 'order', component: OrderComponent }
 ];
 
 @NgModule({
