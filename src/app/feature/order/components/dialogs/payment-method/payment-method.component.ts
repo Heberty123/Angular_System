@@ -10,7 +10,6 @@ import { Payment } from 'src/app/shared/interfaces/payment';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { OrderDetailsViewModule } from 'src/app/shared/components/view/order-details-view/order-details-view.module';
-import { InputCustomizableModule } from 'src/app/shared/components/inputs/input-customizable/input-customizable.module';
 import * as moment from 'moment';
 import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
 import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -29,7 +28,6 @@ import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } fr
     AdvanceChipListboxComponent,
     TablePaymentComponent,
     OrderDetailsViewModule,
-    InputCustomizableModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
   ]

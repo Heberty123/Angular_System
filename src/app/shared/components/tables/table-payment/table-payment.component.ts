@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { MatSortModule } from '@angular/material/sort';
 import { InputDateComponent } from '../../inputs/input-date/input-date.component';
-import { InputCustomizableModule } from '../../inputs/input-customizable/input-customizable.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdvanceChipListboxComponent } from '../../mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 import { FormsModule } from 'src/app/feature/customer/components/forms/forms.module';
@@ -46,7 +45,6 @@ import { PaymentType } from 'src/app/shared/interfaces/paymentType';
     FormsBasics,
     MatSortModule,
     InputDateComponent,
-    InputCustomizableModule,
     MatExpansionModule,
     MatIconModule,
     AdvanceChipListboxComponent,

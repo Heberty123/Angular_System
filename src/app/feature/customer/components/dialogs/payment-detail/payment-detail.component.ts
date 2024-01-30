@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { InputCustomizableModule } from 'src/app/shared/components/inputs/input-customizable/input-customizable.module';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 import { Payment } from 'src/app/shared/interfaces/payment';
 import { PaymentType } from 'src/app/shared/interfaces/paymentType';
@@ -26,7 +25,6 @@ import { PaymentTypeService } from 'src/app/shared/resources/payment-type.servic
     FormsModule,
     AdvanceChipListboxComponent,
     ReactiveFormsModule,
-    InputCustomizableModule
   ]
 })
 export class PaymentDetailComponent {
