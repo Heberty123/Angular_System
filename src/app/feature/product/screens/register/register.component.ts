@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductType } from 'src/app/shared/interfaces/productType';
 import { ProductTypeService } from 'src/app/shared/resources/product-type.service';
-import { DialogOverviewAddChipComponent } from '../../components/dialogs/add-mat-chip/add-mat-chip.component';
+// import { DialogOverviewAddChipComponent } from '../../components/dialogs/add-mat-chip/add-mat-chip.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Brand } from 'src/app/shared/interfaces/brand';
 import { BrandService } from 'src/app/shared/resources/brand.service';
 import { ProductService } from 'src/app/shared/resources/product.service';
-import { DialogOverviewAddOptionComponent } from '../../components/dialogs/add-mat-option-brand/add-mat-option-brand.component';
 import { Product } from 'src/app/shared/interfaces/product';
 
 @Component({
@@ -84,17 +83,17 @@ export class RegisterComponent implements OnInit{
 
 
 
-  addChip(): void {
-    const dialogRef = this.dialog.open(DialogOverviewAddChipComponent);
-      dialogRef.afterClosed().subscribe((newProductType: string) => {
-        if (newProductType) {
-          this.productTypeService.create({name: newProductType})
-            .subscribe({
-              next: (productType: ProductType) => this.productTypes.push(productType)
-            })
-        }
-      });
-  }
+  // addChip(): void {
+  //   const dialogRef = this.dialog.open(DialogOverviewAddChipComponent);
+  //     dialogRef.afterClosed().subscribe((newProductType: string) => {
+  //       if (newProductType) {
+  //         this.productTypeService.create({name: newProductType})
+  //           .subscribe({
+  //             next: (productType: ProductType) => this.productTypes.push(productType)
+  //           })
+  //       }
+  //     });
+  // }
 
   removeChip(obj: ProductType): void{
     this.productTypeService.delete(obj)
@@ -124,16 +123,20 @@ export class RegisterComponent implements OnInit{
   }
 
   openDialogAddBrand(): void{
-    const dialogRef = this.dialog.open(DialogOverviewAddOptionComponent);
-      dialogRef.afterClosed().subscribe((newBrand: string) => {
-        if (newBrand) {
-          this.brandService.save({name: newBrand})
-            .subscribe({
-              next: (brand: Brand) => this.brands.push(brand)
-            })
-        }
-      });
+    console.log("Fui chamado!")
   }
+
+  // openDialogAddBrand(): void{
+  //   const dialogRef = this.dialog.open(DialogOverviewAddOptionComponent);
+  //     dialogRef.afterClosed().subscribe((newBrand: string) => {
+  //       if (newBrand) {
+  //         this.brandService.save({name: newBrand})
+  //           .subscribe({
+  //             next: (brand: Brand) => this.brands.push(brand)
+  //           })
+  //       }
+  //     });
+  // }
 
   onSubmit(): void{
     if(!this.productForm.invalid){

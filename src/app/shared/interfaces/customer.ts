@@ -1,7 +1,5 @@
-import { Order } from "./order"
-
 export interface Customer {
-    id: number,
+    id?: number,
     name: string,
     cpf: string,
   }

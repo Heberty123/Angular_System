@@ -1,6 +1,6 @@
 <!--  Template for Form !  -->
 
-<form-address (submited)="newAddress($event)" *ngIf="formOpened; else formClosed"/>
+<form-address *ngIf="formOpened; else formClosed"/>
 
 <ng-template #formClosed>
     <button mat-raised-button color="primary" (click)="formOpened = true">Novo</button>

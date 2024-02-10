@@ -27,7 +27,7 @@ export class PaymentsComponent implements OnInit {
 
   ngOnInit(): void {
     // Primeiro pagamentos pendentes
-    this._paymentService.findAllByCustomerId(this.customer.id, false)
+    this._paymentService.findAllByCustomerId(this.customer.id!, false)
       .subscribe({
         next: (data: Payment[]) => this.data[0] = data,
         error: (error: HttpErrorResponse) => {
@@ -44,7 +44,7 @@ export class PaymentsComponent implements OnInit {
       // Pagamentos já pagos
       this.displayedColumns.push('paymentType', 'payedAt', 'amountPayed');
       if (!this.data[1])
-        this._paymentService.findAllByCustomerId(this.customer.id, true)
+        this._paymentService.findAllByCustomerId(this.customer.id!, true)
           .subscribe({
             next: (data: Payment[]) => this.data[1] = data,
             error: (error: HttpErrorResponse) => {

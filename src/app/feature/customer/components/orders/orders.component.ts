@@ -4,15 +4,25 @@ import { Order } from 'src/app/shared/interfaces/order';
 import { OrderDetailsComponent } from '../dialogs/order-details/order-details.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { OrderService } from 'src/app/shared/resources/order.service';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main-load.module';
+import { TableOrderModule } from 'src/app/shared/components/tables/table-order/table-order.module';
 
 let snackBarRef: any;
 
 @Component({
   selector: 'orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.css'],
+  standalone: true,
+  imports: [    
+    CommonModule,
+    TableOrderModule,
+    MatButtonToggleModule,
+    MainLoadModule
+  ]
 })
 export class OrdersComponent implements OnInit {
 
@@ -26,7 +36,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     // Orders Unpaid
-    this._orderService.findAllByCustomerId(this.customer.id, false)
+    this._orderService.findAllByCustomerId(this.customer.id!, false)
       .subscribe({
         next: (data: Order[]) => this.data[0] = data,
         error: (error: HttpErrorResponse) => this.data[0] = []
@@ -41,7 +51,7 @@ export class OrdersComponent implements OnInit {
     // Orders paid
     if(bttn.value === '1')
       if(!this.data[1])
-        this._orderService.findAllByCustomerId(this.customer.id, true)
+        this._orderService.findAllByCustomerId(this.customer.id!, true)
           .subscribe({ 
             next: (data: Order[]) => this.data[1] = data,
             error: (error: HttpErrorResponse) => {

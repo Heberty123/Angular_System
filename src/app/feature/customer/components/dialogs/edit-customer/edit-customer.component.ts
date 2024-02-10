@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Customer } from 'src/app/shared/interfaces/customer';
-import { FormCustomerModule } from '../../forms/form-customer/form-customer.module';
+import { FormCustomerComponent } from '../../forms/form-customer/form-customer.component';
 
 @Component({
   selector: 'edit-customer',
@@ -15,7 +15,7 @@ import { FormCustomerModule } from '../../forms/form-customer/form-customer.modu
     CommonModule,
     MatDialogModule,
     MatButtonModule,
-    FormCustomerModule,
+    FormCustomerComponent,
   ]
 })
 export class EditCustomerComponent {

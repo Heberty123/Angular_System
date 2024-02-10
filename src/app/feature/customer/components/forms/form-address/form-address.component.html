@@ -1,11 +1,13 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="AddressForm" #formDir="ngForm" class="form-address"> 
+<form [formGroup]="form" #formDir="ngForm" class="form-address"> 
       
 
     <mat-form-field appearance="fill" class="input-cep">
       <mat-label>CEP</mat-label>
       <input type="text" matInput placeholder="xxxxx-xxx" maxlength="9" formControlName="cep"
       mask="00000-000" [dropSpecialCharacters]="false">
-      <button type="button" mat-icon-button matSuffix [disabled]="AddressForm.status === 'DISABLED'" (click)="searchByCPF()">
+      <button type="button" mat-icon-button matSuffix 
+        [disabled]="cep.value == '' || cep.invalid"
+        (click)="findByCEP()">
         <mat-icon>search</mat-icon>
       </button>
       <mat-hint>nome do cep</mat-hint>
@@ -130,5 +132,12 @@
         </mat-error>
       </mat-form-field>
           
-      <button mat-raised-button type="submit" [disabled]="AddressForm.status === 'DISABLED'" *ngIf="!hasAddress"  class="btt-form-address">Salvar</button>
+      <button mat-raised-button 
+        type="submit"
+        [disabled]="form.status === 'DISABLED'"
+        *ngIf="enableButton"
+        (click)="submit"
+        class="btt-form-address">
+        {{ isEditable() ? 'Salvar' : 'Editar' }}
+      </button>
 </form>

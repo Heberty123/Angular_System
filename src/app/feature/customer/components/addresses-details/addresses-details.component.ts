@@ -1,18 +1,30 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Address } from 'src/app/shared/interfaces/address';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { EditAddressComponent } from '../dialogs/edit-address/edit-address.component';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AddressDeletedComponent } from '../snackbar/address-deleted/address-deleted.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
+import { FormAddressComponent } from '../forms/form-address/form-address.component';
 
 let snackBarRef: any;
 
 @Component({
   selector: 'addresses-details',
   templateUrl: './addresses-details.component.html',
-  styleUrls: ['./addresses-details.component.css']
+  styleUrls: ['./addresses-details.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ListAddressComponent,
+    FormAddressComponent,
+    MatButtonModule,
+    MatSnackBarModule
+  ]
 })
 export class AddressesDetailsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
@@ -27,7 +39,7 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this._addressService.findAllByCustomerId(this.customer.id)
+    this._addressService.findAllByCustomerId(this.customer.id!)
       .subscribe({
         next: (data: Address[]) => this.addresses = data
       })
@@ -39,7 +51,7 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
   }
 
   newAddress(value: Address): void {
-    this._addressService.create(value, this.customer.id)
+    this._addressService.save(value, this.customer.id!)
       .subscribe({
         next: (address: Address) => {
           this.addresses.push(address);

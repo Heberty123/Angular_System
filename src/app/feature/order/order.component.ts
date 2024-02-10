@@ -134,7 +134,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   saveOrder(): void {
     let order: Order = {
       paid: false,
-      customerId: this.customerChoosed.id,
+      customerId: this.customerChoosed.id!,
       grossAmount: this.orderDetails.grossAmount,
       netAmount: this.orderDetails.netAmount,
       discounts: this.orderDetails.discounts,

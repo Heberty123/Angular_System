@@ -14,7 +14,7 @@ export class AddressService {
   private apiUrl: string = 'api/address';
   private headers = { 'content-type': 'application/json'}
 
-  create(address: any, customerId: number): Observable<Address>{
+  save(address: any, customerId: number): Observable<Address>{
     return this.http.post<Address>(this.apiUrl + `/create/${customerId}`, address, {'headers': this.headers});
   }
 

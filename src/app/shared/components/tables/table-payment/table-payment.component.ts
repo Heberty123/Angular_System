@@ -13,7 +13,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { InputDateComponent } from '../../inputs/input-date/input-date.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdvanceChipListboxComponent } from '../../mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { FormsModule } from 'src/app/feature/customer/components/forms/forms.module';
 import { BusinessLogicServiceService } from 'src/app/shared/services/business-logic-service.service';
 import { FormControl } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -48,7 +47,6 @@ import { PaymentType } from 'src/app/shared/interfaces/paymentType';
     MatExpansionModule,
     MatIconModule,
     AdvanceChipListboxComponent,
-    FormsModule
   ],
 })
 export class TablePaymentComponent implements OnInit, AfterViewInit {

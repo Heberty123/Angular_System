@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, ViewChild } from '@angular/core';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { MaterialBasicModule } from 'src/app/shared/modules/material-basic.module';
-import { DetailsModule } from './screens/details/details.module';
 import { ListModule } from './screens/list/list.module';
-import { RegisterModule } from './screens/register/register.module';
 import { RemoveModule } from './screens/remove/remove.module';
+import { RegisterComponent } from './screens/register/register.component';
+import { DetailsComponent } from './screens/details/details.component';
 
 @Component({
   selector: 'customer',
@@ -16,10 +16,11 @@ import { RemoveModule } from './screens/remove/remove.module';
   imports: [
     CommonModule,
     MaterialBasicModule,
-    RegisterModule,
+    RegisterComponent,
     ListModule, 
     RemoveModule,
-    DetailsModule
+    DetailsComponent,
+    
   ],
   providers: []
 })

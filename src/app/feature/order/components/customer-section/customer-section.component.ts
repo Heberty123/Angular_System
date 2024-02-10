@@ -20,7 +20,7 @@ export class CustomerSectionComponent implements OnInit{
   ngOnInit(): void {}
 
   findCustomer(c: Customer): void {
-    this.customerService.findById(c.id)
+    this.customerService.findById(c.id!)
       .subscribe({
         next: (customer: Customer) => {
           this.customer = customer;

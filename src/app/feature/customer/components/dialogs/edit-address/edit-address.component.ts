@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FormAddressModule } from '../../forms/form-address/form-address.module';
 import { Address } from 'src/app/shared/interfaces/address';
+import { FormAddressComponent } from '../../forms/form-address/form-address.component';
 
 @Component({
   selector: 'app-edit-address',
@@ -15,7 +15,7 @@ import { Address } from 'src/app/shared/interfaces/address';
     CommonModule,
     MatDialogModule,
     MatButtonModule,
-    FormAddressModule
+    FormAddressComponent
   ]
 })
 export class EditAddressComponent {

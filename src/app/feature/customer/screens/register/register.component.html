@@ -1,21 +1,40 @@
 <div class="container-customer">
-    <button mat-flat-button color="primary" (click)="reset()" [disabled]="locked" class="btt-new">Novo</button>
-    <form-customer (submited)="newCustomer($event)" [disabled$]="!locked"/>
+    <button mat-flat-button color="primary"
+        [disabled]="!customerFC.value?.id"
+        (click)="reset()"
+        class="btt-new">
+        Novo
+    </button>
+    <form-customer [formControl]="customerFC"/>
+    <button 
+        [disabled]="customerFC.invalid"
+        (click)="saveCustomer()">
+        Salvar
+    </button>
 </div>
 
 <div class="container">
     <mat-stepper #stepper class="stepper">
 
         <mat-step label="Endereços">
-            <form-address (submited)="newAddress($event)" [disabled$]="locked" />
+            <form-address 
+                [formControl]="addressFC"
+                (submit)="saveAddress()"/>
             <list-address [data]="addresses" [editable]="true" />
         </mat-step>
 
-        <mat-step label="Dependentes">         
-            <!--<sub-customers [customerId]="customer?.id" [data]="dependents"/>-->        
+        <mat-step label="Dependentes">  
+            <div class="section-form-dependent">
+                <form-customer [formControl]="dependentFC"/>
+                <button 
+                    mat-raised-button color="primary"
+                    [disabled]="dependentFC.invalid"
+                    (click)="saveDependent()">Salvar</button>
+            </div>
+            <list-customers [data]="dependents"/>
         </mat-step>
         
     </mat-stepper>
 
-    <div class="block" [class.unlock]="!locked"></div>
+    <div class="block" [class.unlock]="customerFC.value?.id"></div>
 </div>
