@@ -1,0 +1,23 @@
+:host {
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:hover .mat-mdc-cell {
+   background-color: rgb(208, 208, 208);
+  }

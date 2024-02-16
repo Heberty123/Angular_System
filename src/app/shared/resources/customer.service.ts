@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { first, Observable } from 'rxjs';
 import { Customer } from '../interfaces/customer';
-import { delay, first, Observable } from 'rxjs';
-import { FullCustomer } from '../interfaces/full-customer';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +10,11 @@ export class CustomerService {
 
   constructor(private http:HttpClient) { }
 
-  private apiUrl: string = 'api/customer';
+  private apiUrl: string = 'api/customers';
   private headers = { 'content-type': 'application/json'}
 
   existByCPF(cpf: string): Observable<boolean>{
-    return this.http.get<boolean>(this.apiUrl + `/exist/${cpf}`);
+    return this.http.get<boolean>(this.apiUrl + `/${cpf}`);
   }
 
   findById(id: number): Observable<Customer>{
@@ -23,18 +22,23 @@ export class CustomerService {
   }
 
   findAll(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.apiUrl + "/all")
+    return this.http.get<Customer[]>(this.apiUrl)
       .pipe(
         first()
       );
   }
 
   save(customer: any): Observable<Customer>{
-    return this.http.post<Customer>(this.apiUrl + '/create', customer, {'headers': this.headers});
+    return this.http.post<Customer>(this.apiUrl, customer, {'headers': this.headers});
   }
 
   deleteById(id: number): Observable<void>{
     return this.http.delete<void>(this.apiUrl + `/${id}`, {'headers': this.headers});
+  }
+
+  deleteAllById(ids: number[]): Observable<void>{
+    let obj = {"ids": ids}
+    return this.http.patch<void>(this.apiUrl + "/deleteAllByIds", obj, { headers: this.headers });
   }
 
   update(customer: Customer): Observable<Customer>{
@@ -42,11 +46,11 @@ export class CustomerService {
   }
 
   addDependent(dependent: Customer, customerId: number): Observable<Customer>{
-    return this.http.post<Customer>(this.apiUrl + `/create/dependent/${customerId}`, dependent, {'headers': this.headers});
+    return this.http.post<Customer>(this.apiUrl + `/${customerId}/dependents`, dependent, {'headers': this.headers});
   }
 
   findAllDependentsById(customerId: number): Observable<Customer[]>{
-    return this.http.get<Customer[]>(this.apiUrl + `/all/dependentsCustomers/${customerId}`, { headers: this.headers });
+    return this.http.get<Customer[]>(this.apiUrl + `/${customerId}/dependents`, { headers: this.headers });
   }
   
 }

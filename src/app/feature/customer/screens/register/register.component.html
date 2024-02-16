@@ -13,6 +13,8 @@
     </button>
 </div>
 
+
+
 <div class="container">
     <mat-stepper #stepper class="stepper">
 
@@ -23,15 +25,29 @@
             <list-address [data]="addresses" [editable]="true" />
         </mat-step>
 
-        <mat-step label="Dependentes">  
-            <div class="section-form-dependent">
-                <form-customer [formControl]="dependentFC"/>
-                <button 
-                    mat-raised-button color="primary"
-                    [disabled]="dependentFC.invalid"
-                    (click)="saveDependent()">Salvar</button>
+        <mat-step label="Dependentes" >  
+            <div class="dependent-box">
+                <div class="section-form-dependent">
+                    <form-customer [formControl]="dependentFC"/>
+                    <button 
+                        mat-raised-button color="primary"
+                        [disabled]="dependentFC.invalid"
+                        (click)="saveDependent()">Salvar</button>
+                </div>
+                
+                <div class="section-dependent-bttns">
+                    <button mat-raised-button color="primary" (click)="toggleSelectable(tdependents)">
+                        selecionar
+                    </button>
+                    <button mat-raised-button color="warn" [disabled]="disabled">
+                        selecionar
+                    </button>
+                </div>
+    
+                <table-entities 
+                    [data]="dependents"
+                    #tdependents/>
             </div>
-            <list-customers [data]="dependents"/>
         </mat-step>
         
     </mat-stepper>

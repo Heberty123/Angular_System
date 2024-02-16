@@ -8,7 +8,7 @@ import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { DeliveryTypeService } from 'src/app/shared/resources/delivery-type.service';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-Delivery-type-dialog/add-delivery-type-dialog.component';
+import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-delivery-type-dialog/add-delivery-type-dialog.component';
 import { provideNgxMask } from 'ngx-mask';
 
  interface AddressForm {
@@ -62,7 +62,8 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
   private regexCEP: RegExp = /^\d{5}-\d{3}$/;
 
   constructor(private _addressService: AddressService,
-    private _deliveryTypeService: DeliveryTypeService,){}
+    private _deliveryTypeService: DeliveryTypeService,
+    public dialog: MatDialog){}
 
     ngOnInit(): void {
       this._deliveryTypeService.findAllDeliveryType()
@@ -101,7 +102,16 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
     }
 
     addDeliveryType(): void {
-      console.log("Teste apenas do addDeliveruType!")
+      const dialogRef = this.dialog.open(AddDeliveryTypeDialogComponent);
+      dialogRef.afterClosed().subscribe({
+        next: (value: string) => {
+          this._deliveryTypeService.save({name: value})
+            .subscribe({
+              next: (deliveryType: DeliveryType) => 
+                this.deliveries.push(deliveryType)
+            })
+        }
+      })
     }
 
 
@@ -118,7 +128,6 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
     }
   }
   registerOnChange(fn: any): void {
-    console.log("Eu fui chamdo!")
     this._form.valueChanges
       .pipe(takeUntil(this.destroySubject))
       .subscribe(fn);
@@ -129,7 +138,6 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
     .subscribe(fn);
   }
   setDisabledState?(isDisabled: boolean): void {
-    console.log(`Chamei aqui: ${isDisabled}`)
     isDisabled ? 
     this._form.disable() :
     this._form.enable();

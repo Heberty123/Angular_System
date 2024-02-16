@@ -11,6 +11,11 @@ export class ListComponent implements OnInit {
   
   customers: Customer[];
   @Output() rowClicked: EventEmitter<Customer> = new EventEmitter<Customer>();
+  displayColumns = {
+    'id': 'id',
+    'name': 'nome',
+    'cpf': 'cpf'
+  }
 
   constructor(private _customerService: CustomerService){}
 

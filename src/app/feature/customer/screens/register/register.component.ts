@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { FormAddressComponent } from '../../components/forms/form-address/form-address.component';
 import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
-import { ListCustomersComponent } from '../../components/list/list-customers/list-customers.component';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/list-customers/table-entities.component';
 
 @Component({
   selector: 'register',
@@ -27,16 +27,16 @@ import { ListCustomersComponent } from '../../components/list/list-customers/lis
     MatIconModule,
     ListAddressComponent,
     ReactiveFormsModule,
-    ListCustomersComponent
+    TableEntitiesComponent
   ]
 })
-export class RegisterComponent {
-
+export class RegisterComponent{
   customerFC = new FormControl<Customer>({} as Customer);
   addressFC = new FormControl<Address>({} as Address);
   dependentFC = new FormControl<Customer>({} as Customer);
   addresses: Address[] = [];
   dependents: Customer[] = [];
+
 
   constructor(private _customerService: CustomerService,
     private _addressService: AddressService){
@@ -92,25 +92,34 @@ export class RegisterComponent {
     this.dependents = [];
   }
 
-    // addDeliveryType(): void {
-  //   const dialogRef = this.dialog.open(AddDeliveryTypeDialogComponent);
+  toggleSelectable(pointer: TableEntitiesComponent<Customer>): void {
+    pointer.selectable = !pointer.selectable;
+    if(pointer.selectable === false) {
+      pointer.clearSelection();
+    }
+  }
 
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (result: string) => {
-  //       if (result) {
-  //         this.deliveryTypeService.save({ name: result })
-  //           .subscribe({
-  //             next: (deliveryType: DeliveryType) => this.deliveries.push(deliveryType)
-  //           })
-  //       }
-  //     }
-  //   });
-  // }
+  teste(pointer: TableEntitiesComponent<Customer>): void {
+    console.log(pointer.hasSelected)
+  }
 
-    // searchByCEF(): void {
+  get disabled(): boolean {
+    console.log("nossssaaaa");
+    return false;
+  }
 
-  // }
-
+  deleteDependents(pointer: TableEntitiesComponent<Customer>) {
+    // if(pointer.hasSelected) {
+    //   this._customerService.deleteAllById(
+    //     selected.map(({ id }) => id!))
+    //       .subscribe({
+    //         next: () => {
+    //           this.dependents = this.dependents
+    //             .filter((d) => !selected.includes(d));
+    //         }
+    //       })
+    // }
+  }
 
   // removeAddress(id: number): void{
   //   this.serviceAddress.deleteById(id)
@@ -127,21 +136,4 @@ export class RegisterComponent {
   //       error: (v) => console.error(v),
   //     })
   // }
-
-  // newDependent(value: Customer): void{
-  //   this.serviceCustomer.addDependent(value, this.customer!.id!)
-  //     .subscribe({
-  //       next: (customer: Customer) => {
-  //         this.dependents.push(customer);
-  //       }
-  //     })
-  // }
-
-  // teste(): void {
-  //   console.log(`Is invalid: ${this.customerFormControl.invalid}`)
-  //   console.log(this.customerFormControl.value)
-  //   this.customerFormControl.clearValidators();
-  //   this.customerFormControl.markAllAsTouched();
-  // }
-
 }
