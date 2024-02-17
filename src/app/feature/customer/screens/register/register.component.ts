@@ -104,6 +104,7 @@ export class RegisterComponent{
   }
 
   get disabled(): boolean {
+    
     console.log("nossssaaaa");
     return false;
   }
