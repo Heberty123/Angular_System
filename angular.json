@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Amelia_Angular:build:production"
+              "buildTarget": "Amelia_Angular:build:production"
             },
             "development": {
-              "browserTarget": "Amelia_Angular:build:development"
+              "buildTarget": "Amelia_Angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Amelia_Angular:build"
+            "buildTarget": "Amelia_Angular:build"
           }
         },
         "test": {
