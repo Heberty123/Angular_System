@@ -1,27 +1,44 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
-import { DiscountsDialogComponent } from '../../../../feature/order/components/dialogs/discounts/discounts-dialog.component';
-import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ProductOrder } from 'src/app/shared/classes/ProductOrder';
 
 
 @Component({
   selector: 'table-product-order',
   templateUrl: './table-product-order.component.html',
-  styleUrls: ['./table-product-order.component.css']
+  styleUrls: ['./table-product-order.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatButtonModule, 
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatMenuModule
+  ]
 })
 export class TableProductOrderComponent implements OnInit, OnChanges {
 
-  @Input() products: ProductForOrder[];
+  @Input() products: ProductOrder[];
   @Input() editable?: boolean;
   displayedColumns: string[] = ['name', 'price', 'grossAmount', 'netValue', 'discounts', 'promotion', 'quantity', 'options'];
-  dataSource = new MatTableDataSource<ProductForOrder>([]);
-  selection = new SelectionModel<ProductForOrder>(true, []);
-  @Output() changeQty = new EventEmitter<ProductForOrder>();
-  @Output() updateList = new EventEmitter<ProductForOrder>();
-  @Output() deleteEvent = new EventEmitter<ProductForOrder[]>();
+  dataSource = new MatTableDataSource<ProductOrder>([]);
+  selection = new SelectionModel<ProductOrder>(true, []);
+  @Output() changeQty = new EventEmitter<void>();
+  @Output() deleteEvent = new EventEmitter<ProductOrder[]>();
 
   constructor(public dialog: MatDialog) {}
 
@@ -35,14 +52,12 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
       this.dataSource.data = this.products;
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -52,12 +67,11 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
     this.selection.select(...this.dataSource.data);
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: ProductForOrder): string {
+  checkboxLabel(row?: ProductOrder): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.product.id + 1}`;
   }
 
 
@@ -73,40 +87,25 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
       this.displayedColumns.unshift('select');
   }
 
-  setQuantity(product: ProductForOrder): void {
-    this.changeQty.emit(product);
-  }
-
   /*  Options operations   */
 
-  returnProduct(product: ProductForOrder): void {
+  returnProduct(product: ProductOrder): void {
     product.isRefund = !product.isRefund;
-    this.updateList.emit();
   }
 
-  deductProduct(product: ProductForOrder): void {
-    let discDialog: DiscountsDialog = {
-      name: product.name,
-      grossAmount: product.grossAmount,
-      netAmount: product.grossAmount,
-      price: product.price,
-      quantity: product.quantity
-    }
+  // deductProduct(product: ProductOrder): void {
+  //   const dialogRef = this.dialog.open(DiscountsDialogComponent, {
+  //     data: new DiscountsDialog(product)
+  //   });
 
-    const dialogRef = this.dialog.open(DiscountsDialogComponent, {
-      data: discDialog
-    });
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (d: DiscountsDialog) => {
+  //       product.discounts = d.discount
+  //     }
+  //   });
+  // }
 
-    dialogRef.afterClosed().subscribe({
-      next: (d: DiscountsDialog) => {
-        product.discounts = d.percentage!
-        product.netAmount = d.netAmount!
-        this.updateList.emit();
-      }
-    });
-  }
-
-  editProduct(product: ProductForOrder): void {
-    console.log(`Editando o produto ${product.name}`);
+  editProduct(product: ProductOrder): void {
+    console.log(`Editando o produto ${product.product.name}`);
   }
 }

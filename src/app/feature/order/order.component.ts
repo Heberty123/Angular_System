@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit } from '@angular/core';
-import { TableProductModule } from 'src/app/shared/components/tables/table-product/table-product.module';
-import { OrderSectionModule } from './components/order-section/order-section.module';
-import { TableProductOrderModule } from '../../shared/components/tables/table-product-order/table-product-order.module';
-import { ProductService } from 'src/app/shared/resources/product.service';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ControlBarcodeReaderService } from 'src/app/services/control-barcode-reader.service';
-import { CustomerSectionModule } from './components/customer-section/customer-section.module';
+import { Order } from 'src/app/shared/classes/Order';
+import { ProductOrder } from 'src/app/shared/classes/ProductOrder';
+import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
+import { TableProductOrderComponent } from 'src/app/shared/components/tables/table-product-order/table-product-order.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
-import { Order } from 'src/app/shared/interfaces/order';
-import { OrderService } from 'src/app/shared/resources/order.service';
-import { ProductForOrder } from 'src/app/shared/interfaces/productForOrder';
-import { Product } from 'src/app/shared/interfaces/product';
-import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
-import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
-import { ProductOrder } from 'src/app/shared/interfaces/productOrder';
 import { Payment } from 'src/app/shared/interfaces/payment';
+import { Product } from 'src/app/shared/interfaces/product';
+import { OrderService } from 'src/app/shared/resources/order.service';
+import { ProductService } from 'src/app/shared/resources/product.service';
+import { ChooseCustomerDialogComponent } from './components/dialogs/choose-customer-dialog/choose-customer-dialog.component';
+import { OrderSectionModule } from './components/order-section/order-section.module';
 
 @Component({
   selector: 'order',
@@ -25,62 +25,73 @@ import { Payment } from 'src/app/shared/interfaces/payment';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
-    TableProductModule,
     OrderSectionModule,
-    CustomerSectionModule,
-    TableProductOrderModule,
-    TableProductModule
+    TableProductOrderComponent,
+    TableEntitiesComponent,
+    MatButtonModule
   ]
 })
 export class OrderComponent implements OnInit, OnDestroy {
 
   customerChoosed: Customer;
-  products: ProductForOrder[] = [];
-  orderDetails: OrderDetails;
+  // productForOrders: ProductForOrder[] = [];
+  products: SimpleProduct[] = [];
+  productOrders: ProductOrder[] = []
   payments: Payment[] = [];
+  order: Order = new Order();
   private subscription: Subscription;
 
-  constructor(private productService: ProductService,
-    private orderService: OrderService,
-    private controlBarcodeService: ControlBarcodeReaderService) {
-    this.controlBarcodeService.setComponentReader(true);
-    this.orderDetails = {
-      grossAmount: 0,
-      netAmount: 0,
-      quantity: 0,
-      qtyRefund: 0,
-      returnValue: 0,
-      discounts: 0
-    }
+  constructor(private _productService: ProductService,
+    private _orderService: OrderService,
+    private dialog: MatDialog,
+    private _controlBarcodeService: ControlBarcodeReaderService) {
+    this._controlBarcodeService.setComponentReader(true);
   }
 
   ngOnInit(): void {
-    this.subscription = this.controlBarcodeService.getBarcodeReaded()
+    this.subscription = this._controlBarcodeService.getBarcodeReaded()
       .subscribe({
         next: (barcodeText: string) => this.findByBarcode(barcodeText)
       })
-  }
-
-  customerSelected(customer: Customer): void {
-    this.customerChoosed = customer;
+    this._productService.findAll()
+      .subscribe({ 
+        next: (value: SimpleProduct[]) => this.products = value
+      })
   }
 
   addProduct(product: Product): void {
-    if (!this.products.some((obj) => obj.id === product.id)) {
-      this.products = [...this.products, this.toProductForOrder(product)];
-      this.updateDetails();
-    }
-    else {
-      let productFound: ProductForOrder =
-        this.products.find(item => item.id === product.id)!;
-      productFound.quantity!++
+    let productFound: ProductOrder | undefined =
+    this.productOrders.find((obj) => obj.product.id === product.id);
 
-      this.changeQuantity(productFound);
+    if (!productFound) {
+        this.productOrders =
+          [...this.productOrders, new ProductOrder(product)];
+        return;
     }
+    productFound.quantity!++
+    this.updateChange();
   }
 
+//   public productOrders: Signal<ProductOrder[]> = computed(() => {
+//     this.updateValues();
+//     return this._productOrders()
+// })
+
+
+// public updateValues(): void {
+//   console.log("calculando preços")
+//   this._productOrders().map((p) => {
+//       let totalAmount = p.product.price * p.quantity;
+//       if(!p.isRefund) {
+//           this.grossAmount += totalAmount;
+//           this.netAmount += totalAmount - (totalAmount * p.discounts)
+//       }
+//   });
+//   this.discounts = 1 - (this.netAmount / this.grossAmount);
+// }
+
   findByBarcode(barcodeText: string) {
-    this.productService.findByBarcode(barcodeText)
+    this._productService.findByBarcode(barcodeText)
       .subscribe({
         next: (product: Product) => {
           this.addProduct(product);
@@ -88,110 +99,47 @@ export class OrderComponent implements OnInit, OnDestroy {
       })
   }
 
-  updateList(): void {
-    this.products = [...this.products];
-    this.updateDetails();
+  updateChange(): void {
+    this.productOrders = [...this.productOrders];
   }
 
-  changeQuantity(product: ProductForOrder): void {
-    product.grossAmount =
-      product.price * product.quantity;
-
-    product.netAmount =
-      product.grossAmount - (
-        product.grossAmount * product.discounts
-      )
-    this.updateList();
+  deleteItems(items: ProductOrder[]): void {
+    this.productOrders = this.productOrders
+    .filter((item) => !items.includes(item));
   }
 
-  deleteItems(items: ProductForOrder[]): void {
-    this.products = this.products.filter((item) => !items.includes(item));
-    this.updateDetails();
-  }
-
-  updateDetails(): void {
-    this.orderDetails.grossAmount = 0;
-    this.orderDetails.netAmount = 0;
-    this.orderDetails.quantity = 0;
-    this.orderDetails.qtyRefund = 0;
-    this.orderDetails.returnValue = 0;
-    let totalAmount: number;
-    this.products?.forEach(p => {
-      totalAmount = p.price * p.quantity;
-      if (p.isRefund) {
-        this.orderDetails.returnValue += totalAmount;
-        this.orderDetails.qtyRefund += p.quantity
-      }
-      else {
-        this.orderDetails.grossAmount += totalAmount
-        this.orderDetails.netAmount += totalAmount - (totalAmount * p.discounts)
-        this.orderDetails.quantity += p.quantity!
-      }
-    })
-    this.orderDetails.discounts = 1 - (this.orderDetails.netAmount / this.orderDetails.grossAmount);
-  }
 
   saveOrder(): void {
-    let order: Order = {
-      paid: false,
-      customerId: this.customerChoosed.id!,
-      grossAmount: this.orderDetails.grossAmount,
-      netAmount: this.orderDetails.netAmount,
-      discounts: this.orderDetails.discounts,
-      productsOrders: this.products.map((value) => {
-        let productOrder: ProductOrder = {
-          product: {
-            id: value.id,
-            name: value.name,
-            price: value.price
-          },
-          quantity: value.quantity,
-          discounts: value.discounts,
-          isRefund: value.isRefund
-        }
-        return productOrder;
-      }),
-      payments: this.payments.map((value) => {
-        let payment: Payment  = {
-          amount: value.amount,
-          paymentDate: value.paymentDate,
-          paymentType: value.paymentType,
-          payedAt: value.payedAt,
-          amountPayed: value.amountPayed,
-          paid: value.paid
-        }
-        return payment;
-      })
-    }
-
+    let order: Order = new Order()
+    order.paid = false
+    order.customerId = this.customerChoosed.id!
     
-    this.orderService.save(order)
-      .subscribe({
-        next: (value: Order) => console.log(value)
-      })
-    
+    // this._orderService.save(order)
+    //   .subscribe({
+    //     next: (value: Order) => console.log(value)
+    //   })
+    console.log(order);
   }
 
   produtoChamado(product: SimpleProduct) {
     this.addProduct(Object.assign(product));
   }
 
-  toProductForOrder(product: Product): ProductForOrder{
-    return {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      grossAmount: product.price,
-      netAmount: product.price,
-      discounts: 0,
-      promotion: 0,
-      quantity: 1,
-      isRefund: false
-    }
+
+  openChooseCustomerDialog(): void {
+    const dialogRef = this.dialog.open(ChooseCustomerDialogComponent);
+
+    dialogRef.afterClosed().subscribe({
+      next: (customer: Customer) => {
+        if(customer){
+          this.customerChoosed = customer
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    this.controlBarcodeService.setComponentReader(false);
+    this._controlBarcodeService.setComponentReader(false);
     this.subscription && this.subscription.unsubscribe();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Order } from 'src/app/shared/interfaces/order';
+import { Order } from 'src/app/shared/classes/Order';
 
 @Component({
   selector: 'table-order',

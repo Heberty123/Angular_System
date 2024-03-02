@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { TableCustomerModule } from 'src/app/shared/components/tables/table-customer/table-customer.module';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 
@@ -16,7 +16,7 @@ import { CustomerService } from 'src/app/shared/resources/customer.service';
     CommonModule,
     MatDialogModule,
     MatButtonModule,
-    TableCustomerModule
+    TableEntitiesComponent
   ]
 })
 export class ChooseCustomerDialogComponent implements OnInit {

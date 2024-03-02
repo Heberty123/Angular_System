@@ -5,7 +5,7 @@ import { ListModule } from './screens/list/list.module';
 import { RegisterModule } from './screens/register/register.module';
 import { RemoveModule } from './screens/remove/remove.module';
 import { DetailsModule } from './screens/details/details.module';
-import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
+import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
 
 @Component({
   selector: 'product',

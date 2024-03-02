@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, Signal, SimpleChanges, WritableSignal, computed, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -8,7 +8,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 interface objToDisplayColumns {
   [key: string]: string;
 }
-
 
 @Component({
   selector: 'table-entities',
@@ -29,10 +28,12 @@ export class TableEntitiesComponent<T> implements OnChanges {
   @Input() displayColumns: objToDisplayColumns = {'name': 'nome'};
   displayedColumns: string[] = Object.keys(this.displayColumns);
   private _dataSource = new MatTableDataSource<T>(this.data);
-  private _selection = new SelectionModel<T>(true, []);
+  private _selection = new Set<T>();
   private _selectable = 
     this.displayedColumns.includes('select') ?
       true : false;
+  private _selectedSignal = signal(this._selection);
+  private _hasSelectedSignal = signal(this._selection.size > 0);
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,7 +53,7 @@ export class TableEntitiesComponent<T> implements OnChanges {
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this._selection.selected.length;
+    const numSelected = this._selection.size;
     const numRows = this._dataSource.data.length;
     return numSelected === numRows;
   }
@@ -61,10 +62,20 @@ export class TableEntitiesComponent<T> implements OnChanges {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this._selection.clear();
+      this.updateSignals();
       return;
     }
 
-    this._selection.select(...this._dataSource.data);
+    this._selection =
+       new Set<T>([...this._dataSource.data]);
+    this.updateSignals();
+  }
+
+  toggle(row: T): void {
+    this._selection.has(row) ?
+      this._selection.delete(row) :
+      this._selection.add(row);
+    this.updateSignals();
   }
 
   /** The label for the checkbox on the passed row */
@@ -72,26 +83,16 @@ export class TableEntitiesComponent<T> implements OnChanges {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this._selection.isSelected(row) ? 'deselect' : 'select'} row ${row}`;
+    return `${this._selection.has(row) ? 'deselect' : 'select'} row ${row}`;
   }
 
   protected get dataSource(): MatTableDataSource<T> {
     return this._dataSource;
   }
 
-  get selection() {
-    console.log("vish")
-    return this._selection;
-  }
-
-  get selected(): T[] {
-    console.log("Eu fui chamado")
-    return this._selection.selected;
-  }
-
-  public hasSelected(): boolean {
-    console.log("ferrou")
-    return this._selection.hasValue();
+  private updateSignals(): void {
+    this._selectedSignal.update(s => this._selection);
+    this._hasSelectedSignal.set(this._selection.size > 0);
   }
 
   get selectable(): boolean {
@@ -119,8 +120,17 @@ export class TableEntitiesComponent<T> implements OnChanges {
     }
   }
 
+  public selected: Signal<Set<T>> = computed(() => {
+    return this._selectedSignal();
+  })
+
+  public hasSelected: Signal<boolean> = computed(() => {
+    return this._hasSelectedSignal();
+  });
+
   public clearSelection(): void {
-    this._selection.clear()
+    this._selection.clear();
+    this.updateSignals();
   }
 
   @Input() set filterByValue(value: string) {

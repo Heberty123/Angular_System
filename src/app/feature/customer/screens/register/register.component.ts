@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Signal, ViewChild, WritableSignal, computed } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,9 @@ import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { FormAddressComponent } from '../../components/forms/form-address/form-address.component';
 import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
-import { TableEntitiesComponent } from 'src/app/shared/components/tables/list-customers/table-entities.component';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
+import { MatDialog } from '@angular/material/dialog';
+import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 
 @Component({
   selector: 'register',
@@ -39,7 +41,8 @@ export class RegisterComponent{
 
 
   constructor(private _customerService: CustomerService,
-    private _addressService: AddressService){
+    private _addressService: AddressService,
+    public dialog: MatDialog){
       this.addressFC.disable();
       this.dependentFC.disable();
     }
@@ -99,26 +102,33 @@ export class RegisterComponent{
     }
   }
 
-  teste(pointer: TableEntitiesComponent<Customer>): void {
-    console.log(pointer.hasSelected)
-  }
-
-  get disabled(): boolean {
-    console.log("nossssaaaa");
-    return false;
-  }
-
   deleteDependents(pointer: TableEntitiesComponent<Customer>) {
-    // if(pointer.hasSelected) {
-    //   this._customerService.deleteAllById(
-    //     selected.map(({ id }) => id!))
-    //       .subscribe({
-    //         next: () => {
-    //           this.dependents = this.dependents
-    //             .filter((d) => !selected.includes(d));
-    //         }
-    //       })
-    // }
+    let selected: Set<Customer> = pointer.selected();
+    if(selected.size) {
+      let data: GeneralDialogData = {
+        title: "Apagar dependentes",
+        description: `Deseja apagar ${selected.size} dependentes?`
+      }
+      const dialogRef = this.dialog.open(GeneralDialogConfirmComponent, {
+        data : data,
+      });
+      dialogRef.afterClosed()
+        .subscribe({
+          next: (result: boolean) => {
+            if(result) {
+              this._customerService.deleteAllById(
+                Array.from(selected).map(({ id }) => id!))
+                  .subscribe({
+                    next: () => {
+                      this.dependents = this.dependents
+                        .filter((d) => !selected.has(d));
+                      pointer.clearSelection();
+                    }
+                  })
+            }
+          }
+      })
+    }    
   }
 
   // removeAddress(id: number): void{

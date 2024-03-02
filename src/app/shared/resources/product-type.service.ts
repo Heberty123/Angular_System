@@ -17,8 +17,8 @@ export class ProductTypeService {
     return this.http.get<ProductType[]>(this.apiUrl + "/all", { headers: this.headers })
   }
 
-  create(value: ProductType): Observable<ProductType>{
-    return this.http.post<ProductType>(this.apiUrl + "/", value, { headers: this.headers })
+  save(value: ProductType): Observable<ProductType>{
+    return this.http.post<ProductType>(this.apiUrl, value, { headers: this.headers })
   }
 
   delete(value: ProductType): Observable<void>{

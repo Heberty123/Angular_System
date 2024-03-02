@@ -1,55 +1,66 @@
 <h1 mat-dialog-title>{{data.name}}</h1>
 <div mat-dialog-content class="content">
 
-    <div *ngIf="data.quantity > 1" class="div-quantity">
-
-        <mat-form-field class="input-quantity">
-            <mat-label>Quantidade produto</mat-label>
-            <input matInput type="number" (input)="adjustAmount()"
-                [formControl]="quantity">
-            <mat-hint align="start" *ngIf="quantity.value === data.quantity">
-                <strong>O valor absoluto vai ser calculado.</strong>
-            </mat-hint>
-            <mat-hint align="end">{{quantity.value}} / {{data.quantity}}</mat-hint>
-            <mat-error *ngIf="quantity.errors?.['max']">
-                A quantitade máxima é {{data.quantity}}
-            </mat-error>
-            <mat-error *ngIf="quantity.errors?.['min']">
-                A quantitade mínima é 1
-            </mat-error>
-        </mat-form-field>
-    </div>
-
+    <h2>Você tem {{data.quantity}} produtos</h2>
 
     <div class="box">
-        <div class="inputs">
-            <mat-form-field class="example-form-field">
-                <mat-label>Porcentagem</mat-label>
-                <input matInput type="number" min="0" [max]="100" (input)="adjustAmount()" [formControl]="percentage">
-                <h1 matSuffix>%</h1>
-                <mat-error *ngIf="percentage.errors?.['max']">
-                    A porcentagem máxima é 100 !
-                </mat-error>
-                <mat-error *ngIf="percentage.errors?.['min']">
-                    A porcentagem mínima é 0 !
-                </mat-error>
-            </mat-form-field>
+        <form [formGroup]="form" #formDir="ngForm" class="inputs">
 
-            <mat-form-field class="input-valor">
-                <mat-label>Valor</mat-label>
-                <input matInput type="number" (input)="adjustAmount()" [formControl]="value">
-                <h1 matSuffix>R$</h1>
-                <mat-error *ngIf="value.errors?.['max']">
-                    O desconto não pode ser maior que o preço !
-                </mat-error>
-                <mat-error *ngIf="value.errors?.['min']">
-                    O desconto mínimo é 0
-                </mat-error>
-            </mat-form-field>
+            <div class="first-div">
+                <mat-form-field class="input-percentage-quantity">
+                    <mat-label>quantidade</mat-label>
+                    <input matInput type="number" min="0" [max]="data.quantity" (input)="adjustAmount()" formControlName="percentageQty">
+                    <mat-error *ngIf="percentage.errors?.['max']">
+                        A quantidade máxima é {{data.quantity}}
+                    </mat-error>
+                    <mat-error *ngIf="percentage.errors?.['min']">
+                        A quantidade mínima é 1
+                    </mat-error>
+                </mat-form-field>
+    
+                <mat-form-field class="input-percentage">
+                    <mat-label>Porcentagem</mat-label>
+                    <input matInput type="number" min="0" [max]="100" (input)="adjustAmount()" formControlName="percentage">
+                    <h1 matSuffix>%</h1>
+                    <mat-error *ngIf="percentage.errors?.['max']">
+                        A porcentagem máxima é 100 !
+                    </mat-error>
+                    <mat-error *ngIf="percentage.errors?.['min']">
+                        A porcentagem mínima é 0 !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+            <div class="second-div">
+                <mat-form-field class="input-value-quantity">
+                    <mat-label>quantidade</mat-label>
+                    <input matInput type="number" min="0" [max]="data.quantity" (input)="adjustAmount()" formControlName="valueQty">
+                    <mat-error *ngIf="percentage.errors?.['max']">
+                        A quantidade máxima é {{data.quantity}}
+                    </mat-error>
+                    <mat-error *ngIf="percentage.errors?.['min']">
+                        A quantidade mínima é 1
+                    </mat-error>
+                </mat-form-field>
+    
+                <mat-form-field class="input-valor">
+                    <mat-label>Valor</mat-label>
+                    <input matInput type="number" (input)="adjustAmount()" formControlName="value">
+                    <h1 matSuffix>R$</h1>
+                    <mat-error *ngIf="value.errors?.['max']">
+                        O desconto não pode ser maior que o preço !
+                    </mat-error>
+                    <mat-error *ngIf="value.errors?.['min']">
+                        O desconto mínimo é 0
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
 
             <mat-form-field class="input-netValue">
                 <mat-label>Valor Líquido</mat-label>
-                <input matInput type="number" (input)="setNetAmount()" [formControl]="netValue">
+                <input matInput type="number" (input)="setNetAmount()" formControlName="netValue">
                 <h1 matSuffix>R$</h1>
                 <mat-error *ngIf="netValue.errors?.['max']">
                     O valor líquido não pode ser maior que valor bruto !
@@ -58,14 +69,13 @@
                     O valor não pode ser menor que 0 (Zero)!
                 </mat-error>
             </mat-form-field>
-
-        </div>
+        </form>
 
         <div class="results">
             <h1>Valor Líquido: {{data.netAmount | currency}}</h1>
             <h2>Valor Bruto: {{data.grossAmount | currency}}</h2>
             <h2>Quantidade item: {{data.quantity}}</h2>
-            <h2>Desconto final: {{(data.percentage || 0) | percent: '1.2-2'}}</h2>
+            <h2>Desconto final: {{(data.discount || 0) | percent: '1.2-2'}}</h2>
         </div>
     </div>
 

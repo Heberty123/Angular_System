@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Customer } from 'src/app/shared/interfaces/customer';
-import { CustomerService } from 'src/app/shared/resources/customer.service';
-import { MatDialog } from '@angular/material/dialog';
-import { EditCustomerComponent } from '../../components/dialogs/edit-customer/edit-customer.component';
-import { RemoveCustomerComponent } from '../../components/dialogs/remove-customer/remove-customer.component';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
-import { PaymentsModule } from '../../components/payments/payments.module';
-import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
+import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
+import { Customer } from 'src/app/shared/interfaces/customer';
+import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { AddressesDetailsComponent } from '../../components/addresses-details/addresses-details.component';
+import { EditCustomerComponent } from '../../components/dialogs/edit-customer/edit-customer.component';
+import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
 import { OrdersComponent } from '../../components/orders/orders.component';
+import { PaymentsModule } from '../../components/payments/payments.module';
 
 @Component({
   selector: 'details-customer',
@@ -45,10 +45,11 @@ export class DetailsComponent implements OnInit {
   openEditCustomer(): void {
     const dialogRef = this.dialog.open(EditCustomerComponent, {
       data: this.customer
-    });
+  });
 
     dialogRef.afterClosed().subscribe({
       next: (editedCustomer: Customer) => {
+        console.log(editedCustomer);
         if (editedCustomer)
           this._customerService.update(editedCustomer)
             .subscribe({
@@ -60,8 +61,13 @@ export class DetailsComponent implements OnInit {
 
 
   openRemoveCustomer(): void {
-    const dialogRef = this.dialog.open(RemoveCustomerComponent, {
-      data: this.customer
+    let information: GeneralDialogData = {
+      title: `Apagar cliente id ${this.customer.id}`,
+      description: `Deseja apagar cliente ${this.customer.name}`
+    }
+
+    const dialogRef = this.dialog.open(GeneralDialogConfirmComponent, {
+      data: information
     });
 
     dialogRef.afterClosed().subscribe({
@@ -69,7 +75,7 @@ export class DetailsComponent implements OnInit {
         if (result)
           this._customerService.deleteById(this.customer.id!)
             .subscribe({
-              next: (value: unknown) => {
+              next: () => {
                 this.eraseCustomer.emit()
                 this.toList.emit();
               }

@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductForOrder } from '../interfaces/productForOrder';
 import { Product } from '../interfaces/product';
-import { SimpleProduct } from '../interfaces/simpleProduct';
+import { SimpleProduct } from '../classes/SimpleProduct';
 
 
 @Injectable({
@@ -25,7 +24,7 @@ export class ProductService {
   }
 
   save(product: Product): Observable<Product>{
-    return this.http.post<Product>(this.apiUrl + "/", product, { headers: this.headers });
+    return this.http.post<Product>(this.apiUrl, product, { headers: this.headers });
   }
 
   findByBarcode(value: string): Observable<Product>{

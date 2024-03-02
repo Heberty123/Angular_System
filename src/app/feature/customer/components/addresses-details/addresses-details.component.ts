@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
 import { FormAddressComponent } from '../forms/form-address/form-address.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 let snackBarRef: any;
 
@@ -23,7 +24,8 @@ let snackBarRef: any;
     ListAddressComponent,
     FormAddressComponent,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ReactiveFormsModule
   ]
 })
 export class AddressesDetailsComponent implements OnInit, OnDestroy {
@@ -32,11 +34,13 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
 
   @Input() customer: Customer;
   @Input() addresses: Address[] = [];
-  formOpened: boolean = false;
+  addressFC = new FormControl<Address>({} as Address);
 
   constructor(private _addressService: AddressService,
     private _snackBar: MatSnackBar,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+      this.addressFC.disable();
+    }
 
   ngOnInit(): void {
     this._addressService.findAllByCustomerId(this.customer.id!)
@@ -50,19 +54,24 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
     console.log("Fui destruído")
   }
 
-  newAddress(value: Address): void {
-    this._addressService.save(value, this.customer.id!)
+  saveAddress(): void {
+    if(this.addressFC.valid){
+      this._addressService.save(
+        this.addressFC.value,
+        this.customer.id!)
       .subscribe({
         next: (address: Address) => {
           this.addresses.push(address);
-          this.formOpened = false;
+          this.addressFC.reset();
+          this.addressFC.disable();
         }
       })
+    }
   }
 
   updateById(id: number): void {
-    let value: Address | undefined =
-      this.addresses.find(value => value.id === id);
+    let value: Address =
+      this.addresses.find(value => value.id === id)!;
 
     const dialogRef = this.dialog.open(EditAddressComponent, {
       data: value

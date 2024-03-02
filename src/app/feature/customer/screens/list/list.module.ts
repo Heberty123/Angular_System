@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TableEntitiesComponent } from 'src/app/shared/components/tables/list-customers/table-entities.component';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { ListComponent } from './list.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';

@@ -27,6 +27,38 @@ h1, h2{
   gap: 0px 20px;
 }
 
+.inputs{
+  display: flex;
+  flex-direction: column;
+}
+
+.first-div{
+  display: flex;
+  gap: 0px 20px;
+}
+
+.first-div .input-percentage-quantity{
+  max-width: 100px;
+}
+
+.inputs .input-percentage{
+  width: 250px;
+}
+
+
+.second-div{
+  display: flex;
+  gap: 0px 20px;
+}
+
+.second-div .input-value-quantity{
+  max-width: 100px;
+}
+
+.inputs .input-valor{
+  width: 250px;
+}
+
 .results{
   background-color: rgb(211, 211, 211);
   border-radius: 4px;
@@ -46,15 +78,6 @@ h1, h2{
   gap: 0px 10px;
 }
 
-.inputs{
-  display: flex;
-  flex-direction: column;
-}
-
-
-.inputs .input-valor{
-  width: 250px;
-}
 
 .inputs .input-netValue{
   width: 250px;

@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
+import { DiscountsDialog } from 'src/app/shared/classes/DiscountsDialog';
 
 @Component({
   selector: 'app-discounts',
@@ -26,52 +26,75 @@ import { DiscountsDialog } from 'src/app/shared/interfaces/discounts-dialog';
 export class DiscountsDialogComponent {
 
 
-  quantity: FormControl<number | null>;
-  percentage: FormControl<number | null>;
-  value: FormControl<number | null>;
-  netValue: FormControl<number | null>
+  form: FormGroup<any>
 
   constructor(public dialogRef: MatDialogRef<DiscountsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DiscountsDialog) {
-    this.quantity = new FormControl(data.quantity, [Validators.max(data.quantity), Validators.min(1)])
-    this.percentage = new FormControl(null, [Validators.max(100), Validators.min(0)])
-    this.value = new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)])
-    this.netValue = new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)])
-    this.data.percentage = 0.0
+    this.form = new FormGroup<any>({
+      percentageQty: new FormControl(data.quantity, [Validators.max(data.quantity), Validators.min(1)]),
+      percentage: new FormControl(null, [Validators.max(100), Validators.min(0)]),
+      valueQty: new FormControl(data.quantity, [Validators.max(data.quantity), Validators.min(1)]),
+      value: new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)]),
+      netValue: new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)])
+    })
+
   }
 
   adjustAmount(): void {
-
-    if (this.quantity.value! >= 1 && this.quantity.value! <= this.data.quantity) {
+    if (this.form.valid) {
       this.data.netAmount = this.data.grossAmount;
       this.netValue.setValue(null);
-
-      if (this.percentage.value != null && this.percentage.value <= 100)
-        this.data.netAmount =
-          this.data.grossAmount!
-          -
-          (this.quantity.value! * this.data.price!) *
-          (this.percentage.value / 100.0)
-
-
-      if (this.value.value != null && this.value.value <= this.data.netAmount)
-        this.data.netAmount -=
-          (this.quantity.value === this.data.quantity ? 
-            this.value.value : this.quantity.value! * this.value.value)
-
-      this.data.percentage =
-        1 - (this.data.netAmount! / this.data.grossAmount);
+      this.adjustPercentage();
+      this.adjustValue();
+      this.adjustDiscount();
     }
   }
 
+  private adjustPercentage(): void {
+    this.data.netAmount = this.data.grossAmount -
+    (this.percentageQty.value! * this.data.price!) *
+    (this.percentage.value / 100.0)
+  }
+
+  private adjustValue(): void {
+    this.data.netAmount -=
+      this.valueQty.value! * this.value.value;
+  }
+
+
   setNetAmount(): void {
-    if (this.netValue.value != null && this.netValue.value <= this.data.grossAmount) {
-      this.percentage.setValue(null);
-      this.value.setValue(null);
-      this.quantity.setValue(this.data.quantity)
+    if (this.netValue.valid) {
+      this.percentageQty.reset()
+      this.percentage.reset()
+      this.valueQty.reset()
+      this.value.reset()
       this.data.netAmount = this.netValue.value;
-      this.data.percentage =
-        1 - (this.data.netAmount! / this.data.grossAmount);
+      this.adjustDiscount();
     }
+  }
+
+  private adjustDiscount(): void {
+    this.data.discount =
+    1 - (this.data.netAmount! / this.data.grossAmount);
+  }
+
+  get percentageQty() {
+    return this.form.get('percentageQty')!;
+  }
+
+  get percentage(){
+    return this.form.get('percentage')!;
+  }
+
+  get valueQty(){
+    return this.form.get('valueQty')!;
+  }
+
+  get value(){
+    return this.form.get('value')!;
+  }
+
+  get netValue(){
+    return this.form.get('netValue')!;
   }
 }

@@ -18,8 +18,9 @@ table-order{
     grid-area: a;
 }
 
-customer-section{
+.customer-section{
     grid-area: b;
+    background-color: rgb(122, 148, 144);
 }
 
 order-section{

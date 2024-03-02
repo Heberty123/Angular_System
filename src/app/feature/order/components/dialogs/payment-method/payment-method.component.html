@@ -6,18 +6,23 @@
 
   <div class="controls">
 
-    <mat-button-toggle-group (change)="changeBttnToggle($event)" class="matBttnToggle">
+    <mat-button-toggle-group (change)="changeBttnToggle($event)">
       <mat-button-toggle value="inCash">Á Vista</mat-button-toggle>
       <mat-button-toggle value="installments">Parcelado</mat-button-toggle>
     </mat-button-toggle-group>
 
     <div class="container-details">
       <div class="input-bttn">
-        <input-customizable hint="valor" label="{{paymentMethod === 'inCash' ? 'Digite o valor' : 'Digite as parcelas'}}"
-          [formControl]="inputValue" type="number" />
-          <button *ngIf="paymentMethod === 'installments'" mat-icon-button color="accent" (click)="resetPayments()">
-            <mat-icon>autorenew</mat-icon>
-          </button>
+        <mat-form-field class="example-full-width" [formControl]="inputValue">
+          <mat-label>{{paymentMethod === 'inCash' ? 'Digite o valor' : 'Digite as parcelas'}}</mat-label>
+          <input matInput #message type="number">
+          <mat-hint align="start"><strong>Digite o valor</strong> </mat-hint>
+        </mat-form-field>
+
+        <button *ngIf="paymentMethod === 'installments'"
+         mat-icon-button color="accent" (click)="resetPayments()">
+          <mat-icon>autorenew</mat-icon>
+        </button>
       </div>
 
       <div class="result">
@@ -25,19 +30,22 @@
         <h1>Faltando: {{ missing || 0 | currency}}</h1>
       </div>
 
-      <ng-container *ngIf="paymentMethod === 'inCash'">
+      <ng-container *ngIf="paymentMethod !== 'installments'">
         <advance-chip-listbox [source]="paymentTypes" [formControl]="paymentType" />
         <button mat-raised-button color="primary" (click)="cashPayment()">
           Pagar
         </button>
       </ng-container>
     </div>
-
-
   </div>
 
-  <table-payment [payments]="payments" [editable]="paymentMethod === 'inCash' ? false : true" [paintPayed]="true"
-    [displayColumns]="displayedColumns" [paymentTypes]="paymentTypes" [changePayment]="changePaymentFunction.bind(this)"/>
+  <table-payment 
+    [payments]="payments"
+    [paintPayed]="true"
+    [paymentTypes]="paymentTypes"
+    [editable]="paymentMethod !== 'inCash' ? true : false"
+    [displayColumns]="displayedColumns"
+    [changePayment]="changePaymentFunction.bind(this)"/>
 
 
 </div>

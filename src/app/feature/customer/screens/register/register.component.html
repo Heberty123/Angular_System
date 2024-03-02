@@ -37,10 +37,10 @@
                 
                 <div class="section-dependent-bttns">
                     <button mat-raised-button color="primary" (click)="toggleSelectable(tdependents)">
-                        selecionar
+                        {{  tdependents.selectable ? 'cancelar' : 'selecionar'  }}
                     </button>
-                    <button mat-raised-button color="warn" [disabled]="disabled">
-                        selecionar
+                    <button mat-raised-button color="warn" [disabled]="!tdependents.hasSelected()" (click)="deleteDependents(tdependents)">
+                        Apagar
                     </button>
                 </div>
     

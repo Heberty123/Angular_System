@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Order } from 'src/app/shared/interfaces/order';
 import { OrderDetailsComponent } from '../dialogs/order-details/order-details.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { OrderService } from 'src/app/shared/resources/order.service';
@@ -9,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main-load.module';
 import { TableOrderModule } from 'src/app/shared/components/tables/table-order/table-order.module';
+import { Order } from 'src/app/shared/classes/Order';
 
 let snackBarRef: any;
 

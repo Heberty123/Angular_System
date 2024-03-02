@@ -1,18 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { OrderDetails } from 'src/app/shared/interfaces/orderDetails';
+import { MatInputModule } from '@angular/material/input';
+import * as moment from 'moment';
+import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
+import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
+import { OrderDetailsViewComponent } from 'src/app/shared/components/view/order-details-view/order-details-view.component';
+import { Payment } from 'src/app/shared/interfaces/payment';
 import { PaymentType } from 'src/app/shared/interfaces/paymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
-import { Payment } from 'src/app/shared/interfaces/payment';
-import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { OrderDetailsViewModule } from 'src/app/shared/components/view/order-details-view/order-details-view.module';
-import * as moment from 'moment';
-import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
-import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
+
+export class OrderDetails {
+  quantity: number;
+  grossAmount: number;
+  netAmount: number;
+  discounts: number
+
+  constructor(
+    quantity: number,
+     grossAmount: number,
+      netAmount: number,
+       discount: number) {
+    this.quantity = quantity,
+    this.grossAmount = grossAmount;
+    this.netAmount = netAmount;
+    this.discounts = discount
+  }
+}
 
 @Component({
   selector: 'payment-method',
@@ -24,10 +42,11 @@ import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } fr
     CommonModule,
     MatDialogModule,
     MatButtonModule,
+    MatInputModule,
     MatIconModule,
     AdvanceChipListboxComponent,
     TablePaymentComponent,
-    OrderDetailsViewModule,
+    OrderDetailsViewComponent,
     ReactiveFormsModule,
     MatButtonToggleModule,
   ]

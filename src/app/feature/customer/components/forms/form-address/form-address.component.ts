@@ -151,7 +151,8 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
   // Getters
 
   isEditable(): boolean {
-    return this._form.get('id') ? true : false
+    console.log()
+    return this._form.get('id')?.value ? true : false
   }
 
   get cep(): AbstractControl<string | null> {

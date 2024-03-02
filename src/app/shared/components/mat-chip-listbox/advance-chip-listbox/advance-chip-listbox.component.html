@@ -1,6 +1,22 @@
 <mat-chip-listbox aria-label="Fish selection" #matChip
   [disabled]="isDisabled">
-    <mat-chip-option *ngFor="let value of data" [value]="value">
+    <mat-chip-option *ngFor="let value of data" [value]="value"
+      (removed)="remItemEvent.next(value)">
       {{ value[displayProperty] }}
+      <button matChipRemove *ngIf="isRemovable">
+        <mat-icon>cancel</mat-icon>
+      </button>
     </mat-chip-option>
 </mat-chip-listbox>
+
+<button mat-fab color="primary"
+  aria-label="Example icon button with a delete icon"
+  (click)="addItemEvent.next()">
+  <mat-icon>add</mat-icon>
+</button>
+
+<button mat-fab color="warn"
+  aria-label="Example icon button with a delete icon"
+  (click)="isRemovable = !isRemovable">
+  <mat-icon>delete</mat-icon>
+</button>

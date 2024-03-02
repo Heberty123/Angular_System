@@ -14,11 +14,11 @@ export class BrandService {
   private headers = { 'content-type': 'application/json'}
 
   findAll(): Observable<Brand[]>{
-    return this.http.get<Brand[]>(this.apiUrl + "/all", {headers: this.headers});
+    return this.http.get<Brand[]>(this.apiUrl, {headers: this.headers});
   }
 
   save(brand: Brand): Observable<Brand>{
-    return this.http.post<Brand>(this.apiUrl + "/create", brand, { headers: this.headers});
+    return this.http.post<Brand>(this.apiUrl, brand, { headers: this.headers});
   }
   
 }

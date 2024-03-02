@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SimpleProduct } from 'src/app/shared/interfaces/simpleProduct';
+import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
 
 @Component({
   selector: 'list',

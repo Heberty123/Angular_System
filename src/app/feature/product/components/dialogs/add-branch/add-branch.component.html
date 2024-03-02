@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Adicionar uma marca</h2>
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-label>nome da marca</mat-label>
+        <input matInput [formControl]="input">
+    </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button color="primary" mat-button [mat-dialog-close]="input.value" cdkFocusInitial>Salvar</button>
+</mat-dialog-actions>

@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './register.component';
-import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
+import { NgModule } from '@angular/core';
 import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
+import { ProductFormComponent } from '../../components/forms/product-form/product-form.component';
+import { RegisterComponent } from './register.component';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -12,8 +13,9 @@ import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
   ],
   imports: [
     CommonModule,
-    AdvanceChipListboxComponent,
     FormsBasics,
+    ProductFormComponent,
+    MatButtonModule
   ],
   exports: [
     RegisterComponent

@@ -1,8 +1,23 @@
-<table-product-order [products]="products" [editable]="true" (changeQty)="changeQuantity($event)"
-    (updateList)="updateList()" (deleteEvent)="deleteItems($event)" />
+<table-product-order
+    [products]="productOrders" 
+    [editable]="true" 
+    (changeQty)="updateChange()"
+    (deleteEvent)="deleteItems($event)" />
 
-<order-section [orderDetails]="orderDetails" [payments]="payments" (updatePayments)="payments = $event" (saveOrder)="saveOrder()"/>
+<order-section 
+    [productOrders]="productOrders"
+    [payments]="payments"
+    (saveOrder)="saveOrder()"/>
 
-<customer-section (customerEvent)="customerSelected($event)" />
+<div class="customer-section">
+    <button mat-flat-button color="primary"
+        (click)="openChooseCustomerDialog()">
+        Escolher cliente
+    </button>
 
-<table-product (messageClicked)="produtoChamado($event)" />
+    <h1>Cliente: {{customerChoosed ? customerChoosed.name : 'Seleciona o cliente'}}</h1>
+</div>
+
+<table-entities
+    [data]="products" 
+    (rowClicked)="produtoChamado($event)" />

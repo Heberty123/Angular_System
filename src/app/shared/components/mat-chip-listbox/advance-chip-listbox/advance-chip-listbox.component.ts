@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatChipListbox, MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 
 export interface HasDisplayProperty {
@@ -17,7 +19,9 @@ export interface HasDisplayProperty {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     {
@@ -36,6 +40,9 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty>
   onChange: (value: T) => void
   onTouched: () => void;
   isDisabled: boolean;
+  isRemovable: boolean = false
+  @Output() addItemEvent = new EventEmitter<void>();
+  @Output() remItemEvent = new EventEmitter<T>();
 
   constructor(){}
 
