@@ -45,12 +45,12 @@ export class CustomerService {
     return this.http.put<Customer>(this.apiUrl, customer, {'headers': this.headers});
   }
 
-  addDependent(dependent: Customer, customerId: number): Observable<Customer>{
-    return this.http.post<Customer>(this.apiUrl + `/${customerId}/dependents`, dependent, {'headers': this.headers});
+  addDependent(dependent: Customer, parent: Customer): Observable<Customer>{
+    return this.http.post<Customer>(this.apiUrl + `/${parent.id!}/dependents`, dependent, {'headers': this.headers});
   }
 
-  findAllDependentsById(customerId: number): Observable<Customer[]>{
-    return this.http.get<Customer[]>(this.apiUrl + `/${customerId}/dependents`, { headers: this.headers });
+  findAllDependentsByCustomer(customer: Customer): Observable<Customer[]>{
+    return this.http.get<Customer[]>(this.apiUrl + `/${customer.id}/dependents`, { headers: this.headers });
   }
   
 }

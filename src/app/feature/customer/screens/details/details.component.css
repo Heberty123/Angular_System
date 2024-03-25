@@ -66,6 +66,12 @@
     margin: 10px;
 }
 
+.container-stepper ::ng-deep .mat-horizontal-stepper-wrapper {
+    height: 100%;
+}
+
+/*ng-tns-c2393337978-23 ng-star-inserted*/
+
 addresses-details {
     height: 100%;
 }

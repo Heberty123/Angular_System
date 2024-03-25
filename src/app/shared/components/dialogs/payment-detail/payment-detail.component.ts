@@ -6,8 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { Payment } from 'src/app/shared/interfaces/payment';
-import { PaymentType } from 'src/app/shared/interfaces/paymentType';
+import { Payment } from 'src/app/shared/interfaces/Payment';
+import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class PaymentDetailComponent {
 
   paymentTypes: PaymentType[] = [];
   private form = new FormGroup({
-    inputValue: new FormControl<number | null>(null, [Validators.required]),
+    inputValue: new FormControl<number | null>(null, [Validators.required, Validators.min(this.data.amount)]),
     inputPaymentType: new FormControl<PaymentType | null>(null, [Validators.required]),
   });
 
@@ -48,10 +48,8 @@ export class PaymentDetailComponent {
 
   payNow(): void {
     if(!this.form.invalid){
-      this.data.amountPayed = this.InputValue.value!
-      this.data.paymentType = this.InputPaymentType.value!
-      if(this.data.amountPayed >= this.data.amount)
-        this.data.paid = true
+      this.data.amountPayed = this.inputValue.value!
+      this.data.paymentType = this.inputPaymentType.value!
       this.dialogRef.close(this.data);
     }
   }
@@ -60,11 +58,11 @@ export class PaymentDetailComponent {
     return this.form;
   }
 
-  get InputValue() {
+  get inputValue() {
     return this.form.get('inputValue')!
   }
 
-  get InputPaymentType() {
+  get inputPaymentType() {
     return this.form.get('inputPaymentType')!
   }
 }

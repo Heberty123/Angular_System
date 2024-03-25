@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../interfaces/product';
 import { SimpleProduct } from '../classes/SimpleProduct';
+import { ProductDashboard } from '../interfaces/ProductDashboard';
 
 
 @Injectable({
@@ -29,5 +30,9 @@ export class ProductService {
 
   findByBarcode(value: string): Observable<Product>{
     return this.http.get<Product>(this.apiUrl + `/barcode/${value}`, { headers: this.headers })
+  }
+
+  getDashboard(): Observable<ProductDashboard[]>{
+    return this.http.get<ProductDashboard[]>(this.apiUrl + "/productFinalValue", { headers: this.headers })
   }
 }

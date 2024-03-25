@@ -3,8 +3,13 @@
     flex-direction: column;
 }
 
+.head-bttns{
+    display: flex;
+    gap: 0px 10px;
+}
+
 .bttn-toggle-group {
-    width: 150px;
+    width: 160px;
 }
 
 table-order {

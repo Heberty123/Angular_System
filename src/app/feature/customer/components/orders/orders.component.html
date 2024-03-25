@@ -1,9 +1,14 @@
-<mat-button-toggle-group #group="matButtonToggleGroup" class="bttn-toggle-group" value="0"
-    (change)="bttnToggleChange($event)">
-    <mat-button-toggle value="0">Á Pagar </mat-button-toggle>
-    <mat-button-toggle value="1">Já Pago</mat-button-toggle>
-</mat-button-toggle-group>
+<div class="head-bttns">
+    <mat-button-toggle-group #group="matButtonToggleGroup" class="bttn-toggle-group" value="0"
+        (change)="bttnToggleChange($event)">
+        <mat-button-toggle value="0">Á Pagar </mat-button-toggle>
+        <mat-button-toggle value="1">Já Pago</mat-button-toggle>
+    </mat-button-toggle-group>
 
+    <button mat-fab color="accent" (click)="autorenew(group)">
+        <mat-icon>autorenew</mat-icon>
+    </button>
+</div>
 
 <!-- Display when data is 'LOADING' -->
 <ng-container *ngIf="!data[+group.value]; else displayTable">
@@ -13,9 +18,10 @@
 </ng-container>
 
 <!-- Display with 'CONTENTED' data -->
-<ng-template #displayTable>
-    <table-order *ngIf="data[+group.value]!.length > 0; else displayEmpty"
-        [data]="data[+group.value]"
+<ng-template #displayTable>        
+    <table-entities *ngIf="data[+group.value]!.length > 0; else displayEmpty"
+        [displayColumns]="displayColumns"
+        [data]="data[+group.value]!"
         (rowClicked)="openOrder($event)" />
 </ng-template>
 

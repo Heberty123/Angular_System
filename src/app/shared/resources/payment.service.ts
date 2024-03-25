@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Payment } from '../interfaces/payment';
+import { Payment } from '../interfaces/Payment';
+import { CustomerPayment } from '../interfaces/CustomerPaymentInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class PaymentService {
   private apiUrl: string = 'api/payments';
   private headers = { 'content-type': 'application/json'}
 
-  findAllToday(): Observable<Payment[]>{
-    return this.http.get<Payment[]>(this.apiUrl, { headers: this.headers })
+  findAllToday(): Observable<CustomerPayment[]>{
+    return this.http.get<CustomerPayment[]>(this.apiUrl + "/today", { headers: this.headers })
   }
 
   findAllByCustomerId(id: number, paid: boolean): Observable<Payment[]>{

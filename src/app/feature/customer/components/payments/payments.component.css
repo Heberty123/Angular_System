@@ -7,9 +7,11 @@
     width: 150px;
 }
 
-table-payment {
-    flex: 1;
+table-entities {
+
 }
+
+
 
 .loading{
     display: flex;

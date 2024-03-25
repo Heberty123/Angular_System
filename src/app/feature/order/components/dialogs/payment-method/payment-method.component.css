@@ -35,29 +35,9 @@ order-details-view {
   flex-direction: column;
 }
 
+
 table-payment {
   grid-area: c;
-}
-
-mat-button-toggle-group {
-  margin-bottom: 10px;
-}
-
-.container-details{
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.input-bttn{
-  display: flex;
-}
-
-.result{
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 

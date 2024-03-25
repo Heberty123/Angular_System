@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { OrderDetails } from 'src/app/feature/order/components/dialogs/payment-method/payment-method.component';
+import { Order } from 'src/app/shared/classes/Order';
 
 @Component({
   selector: 'order-details-view',
@@ -13,7 +13,7 @@ import { OrderDetails } from 'src/app/feature/order/components/dialogs/payment-m
 })
 export class OrderDetailsViewComponent {
 
-  @Input() data: OrderDetails;
+  @Input() data: Order;
 
   constructor(){}
 }

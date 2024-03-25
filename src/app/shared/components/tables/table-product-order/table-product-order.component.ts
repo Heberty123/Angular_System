@@ -10,7 +10,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { DialogProductsComponent } from 'src/app/feature/order/components/dialogs/dialog-products/dialog-products.component';
+import { DiscountsDialogComponent } from 'src/app/feature/order/components/dialogs/discounts/discounts-dialog.component';
+import { DiscountsDialog } from 'src/app/shared/classes/DiscountsDialog';
 import { ProductOrder } from 'src/app/shared/classes/ProductOrder';
+import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
 
 
 @Component({
@@ -37,7 +41,7 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
   displayedColumns: string[] = ['name', 'price', 'grossAmount', 'netValue', 'discounts', 'promotion', 'quantity', 'options'];
   dataSource = new MatTableDataSource<ProductOrder>([]);
   selection = new SelectionModel<ProductOrder>(true, []);
-  @Output() changeQty = new EventEmitter<void>();
+  @Output() selectedEvent = new EventEmitter<SimpleProduct[]>();
   @Output() deleteEvent = new EventEmitter<ProductOrder[]>();
 
   constructor(public dialog: MatDialog) {}
@@ -93,17 +97,33 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
     product.isRefund = !product.isRefund;
   }
 
-  // deductProduct(product: ProductOrder): void {
-  //   const dialogRef = this.dialog.open(DiscountsDialogComponent, {
-  //     data: new DiscountsDialog(product)
-  //   });
+  deductProduct(product: ProductOrder): void {
+    const dialogRef = this.dialog.open(DiscountsDialogComponent, {
+      data: new DiscountsDialog(product)
+    });
 
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (d: DiscountsDialog) => {
-  //       product.discounts = d.discount
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe({
+      next: (d: DiscountsDialog) => {
+        if(d) {
+          product.discounts = d.discount
+        }
+      }
+    });
+  }
+
+  dialogProducts(): void {
+    const dialogRef = this.dialog.open(DialogProductsComponent, {
+      width: '80%',
+      height: '80%',
+      maxWidth: '1000px',
+      maxHeight: '700px',
+    });
+    
+    dialogRef.afterClosed().subscribe({
+      next: (products: SimpleProduct[]) => 
+        this.selectedEvent.next(products)
+    })
+  }
 
   editProduct(product: ProductOrder): void {
     console.log(`Editando o produto ${product.product.name}`);

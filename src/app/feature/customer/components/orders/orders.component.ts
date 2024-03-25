@@ -3,14 +3,22 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrderDetailsComponent } from '../dialogs/order-details/order-details.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { OrderService } from 'src/app/shared/resources/order.service';
-import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { HttpErrorResponse } from '@angular/common/http';
+import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CommonModule } from '@angular/common';
 import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main-load.module';
-import { TableOrderModule } from 'src/app/shared/components/tables/table-order/table-order.module';
 import { Order } from 'src/app/shared/classes/Order';
+import { OrderInterface } from 'src/app/shared/interfaces/OrderInterface';
+import { ObjToDisplayColumns, TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 let snackBarRef: any;
+let columnsDisplayed: ObjToDisplayColumns[] = [
+  { key: 'paid', label: 'Pago' },
+  { key: 'createdAt', label: 'Data', pipe: { type: 'date' } },
+  { key: 'grossAmount', label: 'Valor bruto', pipe: { type: 'currency' } },
+  { key: 'netAmount', label: 'Valor líquido', pipe: { type: 'currency' } },
+]
 
 @Component({
   selector: 'orders',
@@ -19,9 +27,11 @@ let snackBarRef: any;
   standalone: true,
   imports: [    
     CommonModule,
-    TableOrderModule,
     MatButtonToggleModule,
-    MainLoadModule
+    MainLoadModule,
+    TableEntitiesComponent,
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class OrdersComponent implements OnInit {
@@ -29,8 +39,8 @@ export class OrdersComponent implements OnInit {
   @Input() customer: Customer;
   // index 0 -> Orders unpaid
   // index 1 -> Orders paid
-  data: [Order[]?, Order[]?] = [];
-
+  data: [OrderInterface[]?, OrderInterface[]?] = [];
+  displayColumns: ObjToDisplayColumns[]  = columnsDisplayed;
   constructor(private _orderService: OrderService,
     public dialog: MatDialog){}
 
@@ -38,9 +48,9 @@ export class OrdersComponent implements OnInit {
     // Orders Unpaid
     this._orderService.findAllByCustomerId(this.customer.id!, false)
       .subscribe({
-        next: (data: Order[]) => this.data[0] = data,
-        error: (error: HttpErrorResponse) => this.data[0] = []
+        next: (data: OrderInterface[]) => {this.data[0] = data; console.log(data)}
       })
+      console.log(this.data[0])
   }
   
   applyFilter(): void {
@@ -53,21 +63,10 @@ export class OrdersComponent implements OnInit {
       if(!this.data[1])
         this._orderService.findAllByCustomerId(this.customer.id!, true)
           .subscribe({ 
-            next: (data: Order[]) => this.data[1] = data,
-            error: (error: HttpErrorResponse) => {
-              if (error.status === 404)
-                this.data[1] = [];
-            }
-          })
-    
+            next: (data: OrderInterface[]) => {this.data[1] = data} })
   }
 
-  ngOnDestroy(): void {
-    snackBarRef && snackBarRef.dismiss();
-    console.log("Fui destruído")
-  }
-
-  openOrder(order: Order): void {
+  openOrder(order: OrderInterface): void {
     const dialogRef = this.dialog.open(OrderDetailsComponent, {
       data: order
     });
@@ -78,6 +77,17 @@ export class OrdersComponent implements OnInit {
           console.log(order);
       }
     });
+  }
+
+  autorenew(group: MatButtonToggleGroup): void {
+    this._orderService.findAllByCustomerId(this.customer.id!, false).subscribe({
+      next: (unpaidOrders: OrderInterface[]) => this.data[0] = unpaidOrders })
+    this.data[1] = undefined;
+    group.value = "0";
+  }
+
+  ngOnDestroy(): void {
+    snackBarRef && snackBarRef.dismiss();
   }
   
 }

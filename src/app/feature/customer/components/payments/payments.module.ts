@@ -4,6 +4,7 @@ import { PaymentsComponent } from './payments.component';
 import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main-load.module';
+import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { MainLoadModule } from 'src/app/shared/components/loaders/main-load/main
     CommonModule,
     TablePaymentComponent,
     MatButtonToggleModule,
-    MainLoadModule
+    MainLoadModule,
+    TableEntitiesComponent
   ],
   exports: [
     PaymentsComponent

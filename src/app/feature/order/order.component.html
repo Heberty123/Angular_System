@@ -1,12 +1,11 @@
 <table-product-order
-    [products]="productOrders" 
+    [products]="order.productOrders" 
     [editable]="true" 
-    (changeQty)="updateChange()"
+    (selectedEvent)="addSelectedProducts($event)"
     (deleteEvent)="deleteItems($event)" />
 
 <order-section 
-    [productOrders]="productOrders"
-    [payments]="payments"
+    [order]="order"
     (saveOrder)="saveOrder()"/>
 
 <div class="customer-section">
@@ -17,7 +16,3 @@
 
     <h1>Cliente: {{customerChoosed ? customerChoosed.name : 'Seleciona o cliente'}}</h1>
 </div>
-
-<table-entities
-    [data]="products" 
-    (rowClicked)="produtoChamado($event)" />

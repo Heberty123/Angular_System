@@ -1,16 +1,17 @@
 <div class="container">
     <div class="top">
         <div class="actions">
-            <button mat-raised-button color="primary" [disabled]="quantity() <= 0" (click)="paymentMethod()">Pagamentos</button>
-            <button mat-raised-button color="primary" (click)="saveOrder.emit()">Salvar</button>
+            <button mat-raised-button color="primary"
+                [disabled]="order.productOrders.length === 0 || order.customerId == undefined"
+                (click)="saveOrder.emit()">Salvar</button>
         </div>
     </div>
 
     <div class="body">
-        <h1>Quantidade itens: {{quantity()}}</h1>
-        <h1>Desconto: {{discounts() | percent: '1.2-2' }}</h1>
-        <h1>Valor Bruto: {{grossAmount() | currency}}</h1>
-        <h1>Valor líquido: {{netAmount() | currency}}</h1>
+        <h1>Quantidade itens: {{ order.quantity }}</h1>
+        <h1>Desconto: {{ order.discounts| percent: '1.2-2' }}</h1>
+        <h1>Valor Bruto: {{ order.grossAmount| currency}}</h1>
+        <h1>Valor líquido: {{ order.netAmount | currency}}</h1>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
+
 import { Product } from "../interfaces/product";
-import { ProductForOrder } from "./ProductForOrder";
 
 export class SimpleProduct {
     id: number;

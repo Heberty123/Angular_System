@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -10,11 +10,11 @@ import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
 import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { TableProductOrderComponent } from 'src/app/shared/components/tables/table-product-order/table-product-order.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
-import { Payment } from 'src/app/shared/interfaces/payment';
 import { Product } from 'src/app/shared/interfaces/product';
 import { OrderService } from 'src/app/shared/resources/order.service';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { ChooseCustomerDialogComponent } from './components/dialogs/choose-customer-dialog/choose-customer-dialog.component';
+import { PaymentMethodComponent } from './components/dialogs/payment-method/payment-method.component';
 import { OrderSectionModule } from './components/order-section/order-section.module';
 
 @Component({
@@ -34,10 +34,6 @@ import { OrderSectionModule } from './components/order-section/order-section.mod
 export class OrderComponent implements OnInit, OnDestroy {
 
   customerChoosed: Customer;
-  // productForOrders: ProductForOrder[] = [];
-  products: SimpleProduct[] = [];
-  productOrders: ProductOrder[] = []
-  payments: Payment[] = [];
   order: Order = new Order();
   private subscription: Subscription;
 
@@ -53,42 +49,19 @@ export class OrderComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (barcodeText: string) => this.findByBarcode(barcodeText)
       })
-    this._productService.findAll()
-      .subscribe({ 
-        next: (value: SimpleProduct[]) => this.products = value
-      })
   }
 
   addProduct(product: Product): void {
-    let productFound: ProductOrder | undefined =
-    this.productOrders.find((obj) => obj.product.id === product.id);
-
-    if (!productFound) {
-        this.productOrders =
-          [...this.productOrders, new ProductOrder(product)];
-        return;
-    }
-    productFound.quantity!++
-    this.updateChange();
+    this.order.addProductOrders(product);
   }
 
-//   public productOrders: Signal<ProductOrder[]> = computed(() => {
-//     this.updateValues();
-//     return this._productOrders()
-// })
+  addSelectedProducts(products: SimpleProduct[]): void {
+    products.forEach(p => this.produtoChamado(p))
+  }
 
-
-// public updateValues(): void {
-//   console.log("calculando preços")
-//   this._productOrders().map((p) => {
-//       let totalAmount = p.product.price * p.quantity;
-//       if(!p.isRefund) {
-//           this.grossAmount += totalAmount;
-//           this.netAmount += totalAmount - (totalAmount * p.discounts)
-//       }
-//   });
-//   this.discounts = 1 - (this.netAmount / this.grossAmount);
-// }
+  deleteItems(items: ProductOrder[]): void {
+    this.order.deleteProductOrders(items)
+  }
 
   findByBarcode(barcodeText: string) {
     this._productService.findByBarcode(barcodeText)
@@ -98,28 +71,14 @@ export class OrderComponent implements OnInit, OnDestroy {
         }
       })
   }
-
-  updateChange(): void {
-    this.productOrders = [...this.productOrders];
-  }
-
-  deleteItems(items: ProductOrder[]): void {
-    this.productOrders = this.productOrders
-    .filter((item) => !items.includes(item));
-  }
+  
 
 
   saveOrder(): void {
-    let order: Order = new Order()
-    order.paid = false
-    order.customerId = this.customerChoosed.id!
-    
-    // this._orderService.save(order)
-    //   .subscribe({
-    //     next: (value: Order) => console.log(value)
-    //   })
-    console.log(order);
+    this.paymentMethodDialog();
   }
+
+
 
   produtoChamado(product: SimpleProduct) {
     this.addProduct(Object.assign(product));
@@ -132,10 +91,36 @@ export class OrderComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: (customer: Customer) => {
         if(customer){
-          this.customerChoosed = customer
+          this.customerChoosed = customer;
+          this.order.customerId = customer.id!
         }
       }
     });
+  }
+
+  paymentMethodDialog(): void {
+    const dialogRef = this.dialog.open(PaymentMethodComponent, {
+      data: this.order,
+      width: '80%',
+      height: '80%',
+      maxWidth: '1000px',
+      maxHeight: '700px',
+    });
+    
+    dialogRef.afterClosed().subscribe({
+      next: (result: boolean) => {
+        if(result) {
+          this.definitelySave();
+        }
+      }
+    })
+  }
+
+  private definitelySave(): void {
+    this._orderService.save(this.order)
+      .subscribe({
+        next: (value: Order) => console.log(value)
+      })    
   }
 
   ngOnDestroy(): void {

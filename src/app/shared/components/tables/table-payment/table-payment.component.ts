@@ -1,22 +1,19 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Payment } from 'src/app/shared/interfaces/payment';
-import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatInputModule } from '@angular/material/input';
-import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
-import { MatSortModule } from '@angular/material/sort';
-import { InputDateComponent } from '../../inputs/input-date/input-date.component';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { AdvanceChipListboxComponent } from '../../mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { BusinessLogicServiceService } from 'src/app/shared/services/business-logic-service.service';
-import { FormControl } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { PaymentType } from 'src/app/shared/interfaces/paymentType';
+import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Payment } from 'src/app/shared/interfaces/Payment';
+import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
+import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
+import { InputDateComponent } from '../../inputs/input-date/input-date.component';
+import { AdvanceChipListboxComponent } from '../../mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 
 @Component({
   selector: 'table-payment',
@@ -49,87 +46,68 @@ import { PaymentType } from 'src/app/shared/interfaces/paymentType';
     AdvanceChipListboxComponent,
   ],
 })
-export class TablePaymentComponent implements OnInit, AfterViewInit {
+export class TablePaymentComponent implements OnInit, AfterViewInit, OnChanges {
 
+  @Input() data?: Payment[] = []
   @Input() paymentTypes?: PaymentType[];
-  @Input() paintPayed?: boolean;
-  @Input() changePayment: (total: number, value: number) => void;
+  @Input() paintPayed?: boolean = true;
   @Output() rowClicked = new EventEmitter<Payment>();
-  // ['amount', 'paymentDate', 'paymentType', 'payedAt', 'amountPayed', 'expand', 'options'];
-  columnsToDisplayWithExpand: string[];
+  @ViewChild(MatSort) private sort: MatSort;
+  displayedColumns: string[] = ['amount', 'paymentDate', 'paymentType', 'options', 'expand'];
   dataSource = new MatTableDataSource<Payment>([]);
   isEditable: boolean = false;
   inputAmount = new FormControl();
-  inputInstallment = new FormControl();
-  chipPaymentType: FormControl
-  indexToEditAmount: number | null;
+  chipPaymentType = new FormControl(null, [Validators.required]);
   expandedElement: Payment | null;
 
-  constructor(private businessLogicService: BusinessLogicServiceService) {}
+  constructor() {}
 
-  @ViewChild(MatSort) private sort: MatSort;
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
   }
 
-  ngOnInit(): void {
-    this.chipPaymentType = new FormControl(this.paymentTypes)
+  ngOnInit(): void {}
 
-    this.chipPaymentType.valueChanges.subscribe({
-      next: (value: PaymentType) => this.expandedElement!.paymentType = value
-    })
-
-    this.inputInstallment.valueChanges.subscribe({
-      next: (value: number) => {
-        this.changePayment(value ? this.expandedElement!.amount : 0, value);
-      }
-    })
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes["data"]) {
+      this.dataSource.data = this.data!;
+    }
   }
 
-  @Input() set payments(payments: Payment[] | undefined) {
-    if(payments)
-      this.dataSource.data = payments
-  }
-
-  startEditing(payment: Payment, index: number): void {
-    this.inputAmount.setValue(payment.amount);
-    this.indexToEditAmount = index;
-  }
-
-  lostEditing(): void {
-    this.businessLogicService.updateInstallments(
-      this.dataSource.data,
-      +this.inputAmount.value,
-      this.indexToEditAmount!
-    );
-    this.inputAmount.reset();
-    this.indexToEditAmount = null;
-  }
 
   @Input() set editable(value: boolean) {
     this.isEditable = value;
   }
 
   @Input() set displayColumns(value: string[]) {
-    this.columnsToDisplayWithExpand = value;
+    this.displayedColumns = value;
   }
 
 
-  expandedCanceled(): void {
-    this.expandedElement!.paymentType = undefined;
-    this.inputInstallment.reset();
+  cancelExpanded(): void {
+    this.resetControls();
     this.expandedElement = null;
   }
 
-  expandedPayNow(): void {
-    if (this.expandedElement!.paymentType != undefined &&
-        this.expandedElement!.amount <= +this.inputInstallment.value) {
-
-      this.expandedElement!.amountPayed = +this.inputInstallment.value;
+  expandedPay(payment: Payment): void {
+    this.inputAmount.addValidators(Validators.min(payment.amount));
+    if (this.isControlsValid()) {
+        
+      this.expandedElement!.paymentType = this.chipPaymentType.value!
+      this.expandedElement!.amountPayed = this.inputAmount.value;
       this.expandedElement!.paid = true;
-      this.expandedElement = null;
-      this.inputInstallment.reset();
+      this.cancelExpanded();
     }
+  }
+
+  private isControlsValid(): boolean {
+    return this.chipPaymentType.valid
+    && this.inputAmount.value !== 0
+  }
+
+  private resetControls(): void {
+    this.inputAmount.reset();
+    this.chipPaymentType.reset();
   }
 } 

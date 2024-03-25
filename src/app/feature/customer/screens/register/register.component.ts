@@ -75,7 +75,7 @@ export class RegisterComponent{
     if(this.dependentFC.valid) {
       this._customerService.addDependent(
         this.dependentFC.value!,
-        this.customerFC.value!.id!)
+        this.customerFC.value!)
         .subscribe({
           next: (value: Customer) => { 
             this.dependents = [...this.dependents, value];

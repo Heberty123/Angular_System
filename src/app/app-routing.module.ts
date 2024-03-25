@@ -4,14 +4,15 @@ import { CustomerComponent } from './feature/customer/customer.component';
 import { ProductComponent } from './feature/product/product.component';
 import { OrderComponent } from './feature/order/order.component';
 import { HomeComponent } from './feature/home/home.component';
+import { DashboardComponent } from './feature/product/screens/dashboard/dashboard.component';
 // import { HomeComponent } from './feature/home/home.component';
 
 const routes: Routes = [
-   /* { path: 'home', component: HomeComponent }, */
+    { path: 'home', component: HomeComponent },
     { path: 'client', component: CustomerComponent },
     { path: 'product', component: ProductComponent },
     { path: 'order', component: OrderComponent },
-    { path: 'home', component: HomeComponent }
+    { path: 'dashboard', component: DashboardComponent }
 ];
 
 @NgModule({

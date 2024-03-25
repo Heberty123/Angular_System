@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ObjToDisplayColumns } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 
@@ -11,11 +12,11 @@ export class ListComponent implements OnInit {
   
   customers: Customer[];
   @Output() rowClicked: EventEmitter<Customer> = new EventEmitter<Customer>();
-  displayColumns = {
-    'id': 'id',
-    'name': 'nome',
-    'cpf': 'cpf'
-  }
+  displayColumns: ObjToDisplayColumns[] = [
+    { key: 'id', label: 'id' },
+    { key: 'name', label: 'nome' },
+    { key: 'cpf', label: 'cpf' }
+  ]
 
   constructor(private _customerService: CustomerService){}
 

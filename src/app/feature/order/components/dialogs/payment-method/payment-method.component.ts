@@ -7,30 +7,26 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import * as moment from 'moment';
+import { Order } from 'src/app/shared/classes/Order';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
 import { OrderDetailsViewComponent } from 'src/app/shared/components/view/order-details-view/order-details-view.component';
-import { Payment } from 'src/app/shared/interfaces/payment';
-import { PaymentType } from 'src/app/shared/interfaces/paymentType';
+import { Payment } from 'src/app/shared/interfaces/Payment';
+import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
 
-export class OrderDetails {
-  quantity: number;
-  grossAmount: number;
-  netAmount: number;
-  discounts: number
+// export class OrderDetails {
+//   quantity: number;
+//   grossAmount: number;
+//   netAmount: number;
+//   discounts: number
 
-  constructor(
-    quantity: number,
-     grossAmount: number,
-      netAmount: number,
-       discount: number) {
-    this.quantity = quantity,
-    this.grossAmount = grossAmount;
-    this.netAmount = netAmount;
-    this.discounts = discount
-  }
-}
+//   constructor(order: Order) {
+//     this.grossAmount = order.grossAmount;
+//     this.netAmount = order.netAmount;
+//     this.discounts = order.discounts
+//   }
+// }
 
 @Component({
   selector: 'payment-method',
@@ -54,18 +50,12 @@ export class OrderDetails {
 export class PaymentMethodComponent implements OnInit {
 
   payments: Payment[] = [];
-  paymentTypes: PaymentType[];
-  paymentType = new FormControl();
-  inputValue: FormControl<number> = new FormControl();
-  displayedColumns: string[];
-  paymentMethod: string;
-  changeAmount: number;
-  missing: number;
-
+  paymentTypes: PaymentType[] = [];
+  input = new FormControl();
+  
 
   constructor(public dialogRef: MatDialogRef<PaymentMethodComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: OrderDetails,
-    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: Order,
     private paymentTypeService: PaymentTypeService) {
   }
 
@@ -73,33 +63,39 @@ export class PaymentMethodComponent implements OnInit {
   ngOnInit(): void {
     this.paymentTypeService.findAll()
       .subscribe({
-        next: (paymentTypes: PaymentType[]) => this.paymentTypes = paymentTypes
+        next: (paymentTypes: PaymentType[]) => 
+          this.paymentTypes = paymentTypes
       })
-
-    this.inputValue.valueChanges.subscribe({
-      next: (value: number) => {
-        this.changePaymentFunction(0, 0);
-        if (this.paymentMethod === 'inCash') 
-          this.changePaymentFunction(this.data.netAmount, value);
-        else 
-          this.updateInstallments(+value);
-      }
-    })
-
-    this.paymentType.valueChanges.subscribe({
-      next: (value: PaymentType) => this.payments[0].paymentType = value
-    })
+      this.input.valueChanges
+        .subscribe({
+          next: (value: number) => 
+            this.updateInstallments(value!)
+        })
   }
 
-
-  async updateInstallments(qty: number): Promise<void> {
+  changeBttnToggle(event: MatButtonToggleChange) {
     this.payments = [];
-    let value: number =
-      this.data.netAmount / qty;
-    let date: moment.Moment = moment();
-    date.add(1, 'month');
+    this.input.reset();
+    if (event.value === "1")
+      this.inCash();
+  }
 
-    for (let i: number = 0; i < qty; i++) {
+  inCash(): void {
+    this.payments = [{
+      amount: this.data.netAmount,
+      paymentDate: moment().format(),
+      paid: false
+    }]
+  }
+
+  async updateInstallments(qty: number) {
+    this.payments = [];
+    let value = this.data.netAmount / qty;
+    let date = moment();
+    // if(!(qty == 1))
+    //   date.add(1, 'month');
+
+    for (let i = 0; i < qty; i++) {
       this.payments.push({
         amount: value,
         paymentDate: date.format(),
@@ -109,47 +105,12 @@ export class PaymentMethodComponent implements OnInit {
     }
   }
 
-  resetPayments(): void {
-    this.updateInstallments(+this.inputValue.value);
+  canceled(): void {
+    this.dialogRef.close(false)
   }
 
-  changePaymentFunction(total: number, value: number): void {
-    
-    let result = total - value;
-    if (Math.sign(result) === -1)
-      this.changeAmount = result * (-1)
-    else
-      this.changeAmount = 0;
-
-    if (Math.sign(result) === 1)
-      this.missing = result
-    else
-      this.missing = 0;
-  }
-
-  cashPayment(): void {
-    let payment: Payment = this.payments[0];
-    if (payment.paymentType != undefined && payment.amount <= +this.inputValue.value) {
-
-      payment.amountPayed = +this.inputValue.value;
-      payment.paid = true;
-    }
-  }
-
-  changeBttnToggle(event: MatButtonToggleChange) {
-    this.paymentMethod = event.value
-    this.payments = [];
-    this.inputValue.reset()
-    if (event.value === "inCash") {
-      this.payments.push({
-        amount: this.data.netAmount,
-        paymentDate: moment().format(),
-        paid: false
-      })
-      this.displayedColumns = ['amount', 'paymentDate', 'paymentType'];
-    }
-    else {
-      this.displayedColumns = ['amount', 'paymentDate', 'paymentType', 'options', 'expand'];
-    }
+  close(): void {
+    this.data.payments = this.payments;
+    this.dialogRef.close(true)
   }
 }

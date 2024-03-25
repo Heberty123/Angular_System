@@ -9,7 +9,17 @@
             <h2>Tipo de pagamento: {{data.paymentType?.name || 'A definir' }}</h2>
             <h2>Valor pago: {{data.amountPayed || 'A definir' }}</h2>
             <h2>payment realizada: {{data.payedAt | date: 'dd/MM/yyyy'}}</h2>
-            <input-customizable type="number" formControlName="inputValue" />
+            <mat-form-field class="example-full-width">
+                <mat-label>Valor a pagar</mat-label>
+                <input matInput placeholder="Digite o valor" formControlName="inputValue">
+                <mat-error *ngIf="inputValue.errors?.['required']">
+                    Obrigatório preencher o valor
+                </mat-error>
+                <mat-error *ngIf="inputValue.errors?.['min']">
+                    O valor não pode ser menor do que o total
+                </mat-error>
+            </mat-form-field>
+            <input-customizable type="number"  />
             <advance-chip-listbox [data]="paymentTypes" formControlName="inputPaymentType" />
         </form>
     </ng-container>

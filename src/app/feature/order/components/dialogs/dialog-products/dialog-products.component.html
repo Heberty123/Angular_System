@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Selectione produtos</h1>
+<div mat-dialog-content>
+    <h3>Você selecionou {{tableEntities.selected().size}} produtos</h3>
+    <table-entities #tableEntities [data]="products" [selectable]="true"/>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary"
+        [disabled]="!tableEntities.hasSelected()"
+        [mat-dialog-close]="tableEntities.selected()">Escolher</button>
+</mat-dialog-actions>

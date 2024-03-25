@@ -40,8 +40,10 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
       </ng-template>
   
       <ng-template matTabContent>
-        <details-customer [customer]="selectedCustomer!" (eraseCustomer)="selectedCustomer = null"
-        (toList)="selectedTabIndex = 1" />
+        <details-customer 
+          [customer]="selectedCustomer!" 
+          (eraseCustomer)="selectedCustomer = null"
+          (toList)="selectedTabIndex = 1" />
       </ng-template>
     </mat-tab>
 </mat-tab-group>

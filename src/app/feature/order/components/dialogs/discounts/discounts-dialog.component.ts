@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { DiscountsDialog } from 'src/app/shared/classes/DiscountsDialog';
+
+class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid);
+  }
+}
 
 @Component({
   selector: 'app-discounts',
@@ -27,6 +35,7 @@ export class DiscountsDialogComponent {
 
 
   form: FormGroup<any>
+  matcher: ErrorStateMatcher = new MyErrorStateMatcher();
 
   constructor(public dialogRef: MatDialogRef<DiscountsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DiscountsDialog) {
@@ -34,7 +43,7 @@ export class DiscountsDialogComponent {
       percentageQty: new FormControl(data.quantity, [Validators.max(data.quantity), Validators.min(1)]),
       percentage: new FormControl(null, [Validators.max(100), Validators.min(0)]),
       valueQty: new FormControl(data.quantity, [Validators.max(data.quantity), Validators.min(1)]),
-      value: new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)]),
+      value: new FormControl(null, [Validators.min(0)]),
       netValue: new FormControl(null, [Validators.max(data.grossAmount), Validators.min(0)])
     })
 
@@ -54,11 +63,12 @@ export class DiscountsDialogComponent {
     this.data.netAmount = this.data.grossAmount -
     (this.percentageQty.value! * this.data.price!) *
     (this.percentage.value / 100.0)
+    this.value.addValidators(Validators.max(this.data.netAmount))
   }
 
   private adjustValue(): void {
-    this.data.netAmount -=
-      this.valueQty.value! * this.value.value;
+      this.data.netAmount -=
+        this.valueQty.value! * this.value.value;
   }
 
 

@@ -13,10 +13,10 @@
 
     <!-- Display with 'CONTENTED' data -->
     <ng-template #displayTable>
-        <table-payment *ngIf="data[+group.value]!.length > 0; else displayEmpty"
-            [displayColumns]="displayedColumns"
-            [payments]="data[+group.value]"
-            (rowClicked)="rowClicked($event)"/>
+            <table-entities *ngIf="data[+group.value]!.length > 0; else displayEmpty"
+                [displayColumns]="displayedColumns"
+                [data]="data[+group.value]!"
+                (rowClicked)="rowClicked($event)" />
     </ng-template>
 
     <!-- Display when data is 'EMPTY' -->

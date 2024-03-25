@@ -1,4 +1,4 @@
-import { PaymentType } from "./paymentType"
+import { PaymentType } from "./PaymentType"
 
 export interface Payment{
     id?: number
