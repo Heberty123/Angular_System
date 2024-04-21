@@ -1,12 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from 'src/app/shared/interfaces/customer';
-import { Payment } from 'src/app/shared/interfaces/Payment';
 import { PaymentService } from 'src/app/shared/resources/payment.service';
 import { PaymentDetailComponent } from '../../../../shared/components/dialogs/payment-detail/payment-detail.component';
 import { ObjToDisplayColumns } from 'src/app/shared/components/tables/table-entities/table-entities.component';
+import { Payment } from 'src/app/shared/interfaces/payment';
 
 let snackBarRef: any;
 let complexColumns: ObjToDisplayColumns[] = [

@@ -6,8 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { Payment } from 'src/app/shared/interfaces/Payment';
-import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
+import { Payment } from 'src/app/shared/interfaces/payment';
+import { PaymentType } from 'src/app/shared/interfaces/paymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
 
 @Component({

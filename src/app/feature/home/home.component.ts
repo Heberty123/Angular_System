@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PaymentDetailComponent } from 'src/app/shared/components/dialogs/payment-detail/payment-detail.component';
 import { ObjToDisplayColumns, TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { CustomerPayment } from 'src/app/shared/interfaces/CustomerPaymentInterface';
-import { Payment } from 'src/app/shared/interfaces/Payment';
+import { Payment } from 'src/app/shared/interfaces/payment';
 import { PaymentService } from 'src/app/shared/resources/payment.service';
 
 let objToDisplayColumns: ObjToDisplayColumns[] = [

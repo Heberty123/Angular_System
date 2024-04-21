@@ -28,4 +28,5 @@ export class RegisterComponent {
   get productFC() {
     return this._productFC
   }
+
 }

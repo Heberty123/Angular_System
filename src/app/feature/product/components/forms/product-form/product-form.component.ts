@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgForm, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher, MatOptionModule } from '@angular/material/core';
@@ -85,6 +85,7 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
   brands: Brand[] = [];
   chipRemovable: boolean = false;
   @Input() displaySubmit?: boolean = false;
+  @Output() submit = new EventEmitter<void>();
 
   constructor(private _productTypeService: ProductTypeService,
     private _brandService: BrandService,
@@ -228,6 +229,10 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
 
   get form(): FormGroup{
     return this._form;
+  }
+
+  onSubmit(): void {
+    this.submit.emit();
   }
 
   writeValue(obj: Product): void {

@@ -1,5 +1,5 @@
-import { PaymentType } from "./PaymentType"
 import { Customer } from "./customer"
+import { PaymentType } from "./paymentType"
 
 export interface CustomerPayment {
     customer: Customer,

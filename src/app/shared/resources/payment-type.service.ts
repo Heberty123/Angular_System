@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PaymentType } from '../interfaces/PaymentType';
 import { PaymentTypeDashboard } from '../interfaces/PaymentTypeDashboard';
 import moment from 'moment';
+import { PaymentType } from '../interfaces/paymentType';
 
 @Injectable({
   providedIn: 'root'

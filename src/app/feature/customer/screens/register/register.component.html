@@ -7,6 +7,8 @@
     </button>
     <form-customer [formControl]="customerFC"/>
     <button 
+        mat-flat-button
+        color="primary"
         [disabled]="customerFC.invalid"
         (click)="saveCustomer()">
         Salvar

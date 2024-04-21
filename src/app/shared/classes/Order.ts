@@ -1,6 +1,6 @@
-import { Payment } from "../interfaces/Payment";
 import { ProductOrder } from "./ProductOrder";
 import { Product } from "../interfaces/product";
+import { Payment } from "../interfaces/payment";
 
 export class Order {
     private _id: number;

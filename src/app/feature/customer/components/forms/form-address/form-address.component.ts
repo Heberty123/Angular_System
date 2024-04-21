@@ -8,8 +8,8 @@ import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { DeliveryTypeService } from 'src/app/shared/resources/delivery-type.service';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-delivery-type-dialog/add-delivery-type-dialog.component';
 import { provideNgxMask } from 'ngx-mask';
+import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-Delivery-type-dialog/add-delivery-type-dialog.component';
 
  interface AddressForm {
   id?: FormControl <number | null>,

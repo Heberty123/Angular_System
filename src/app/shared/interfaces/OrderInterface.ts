@@ -1,5 +1,5 @@
-import { Payment } from "./Payment"
 import { ProductOrderInterface } from "./ProductOrderInterface"
+import { Payment } from "./payment"
 
 
 export interface OrderInterface {

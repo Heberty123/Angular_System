@@ -9,11 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Payment } from 'src/app/shared/interfaces/Payment';
-import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
 import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { InputDateComponent } from '../../inputs/input-date/input-date.component';
 import { AdvanceChipListboxComponent } from '../../mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
+import { PaymentType } from 'src/app/shared/interfaces/paymentType';
+import { Payment } from 'src/app/shared/interfaces/payment';
 
 @Component({
   selector: 'table-payment',

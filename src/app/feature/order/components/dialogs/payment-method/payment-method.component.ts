@@ -11,8 +11,8 @@ import { Order } from 'src/app/shared/classes/Order';
 import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
 import { TablePaymentComponent } from 'src/app/shared/components/tables/table-payment/table-payment.component';
 import { OrderDetailsViewComponent } from 'src/app/shared/components/view/order-details-view/order-details-view.component';
-import { Payment } from 'src/app/shared/interfaces/Payment';
-import { PaymentType } from 'src/app/shared/interfaces/PaymentType';
+import { Payment } from 'src/app/shared/interfaces/payment';
+import { PaymentType } from 'src/app/shared/interfaces/paymentType';
 import { PaymentTypeService } from 'src/app/shared/resources/payment-type.service';
 
 // export class OrderDetails {
