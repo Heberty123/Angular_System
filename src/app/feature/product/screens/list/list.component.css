@@ -1,12 +1,14 @@
 :host {
-    background-color: powderblue;
     display: flex;
     flex-direction: column;
     height: 100%;
     padding: 30px;
+    justify-content: center;
+    align-items: center;
 }
 
-table-product{
+table-entities{
     width: 50%;
-    height: 50%;
+    height: 90%;
+    max-width: 900px;
 }

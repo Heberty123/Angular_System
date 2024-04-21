@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgForm, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher, MatOptionModule } from '@angular/material/core';
@@ -19,6 +19,7 @@ import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { AddProductTypeComponent } from '../../dialogs/add-product-type/add-product-type.component';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 interface ProductForm {
   id: FormControl<number | null>,
@@ -29,6 +30,9 @@ interface ProductForm {
   brand: FormControl<Brand | null>,
   productType: FormControl<ProductType | null>,
   price: FormControl<number | null>
+  quantity: FormControl<number | null>
+  min_quantity: FormControl<number | null>
+  max_quantity: FormControl<number | null>
 }
 
 class CustomErrorStateMatcher implements ErrorStateMatcher {
@@ -53,8 +57,8 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
     MatIconModule,
     MatButtonModule,
     MatOptionModule,
-    AdvanceChipListboxComponent,
-    MatSelectModule
+    MatSelectModule,
+    MatChipsModule
   ],
   providers: [
     provideNgxMask(),
@@ -79,6 +83,8 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
   destroySubject = new Subject<void>();
   productTypes: ProductType[] = [];
   brands: Brand[] = [];
+  chipRemovable: boolean = false;
+  @Input() displaySubmit?: boolean = false;
 
   constructor(private _productTypeService: ProductTypeService,
     private _brandService: BrandService,
@@ -103,7 +109,10 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
     barcode: new FormControl(),
     brand: new FormControl({} as Brand, [Validators.required]),
     productType: new FormControl({} as ProductType, [Validators.required]),
-    price: new FormControl(null, [Validators.required])
+    price: new FormControl(null, [Validators.required]),
+    quantity: new FormControl(1, [Validators.required]),
+    min_quantity: new FormControl(1, [Validators.required]),
+    max_quantity: new FormControl(1, [Validators.required])
   });
 
   openDialogAddProductType(): void{
@@ -168,6 +177,15 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
     return this._form.valid ? null : { product: true };
   }
 
+  compareBrandFn(one: Brand, two: Brand ): boolean {
+    return one.id === two.id;
+  }
+
+  compareProductTypeFn(one: ProductType, two: ProductType ): boolean {
+    console.log("Chamado")
+    return one.id === two.id;
+  }
+
   get name() {
     return this.form.get('name')!;
   }
@@ -196,6 +214,18 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
     return this.form.get('price')!;
   }
 
+  get quantity(){
+    return this.form.get('quantity')!;
+  }
+
+  get min_quantity(){
+    return this.form.get('min_quantity')!;
+  }
+
+  get max_quantity(){
+    return this.form.get('max_quantity')!;
+  }
+
   get form(): FormGroup{
     return this._form;
   }
@@ -205,7 +235,7 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
       this._form.reset();
     } else {
       this._form
-        .patchValue(obj, { emitEvent: false});
+        .patchValue(obj, { emitEvent: false });
     } 
   }
   registerOnChange(fn: any): void {
@@ -223,13 +253,8 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
       this._form.disable() :
       this._form.enable();
   }
-
   ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
-  }
-
-  testeApenas(): void {
-    console.log(this._form.valid);
   }
 }

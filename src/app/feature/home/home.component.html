@@ -1,6 +1,7 @@
 <h2>Valor a receber hoje: {{valueToday() | currency: 'BRL'}}</h2>
 
 <h3>Valores a serem pagos hoje</h3>
+
 <table-entities 
     [data]="paymentsToday()" 
     (rowClicked)="searchPayment($event)"

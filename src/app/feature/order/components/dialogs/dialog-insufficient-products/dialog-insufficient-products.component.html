@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Produtos faltando no estoque</h1>
+<div mat-dialog-content>
+    <h1>Não foi realizado o pedido!</h1>
+    <h3>Produtos faltando: </h3>
+    <table-entities [data]="data" [displayColumns]="columnsDiplayed" />
+
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" mat-button (click)="dialogRef.close()">Ok</button>
+</mat-dialog-actions>

@@ -1,0 +1,35 @@
+<mat-tab-group #tabGroup [@.disabled]="true" class="mat-tabGroup" 
+  mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab #tabRegister>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person_add</mat-icon>
+        Vendas
+      </ng-template>
+
+      <ng-template matTabContent>
+        <product-dashboard />
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab #tabRegister>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person</mat-icon>
+        Clientes
+      </ng-template>
+
+      <ng-template matTabContent>
+       <customer-dashboard />
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab #tabRegister>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person</mat-icon>
+        Pagamentos
+      </ng-template>
+
+      <ng-template matTabContent>
+       <payment-dashboard />
+      </ng-template>
+    </mat-tab>
+</mat-tab-group>

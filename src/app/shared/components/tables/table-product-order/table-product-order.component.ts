@@ -114,7 +114,7 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
   dialogProducts(): void {
     const dialogRef = this.dialog.open(DialogProductsComponent, {
       width: '80%',
-      height: '80%',
+      height: '70%',
       maxWidth: '1000px',
       maxHeight: '700px',
     });

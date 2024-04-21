@@ -21,17 +21,6 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
         <list (rowClicked)="selectedCustomer = $event; tabGroup.selectedIndex = 3"/>
       </ng-template>
     </mat-tab>
-  
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">delete</mat-icon>
-        Excluir
-      </ng-template>
-  
-      <ng-template matTabContent>
-        <remove/>
-      </ng-template>
-    </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
@@ -42,8 +31,7 @@ class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
       <ng-template matTabContent>
         <details-customer 
           [customer]="selectedCustomer!" 
-          (eraseCustomer)="selectedCustomer = null"
-          (toList)="selectedTabIndex = 1" />
+          (toList)="selectedTabIndex = 1; selectedCustomer = null" />
       </ng-template>
     </mat-tab>
 </mat-tab-group>

@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Payment } from '../interfaces/Payment';
 import { CustomerPayment } from '../interfaces/CustomerPaymentInterface';
+import { SeriesDashboard } from '../interfaces/SeriesDashboard';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +27,16 @@ export class PaymentService {
   payNow(payment: Payment): Observable<Payment>{
     return this.http.post<Payment>(this.apiUrl + "/pay", payment, { headers: this.headers })
   }
+
+  getDashboard(year?: number): Observable<SeriesDashboard[]>{
+    let params = new HttpParams();
+    if(year) 
+      params = params.append('year', year);
+    else
+      params = params.append('year', moment().year());
+    
+    return this.http.get<SeriesDashboard[]>(this.apiUrl + "/dashboard", { headers: this.headers,
+    params: params })
+  }
 }
+

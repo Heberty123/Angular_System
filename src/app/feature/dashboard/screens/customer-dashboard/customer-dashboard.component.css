@@ -6,6 +6,15 @@
     padding: 30px;
 }
 
+.header-bar {
+    display: flex;
+    gap: 0px 20px;
+}
+
+.input-date {
+    width: 300px;
+}
+
 .container {
     display: flex;
     gap: 0px 20px;
@@ -13,6 +22,10 @@
 }
 
 
-.container table-entities {
+.container .purchase-section {
+    flex: 1;
+}
+
+.container .defaulting-section {
     flex: 1;
 }

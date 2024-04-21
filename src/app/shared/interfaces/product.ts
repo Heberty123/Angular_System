@@ -9,5 +9,8 @@ export interface Product {
     barcode: string,
     brand: Brand,
     productType: ProductType,
-    price: number
+    price: number,
+    quantity: number,
+    min_quantity: number,
+    max_quantity: number
 }

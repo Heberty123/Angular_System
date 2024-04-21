@@ -16,6 +16,8 @@ import { ProductService } from 'src/app/shared/resources/product.service';
 import { ChooseCustomerDialogComponent } from './components/dialogs/choose-customer-dialog/choose-customer-dialog.component';
 import { PaymentMethodComponent } from './components/dialogs/payment-method/payment-method.component';
 import { OrderSectionModule } from './components/order-section/order-section.module';
+import { SimpleProductInterface } from 'src/app/shared/interfaces/SimpleProductInterface';
+import { DialogInsufficientProductsComponent } from './components/dialogs/dialog-insufficient-products/dialog-insufficient-products.component';
 
 @Component({
   selector: 'order',
@@ -71,22 +73,25 @@ export class OrderComponent implements OnInit, OnDestroy {
         }
       })
   }
-  
-
 
   saveOrder(): void {
-    this.paymentMethodDialog();
+    this._productService.validInventory(this.order.productOrders).subscribe({
+      next: () => this.paymentMethodDialog(),
+      error: (value: any) => this.openInsufficienteProductDialog(value.error.products) 
+    })
   }
-
-
 
   produtoChamado(product: SimpleProduct) {
     this.addProduct(Object.assign(product));
   }
 
-
   openChooseCustomerDialog(): void {
-    const dialogRef = this.dialog.open(ChooseCustomerDialogComponent);
+    const dialogRef = this.dialog.open(ChooseCustomerDialogComponent, {
+      width: "50%",
+      height: "65%",
+      maxWidth: "800px",
+      maxHeight: "800px"
+    });
 
     dialogRef.afterClosed().subscribe({
       next: (customer: Customer) => {
@@ -100,11 +105,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   paymentMethodDialog(): void {
     const dialogRef = this.dialog.open(PaymentMethodComponent, {
-      data: this.order,
-      width: '80%',
-      height: '80%',
-      maxWidth: '1000px',
-      maxHeight: '700px',
+      data: this.order, width: '80%', height: '80%', maxWidth: '1000px',
+      maxHeight: '700px'
     });
     
     dialogRef.afterClosed().subscribe({
@@ -119,8 +121,16 @@ export class OrderComponent implements OnInit, OnDestroy {
   private definitelySave(): void {
     this._orderService.save(this.order)
       .subscribe({
-        next: (value: Order) => console.log(value)
+        next: (value: Order) => console.log(value),
+        error: (value: any) => this.openInsufficienteProductDialog(value.error.products) 
       })    
+  }
+
+  openInsufficienteProductDialog(products: SimpleProductInterface[]): void {
+    this.dialog.open(DialogInsufficientProductsComponent, {
+      data: products, width: '80%', height: '80%',
+      maxWidth: '1000px',maxHeight: '700px',
+    });
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,8 @@
+<div class="bttns">
+    <button mat-flat-button color="primary" (click)="save()">Salvar</button>
+    <button mat-flat-button color="primary" (click)="openDialog()">Produtos</button>
+</div>
+
+<table-entities 
+    [data]="productStocks" 
+    [displayColumns]="columnDisplayed" />

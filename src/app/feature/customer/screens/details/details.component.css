@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     gap: 0px 20px;
-    background-color: burlywood;
+    background-color: rgb(137, 192, 194);
     padding: 30px;
 }
 
@@ -14,13 +14,21 @@
     flex-direction: column;
     width: 20%;
     height: 100%;
-    background-color: aquamarine;
     padding: 10px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.section-bttns {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0 10px;
 }
 
 .container-stepper{
     flex: 1;
     height: 100%;
+    border-radius: 4px;
 }
 
 
@@ -58,19 +66,21 @@
     padding: 15px;
 }
 
-.container-stepper ::ng-deep .mat-horizontal-stepper-header-container{
+:host .container-stepper ::ng-deep .mat-horizontal-stepper-header-container{
     width: auto;
 }
 
-.container-stepper ::ng-deep .mat-horizontal-content-container {
+:host .container-stepper ::ng-deep .mat-horizontal-content-container {
     margin: 10px;
 }
 
-.container-stepper ::ng-deep .mat-horizontal-stepper-wrapper {
+:host .container-stepper ::ng-deep .mat-horizontal-stepper-wrapper {
     height: 100%;
 }
 
-/*ng-tns-c2393337978-23 ng-star-inserted*/
+:host ::ng-deep .mat-horizontal-stepper-content {
+    height: 100%;
+}
 
 addresses-details {
     height: 100%;

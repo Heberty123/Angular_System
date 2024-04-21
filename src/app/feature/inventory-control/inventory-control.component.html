@@ -1,0 +1,29 @@
+<mat-tab-group #tabGroup [@.disabled]="true" [(selectedIndex)]="selectedTabIndex"
+class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon [matBadge]="inventoryStatus.qtyStatus" matBadgeColor="warn">list</mat-icon>
+        Status
+      </ng-template>
+
+      <ng-template matTabContent>
+        <inventory />
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">list</mat-icon>
+        Atualizar
+      </ng-template>
+
+      <ng-template matTabContent>
+        <quantify-pro />
+      </ng-template>
+    </mat-tab>
+  
+</mat-tab-group>
+
+
+

@@ -1,12 +1,26 @@
-<div *ngIf="choosenProduct != null; else isThereNot">
-    <h1>Id: {{choosenProduct.id}}</h1>
-    <h1>Nome: {{choosenProduct.name}}</h1>
-    <h1>Descrição: {{choosenProduct.description}}</h1>
-    <h1>Referência: {{choosenProduct.reference}}</h1>
-    <h1>Código de barras: {{choosenProduct.barcode}}</h1>
-    <h1>Marca: {{choosenProduct.brand}}</h1>
-    <h1>Tipo de produto: {{choosenProduct.productType}}</h1>
-    <h1>Preço: {{choosenProduct.price}}</h1>
+
+<div class="container" *ngIf="choosenProduct != undefined; else isThereNot">
+
+    <div class="section">
+        <div class="bttns">
+            <button mat-flat-button color="warn" (click)="openDialogDeleting()">Apagar</button>
+            <button mat-flat-button color="primary" (click)="openDialogEditing()">Editar</button>
+        </div>
+        <h1>Id: {{choosenProduct.id}}</h1>
+        <h1>Nome: {{choosenProduct.name}}</h1>
+        <h1>Preço: {{choosenProduct.price | currency }}</h1>
+    </div>
+
+    <div class="section-details">
+        <h1>Descrição: {{choosenProduct.description}}</h1>
+        <h1>Referência: {{choosenProduct.reference}}</h1>
+        <h1>Código de barras: {{choosenProduct.barcode}}</h1>
+        <h1>Marca: {{choosenProduct.brand.name}}</h1>
+        <h1>Tipo de produto: {{choosenProduct.productType.name}}</h1>
+        <h1>Quantidade: {{choosenProduct.quantity}}</h1>
+        <h1>Quantidade mínima: {{choosenProduct.min_quantity}}</h1>
+        <h1>Quantidade máxima: {{choosenProduct.max_quantity}}</h1>
+    </div>
 </div>
 
 

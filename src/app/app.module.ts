@@ -9,11 +9,13 @@ import { AppComponent } from './app.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from './shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
-
-
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import {MatBadgeModule} from '@angular/material/badge';
+
+
+//const config: SocketIoConfig = { url: "localhost:4200", options: { path: '/inventory-socket', transports: ['websocket', 'polling'] } };
 
 registerLocaleData(ptBr);
 
@@ -32,6 +34,7 @@ registerLocaleData(ptBr);
     MatIconModule,
     AppRoutingModule,
     MatDialogModule,
+    MatBadgeModule,
     SharedModule
   ],
   providers: [

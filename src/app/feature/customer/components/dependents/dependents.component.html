@@ -1,6 +1,7 @@
-<button mat-fab color="primary" (click)="openDialogAdd()">
+<button mat-mini-fab color="primary" (click)="openDialogAdd()">
     <mat-icon>add</mat-icon>
 </button>
+
 <table-entities 
     [data]="data" 
     (rowClicked)="findDependent.emit($event)"

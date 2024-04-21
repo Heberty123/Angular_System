@@ -1,5 +1,5 @@
 <mat-chip-listbox aria-label="Fish selection" #matChip
-  [disabled]="isDisabled">
+  [disabled]="isDisabled" >
     <mat-chip-option *ngFor="let value of data" [value]="value"
       (removed)="remItemEvent.next(value)">
       {{ value[displayProperty] }}

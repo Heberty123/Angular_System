@@ -3,15 +3,31 @@
     flex-direction: column;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px 0;
+    height: 100%;
+}
+
+
+.bttn-new {
+    align-self: flex-end;
+}
+
+list-address {
+    flex: 1;
+}
+
 .message-empty{
     display: flex;
     flex-direction: column;
     flex: 1;
-    justify-content: center;
-    align-items: center;
-    background-color: bisque;
+    justify-self: center;
+    align-self: center;
 }
 
 .message-empty span{
     font-weight: bold;
+    align-self: center;
 }

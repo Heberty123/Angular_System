@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
@@ -36,7 +36,6 @@ import { DependentsComponent } from '../../components/dependents/dependents.comp
 export class DetailsComponent implements OnInit, OnDestroy {
 
   @Input() customer: Customer;
-  @Output() eraseCustomer = new EventEmitter<void>()
   @Output() toList = new EventEmitter<void>()
 
   constructor(private _customerService: CustomerService,
@@ -51,7 +50,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe({
       next: (editedCustomer: Customer) => {
-        console.log(editedCustomer);
         if (editedCustomer)
           this._customerService.update(editedCustomer)
             .subscribe({
@@ -78,7 +76,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this._customerService.deleteById(this.customer.id!)
             .subscribe({
               next: () => {
-                this.eraseCustomer.emit()
                 this.toList.emit();
               }
             })
@@ -88,8 +85,5 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  testeApenas(parent: Customer): void {
-    this.customer = parent;
-  }
 
 }

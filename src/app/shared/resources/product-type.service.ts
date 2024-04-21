@@ -1,27 +1,44 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductType } from '../interfaces/productType';
+import { ProductTypeDashboard } from '../interfaces/ProductTypeDashboard';
+import moment, { Moment } from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductTypeService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private _http: HttpClient) { }
 
   private apiUrl: string = 'api/productType';
   private headers = { 'content-type': 'application/json'}
 
   findAll(): Observable<ProductType[]>{
-    return this.http.get<ProductType[]>(this.apiUrl + "/all", { headers: this.headers })
+    return this._http.get<ProductType[]>(this.apiUrl + "/all", { headers: this.headers })
   }
 
   save(value: ProductType): Observable<ProductType>{
-    return this.http.post<ProductType>(this.apiUrl, value, { headers: this.headers })
+    return this._http.post<ProductType>(this.apiUrl, value, { headers: this.headers })
   }
 
   delete(value: ProductType): Observable<void>{
-    return this.http.delete<void>(this.apiUrl + `/${value.id!}`, { headers: this.headers })
+    return this._http.delete<void>(this.apiUrl + `/${value.id!}`, { headers: this.headers })
+  }
+
+  getDashboard(startDate?: Moment, endDate?: Moment): Observable<ProductTypeDashboard[]>{
+    let params = new HttpParams();
+    if(startDate && endDate) {
+      params = params.append('startDate', startDate.toISOString());
+      params = params.append('endDate', endDate.toISOString());
+    }
+    else {
+      params = params.append('startDate', moment().startOf('month').toISOString());
+      params = params.append('endDate', moment().endOf('month').toISOString());
+    }
+
+    return this._http.get<ProductTypeDashboard[]>(this.apiUrl + "/dashboard",
+    { headers: this.headers, params: params })
   }
 }

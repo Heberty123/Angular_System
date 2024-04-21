@@ -6,6 +6,8 @@ import { SimpleProduct } from 'src/app/shared/classes/SimpleProduct';
 import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { ChooseCustomerDialogComponent } from '../choose-customer-dialog/choose-customer-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'dialog-products',
@@ -14,6 +16,8 @@ import { ChooseCustomerDialogComponent } from '../choose-customer-dialog/choose-
     CommonModule,
     MatDialogModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     TableEntitiesComponent
   ],
   templateUrl: './dialog-products.component.html',

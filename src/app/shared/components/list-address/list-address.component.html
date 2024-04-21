@@ -26,11 +26,11 @@
         </div>
         
         <div class="div-bttns" *ngIf="editable">
-            <button mat-fab color="accent" (click)="updateItem(item!.id)" class="btt-edit">
+            <button mat-mini-fab color="accent" (click)="updateItem(item!.id)" class="btt-edit">
                 <mat-icon>edit</mat-icon>
             </button>
             
-            <button mat-fab color="primary" (click)="deleteItem(item!.id)" class="btt-delete">
+            <button mat-mini-fab color="primary" (click)="deleteItem(item!.id)" class="btt-delete">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

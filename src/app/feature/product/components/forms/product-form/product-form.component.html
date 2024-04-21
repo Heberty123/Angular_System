@@ -1,15 +1,31 @@
-<form [formGroup]="form" #formDir="ngForm" class="form-customer">
-    
-    <advance-chip-listbox 
-        [data]="productTypes" 
-        formControlName="productType"
-        (addItemEvent)="openDialogAddProductType()"
-        (remItemEvent)="openDialogDeleteProductType($event)"/>
+<form [formGroup]="form" #formDir="ngForm">
 
+    <div class="chip-list">
+      <mat-chip-listbox formControlName="productType">
+          <mat-chip-option *ngFor="let value of productTypes" [value]="value"
+            [selected]="productType.value.id === value.id ? true : false"
+            (removed)="openDialogDeleteProductType(value)">
+            {{ value.name }}
+            <button matChipRemove *ngIf="chipRemovable">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-option>
+      </mat-chip-listbox>
+    
+      <button mat-mini-fab color="primary"
+        (click)="openDialogAddProductType()">
+        <mat-icon>add</mat-icon>
+      </button>
+      
+      <button mat-mini-fab color="warn"
+        (click)="chipRemovable = !chipRemovable">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
 
     <mat-form-field appearance="fill" class="input-name">
         <mat-label>Nome</mat-label>
-        <input type="text" matInput placeholder="Digite o nome do produto..."  formControlName="name">
+        <input type="text" matInput placeholder="Digite o nome do produto..." formControlName="name">
         <mat-hint>nome do produto</mat-hint>
         <mat-error *ngIf="name.errors?.['required']">
           O nome é obrigatório.
@@ -41,8 +57,7 @@
     
         <mat-form-field appearance="fill" class="input-brand">
           <mat-label>Marca</mat-label>
-          <mat-select formControlName="brand">
-    
+          <mat-select formControlName="brand" [compareWith]="compareBrandFn">
             <mat-option (click)="openDialogAddBrand()">
               Adicionar
               <mat-icon>add</mat-icon>
@@ -64,4 +79,38 @@
               O preço é obrigatório.
             </mat-error>
         </mat-form-field>   
+
+        <mat-form-field class="input-quantity">
+          <mat-label>Quantidade</mat-label>
+          <input type="number" matInput formControlName="quantity" placeholder="digite quantitade">
+          <mat-hint>Quantidade</mat-hint>
+          <mat-error *ngIf="price.errors?.['required']">
+              A quantidade é obrigatória.
+            </mat-error>
+        </mat-form-field>  
+
+        <mat-form-field class="input-min-quantity">
+          <mat-label>Quantidade mín</mat-label>
+          <input type="number" matInput formControlName="min_quantity" placeholder="digite quantidade mínima">
+          <mat-hint>Quantidade mín</mat-hint>
+          <mat-error *ngIf="price.errors?.['required']">
+              A quantidade mínima é obrigatória.
+            </mat-error>
+        </mat-form-field>  
+
+        <mat-form-field class="input-max-quantity">
+          <mat-label>Quantidade máx</mat-label>
+          <input type="number" matInput formControlName="max_quantity" placeholder="digite quantidade máxima">
+          <mat-hint>Quanitdade máx</mat-hint>
+          <mat-error *ngIf="price.errors?.['required']">
+              A quantidade máxima é obrigatória.
+            </mat-error>
+        </mat-form-field>  
+
+        <button mat-raised-button
+          *ngIf="displaySubmit"
+          color="primary"
+          class="bttn-save">
+          Salvar
+        </button>
 </form>

@@ -41,6 +41,13 @@
         </mat-list-item>
 
         <mat-list-item>
+          <button [routerLink]="['/inventory-control']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon [matBadge]="inventoryStatus.qtyStatus" matBadgeColor="warn">home</mat-icon>
+            <a>Estoque</a>
+          </button>
+        </mat-list-item>
+
+        <mat-list-item>
           <button [routerLink]="['/dashboard']" routerLinkActive="LinkActive" class="sidenav-btt">
             <mat-icon>data_usage</mat-icon>
             <a>Vendas</a>

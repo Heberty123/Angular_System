@@ -31,6 +31,7 @@ let objToDisplayColumns: ObjToDisplayColumns[] = [
 @Component({
   selector: 'form-field-custom-control-example',
   templateUrl: 'home.component.html',
+  styleUrl: 'home.component.css',
   standalone: true,
   imports: [
     CommonModule,

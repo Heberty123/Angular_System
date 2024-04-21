@@ -1,0 +1,19 @@
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1f 1fr;
+    gap: 0 10px;
+}
+
+.chip-list {
+    display: flex;
+    gap: 0 5px;
+    grid-column: 1/6;
+    margin-bottom: 20px;
+}
+
+.bttn-save {
+    align-self: center;
+}
+

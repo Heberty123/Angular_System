@@ -1,0 +1,25 @@
+<div>
+    <h2>Tipo de pagamento (mes atual)</h2>
+    <ngx-charts-pie-grid
+        [view]="viewPie"
+        [results]="singlePie"
+        (select)="onSelect($event)" />
+</div>
+
+<div>
+    <h2>Pedidos vs Pagamentos</h2>
+    <ngx-charts-line-chart
+    [view]="viewLine"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [xAxisLabel]="'Meses'"
+    [yAxisLabel]="'Valores'"
+    [timeline]="true"
+    [results]="multiLine"
+    (select)="onSelect($event)"
+    (activate)="onActivate($event)"
+    (deactivate)="onDeactivate($event)"/>
+</div>

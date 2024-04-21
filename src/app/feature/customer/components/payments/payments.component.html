@@ -1,8 +1,11 @@
-<mat-button-toggle-group #group="matButtonToggleGroup" class="bttn-toggle-group"
-    value="0" (change)="bttnToggleChange($event)">
-    <mat-button-toggle value="0">Á Pagar </mat-button-toggle>
-    <mat-button-toggle value="1">Já Pago</mat-button-toggle>
-</mat-button-toggle-group>
+<div class="head-bttns">
+    <mat-button-toggle-group #group="matButtonToggleGroup" class="bttn-toggle-group"
+        value="0" (change)="bttnToggleChange($event)">
+        <mat-button-toggle value="0">Á Pagar </mat-button-toggle>
+        <mat-button-toggle value="1">Já Pago</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
 
     <!-- Display when data is 'LOADING' -->
     <ng-container *ngIf="!data[+group.value]; else displayTable">

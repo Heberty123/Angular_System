@@ -1,13 +1,17 @@
 import { CommonModule, CurrencyPipe, DatePipe, PercentPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, Signal, SimpleChanges, computed, signal } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 
 export interface ObjToDisplayColumns {
   key: string,
   label: string,
+  editable?: boolean,
   pipe?: {
     type: string,
     value?: string
@@ -21,7 +25,11 @@ export interface ObjToDisplayColumns {
     CommonModule,
     MatTableModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './table-entities.component.html',
   styleUrls: ['./table-entities.component.css'],
@@ -34,9 +42,7 @@ export class TableEntitiesComponent<T> implements OnChanges {
   displayedColumns: string[] = this.displayColumns.map(o => o.key)
   private _dataSource = new MatTableDataSource<T>(this.data);
   private _selection = new Set<T>();
-  private _selectable = 
-    this.displayedColumns.includes('select') ?
-      true : false;
+  private _selectable = this.displayedColumns.includes('select') ? true : false;
   private _selectedSignal = signal(this._selection);
   private _hasSelectedSignal = signal(this._selection.size > 0);
 

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { FormCustomerComponent } from '../../forms/form-customer/form-customer.component';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-add-dependent',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     MatDialogModule,
     FormCustomerComponent,
+    MatButtonModule,
     ReactiveFormsModule
   ],
   templateUrl: './add-dependent.component.html',

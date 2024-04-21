@@ -10,7 +10,6 @@ export interface HasDisplayProperty {
   [key: string]: any;
 }
 
-
 @Component({
   selector: 'advance-chip-listbox',
   templateUrl: './advance-chip-listbox.component.html',
@@ -37,6 +36,7 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty>
   @ViewChild('matChip') matChip: MatChipListbox
   @Input() data: T[];
   @Input() displayProperty: keyof T = 'name';
+  selected: T;
   onChange: (value: T) => void
   onTouched: () => void;
   isDisabled: boolean;
@@ -51,8 +51,15 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty>
       next: ({value}: MatChipListboxChange) => this.onChange(value)
     })
   }
+
+  compareFn(one: T, two: T): boolean {
+    console.log(`one: ${one} === two: ${two}`);
+    return one['id'] === two['id'];
+  }
   
-  writeValue(obj: T[]): void {
+  writeValue(obj: T): void {
+    console.log(obj);
+    this.selected = obj;
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;

@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductByBarcodeComponent } from './shared/components/dialogs/product-by-barcode/product-by-barcode.component';
 import { Product } from './shared/interfaces/product';
 import { ProductService } from './shared/resources/product.service';
+import { WebSocketStockService } from './shared/resources/web-socket-stock.service';
+import { ProductStock } from './shared/interfaces/ProductStock';
+import { InventoryStatusService } from './services/inventory-status.service';
 
 
 @Component({
@@ -23,8 +26,9 @@ export class AppComponent implements OnInit, OnDestroy {
   private maxKeypressDelay = 100; 
 
   constructor(private controlBarcodeService: ControlBarcodeReaderService,
-              private productService: ProductService,
-              private dialog: MatDialog) { }
+              public inventoryStatus: InventoryStatusService,
+              private _productService: ProductService,
+              private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.subscription =
@@ -71,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.barcode += event.key;
       else {
         if(this.barcode.length > 10){
+          event.preventDefault();
           if (this.isThereComponentBarcodeReader) {
             this.controlBarcodeService.setBarcodeValue(this.barcode);
           }
@@ -86,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /** !!!!!! Dialogs  !!!!! */
 
   openProductByBarcode(barcode: string): void {
-    this.productService.findByBarcode(barcode)
+    this._productService.findByBarcode(barcode)
       .subscribe({
         next: (product: Product) => {
           const dialogRef = this.dialog.open(ProductByBarcodeComponent, {

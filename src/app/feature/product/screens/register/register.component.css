@@ -1,6 +1,10 @@
 :host {
-    background-color: aqua;
     display: flex;
+    flex-direction: column;
     height: 100%;
     padding: 30px;
+}
+
+button {
+    align-self: flex-end;
 }

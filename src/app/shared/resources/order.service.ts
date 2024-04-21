@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Order } from '../classes/Order';
 import { OrderInterface } from '../interfaces/OrderInterface';
+import { SalesData } from '../interfaces/SalesData';
+import moment from 'moment';
+import { ProductOrder } from '../classes/ProductOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +22,19 @@ export class OrderService {
   }
 
   save(order: Order): Observable<Order>{
-    let orderAPI: any = this.stringify(order);
+    let orderAPI: string = this.stringify(order);
     return this.http.post<Order>(this.apiUrl + "/save", orderAPI, { headers: this.headers })
+      .pipe(catchError((error: HttpErrorResponse) => throwError(() => error)))
+  }
+
+  getSalesData(year?: number): Observable<SalesData[]>{
+    let params = new HttpParams();
+    if(year)
+      params = params.append('year', year);
+    else
+      params = params.append('year', moment().year())
+    return this.http.get<SalesData[]>(this.apiUrl + "/dashboard", { headers: this.headers,
+    params: params })
   }
 
   private stringify(obj: any): string {

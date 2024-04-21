@@ -1,1 +1,4 @@
-<table-entities (rowClicked)="rowClicked.emit($event)"/>
+<table-entities 
+    [data]="products"
+    [displayColumns]="columnsDiplayed"
+    (rowClicked)="rowClicked.emit($event)"/>

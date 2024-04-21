@@ -2,11 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: aquamarine;
+    background-color: rgb(137, 192, 194);
     width: 100%;
     height: 100%;
     padding: 30px;
     gap: 20px 0px;
+}
+
+mat-form-field {
+    width: 50%;
+    max-width: 400px;
 }
 
 table-entities{

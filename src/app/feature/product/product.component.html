@@ -21,17 +21,6 @@ mat-align-tabs="center">
         <list (rowClicked)="selectedProduct = $event; tabGroup.selectedIndex = 3" />
       </ng-template>
     </mat-tab>
-  
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">delete</mat-icon>
-        Excluir
-      </ng-template>
-  
-      <ng-template matTabContent>
-        <remove />
-      </ng-template>
-    </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
@@ -40,8 +29,8 @@ mat-align-tabs="center">
       </ng-template>
   
       <ng-template matTabContent>
-        <details-product [productId]="selectedProduct!.id" (eraseProduct)="selectedProduct = null"
-        (toList)="tabGroup.selectedIndex = 1" />
+        <details-product [productId]="selectedProduct?.id"
+        (toList)="tabGroup.selectedIndex = 1; selectedProduct = undefined" />
       </ng-template>
     </mat-tab>
 

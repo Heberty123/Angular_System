@@ -1,24 +1,19 @@
 <ng-container *ngIf="customer != null; else empty">
+
     <div class="container-customer">
+        <div class="section-bttns">
+            <button mat-flat-button color="warn" (click)="openRemoveCustomer()">
+                Excluir
+            </button>
+            <button mat-flat-button color="primary" (click)="openEditCustomer()">
+                Editar
+            </button>
+        </div>
 
         <h1>Id: {{customer.id}}</h1>
         <h1>CPF: {{customer.cpf}}</h1>
         <h1>Name: {{customer.name}}</h1>
         <h1>É dependente de: {{customer.parent?.name || 'ninguém'}}</h1>
-
-        <button  *ngIf="customer.parent"
-            mat-flat-button color="primary"
-            (click)="testeApenas(customer.parent)">
-            Buscar parente
-        </button>
-
-        <button mat-flat-button color="primary" (click)="openEditCustomer()">
-            Editar
-        </button>
-
-        <button mat-flat-button color="warn" (click)="openRemoveCustomer()">
-            Excluir
-        </button>
     </div>
 
     <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="true">        
@@ -57,7 +52,7 @@
 <ng-template #empty>
     <div class="auto-reply-message">
         <h1>Cliente não foi selecionado !</h1>
-        <strong>Por favor, selecione o cliente</strong>
+        <strong>Por favor, selecione um cliente</strong>
         <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
     </div>
 </ng-template>

@@ -1,17 +1,23 @@
 <!--  Template for Form !  -->
 
-<form-address *ngIf="!addressFC.disabled; else bttn" [formControl]="addressFC" (submit)="saveAddress()"/>
+<div class="container">
+    <button 
+        mat-raised-button 
+        color="{{ addressFC.enabled ? 'warn' : 'primary' }}" 
+        (click)="addressFC.enabled ? addressFC.disable() : addressFC.enable()"
+        class="bttn-new">
+            {{ addressFC.enabled ? 'Fechar' : 'Novo' }}
+    </button>
+    
+    <form-address *ngIf="!addressFC.disabled" [formControl]="addressFC" (submit)="saveAddress()"/>
 
-<ng-template #bttn>
-    <button mat-raised-button color="primary" (click)="addressFC.enable()">Novo</button>
-</ng-template>
+    <list-address [data]="addresses" [editable]="true"
+        (updateById)="updateById($event)"
+        (removeById)="removeById($event)"
+        *ngIf="addresses.length > 0; else empty"/>
+</div>
 
-<!--  Template for List !  -->
 
-<list-address [data]="addresses" [editable]="true"
-    (updateById)="updateById($event)"
-    (removeById)="removeById($event)"
-    *ngIf="addresses.length > 0; else empty"/>
 
 <ng-template #empty>
     <div class="message-empty">
