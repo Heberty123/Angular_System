@@ -15,8 +15,7 @@ import { BrandService } from 'src/app/shared/resources/brand.service';
 import { ProductTypeService } from 'src/app/shared/resources/product-type.service';
 import { AddBranchComponent } from '../../dialogs/add-branch/add-branch.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AdvanceChipListboxComponent } from 'src/app/shared/components/mat-chip-listbox/advance-chip-listbox/advance-chip-listbox.component';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { AddProductTypeComponent } from '../../dialogs/add-product-type/add-product-type.component';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -175,16 +174,16 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
   }
   
   validate(control: AbstractControl<any, any>): ValidationErrors | null {
+    console.log("EU fui chamado, ok?")
     return this._form.valid ? null : { product: true };
   }
 
-  compareBrandFn(one: Brand, two: Brand ): boolean {
-    return one.id === two.id;
+  compareBrandFn(one: Brand, two?: Brand ): boolean {
+    return one.id === two?.id;
   }
 
-  compareProductTypeFn(one: ProductType, two: ProductType ): boolean {
-    console.log("Chamado")
-    return one.id === two.id;
+  compareProductTypeFn(one: ProductType, two?: ProductType ): boolean {
+    return one.id === two?.id;
   }
 
   get name() {
@@ -232,6 +231,7 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
   }
 
   onSubmit(): void {
+    this.brand.markAsDirty();
     this.submit.emit();
   }
 

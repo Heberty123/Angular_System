@@ -3,7 +3,7 @@
     <div class="chip-list">
       <mat-chip-listbox formControlName="productType">
           <mat-chip-option *ngFor="let value of productTypes" [value]="value"
-            [selected]="productType.value.id === value.id ? true : false"
+            [selected]="productType.value?.id === value.id ? true : false"
             (removed)="openDialogDeleteProductType(value)">
             {{ value.name }}
             <button matChipRemove *ngIf="chipRemovable">
@@ -72,7 +72,7 @@
     
         <mat-form-field class="input-price">
           <mat-label>Preço</mat-label>
-          <input type="text" matInput formControlName="price"
+          <input type="number" matInput formControlName="price"
               prefix="R$ " placeholder="digite o preço...">
           <mat-hint>preço</mat-hint>
           <mat-error *ngIf="price.errors?.['required']">
