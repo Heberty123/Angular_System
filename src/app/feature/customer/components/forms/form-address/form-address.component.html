@@ -73,7 +73,7 @@
 
       <mat-form-field appearance="fill" class="input-deliveryType">
         <mat-label>Tipo de entrega</mat-label>
-        <mat-select formControlName="deliveryType">
+        <mat-select formControlName="deliveryType" [compareWith]="compareDTFn">
           <mat-option (click)="addDeliveryType()">
             <mat-icon>
               add

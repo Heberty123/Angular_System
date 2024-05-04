@@ -14,6 +14,7 @@ import { FormCustomerComponent } from '../../components/forms/form-customer/form
 import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
+import { EditAddressComponent } from '../../components/dialogs/edit-address/edit-address.component';
 
 @Component({
   selector: 'register',
@@ -131,19 +132,45 @@ export class RegisterComponent{
     }    
   }
 
-  // removeAddress(id: number): void{
-  //   this.serviceAddress.deleteById(id)
-  //     .subscribe({
-  //       next: (n: any) => {
-  //         if(n.status == 200){
-  //           this.addresses.filter((value, index) => {
-  //             if(value.id === id){
-  //               this.addresses.splice(index, 1);
-  //             }
-  //           })
-  //         }
-  //       },
-  //       error: (v) => console.error(v),
-  //     })
-  // }
+  updateById(id: number): void {
+    let value: Address =
+      this.addresses.find(value => value.id === id)!;
+
+    const dialogRef = this.dialog.open(EditAddressComponent, {
+      data: value
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (editedAddress: Address) => {
+        if (editedAddress) {
+          this._addressService.update(editedAddress)
+            .subscribe({
+              next: (address: Address) => {
+                this.addresses.find((value, index) => {
+                  if (value.id === address.id)
+                    this.addresses[index] = address;
+                  return;
+                })
+              }
+            })
+        }
+      }
+    });
+  }
+
+  removeAddress(id: number): void{
+     this._addressService.deleteById(id)
+       .subscribe({
+         next: (n: any) => {
+           if(n.status == 200){
+             this.addresses.filter((value, index) => {
+               if(value.id === id){
+                 this.addresses.splice(index, 1);
+               }
+             })
+           }
+         },
+         error: (v) => console.error(v),
+       })
+   }
 }

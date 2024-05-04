@@ -24,7 +24,9 @@
             <form-address 
                 [formControl]="addressFC"
                 (submit)="saveAddress()"/>
-            <list-address [data]="addresses" [editable]="true" />
+            <list-address [data]="addresses" [editable]="true" 
+                (updateById)="updateById($event)"
+                (removeById)="removeAddress($event)" />
         </mat-step>
 
         <mat-step label="Dependentes" >  

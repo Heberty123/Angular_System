@@ -9,7 +9,7 @@ import { AddressService } from 'src/app/shared/resources/address.service';
 import { DeliveryTypeService } from 'src/app/shared/resources/delivery-type.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { provideNgxMask } from 'ngx-mask';
-import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-Delivery-type-dialog/add-delivery-type-dialog.component';
+import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-delivery-type-dialog/add-delivery-type-dialog.component';
 
  interface AddressForm {
   id?: FormControl <number | null>,
@@ -153,6 +153,10 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
   isEditable(): boolean {
     console.log()
     return this._form.get('id')?.value ? true : false
+  }
+
+  compareDTFn(one: DeliveryType, two?: DeliveryType ): boolean {
+    return one.id === two?.id;
   }
 
   get cep(): AbstractControl<string | null> {
