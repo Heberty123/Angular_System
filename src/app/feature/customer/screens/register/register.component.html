@@ -1,15 +1,15 @@
 <div class="container-customer">
     <button mat-flat-button color="primary"
-        [disabled]="!customerFC.value?.id"
+        [disabled]="isCustomerPersisted()"
         (click)="reset()"
         class="btt-new">
         Novo
     </button>
-    <form-customer [formControl]="customerFC"/>
+    <form-customer [formGroup]="customerFG" />
     <button 
         mat-flat-button
         color="primary"
-        [disabled]="customerFC.invalid"
+        [disabled]="customerFG.invalid"
         (click)="saveCustomer()">
         Salvar
     </button>
@@ -22,8 +22,8 @@
 
         <mat-step label="Endereços">
             <form-address 
-                [formControl]="addressFC"
-                (submit)="saveAddress()"/>
+                [formGroup]="addressFG"
+                (ngSubmit)="saveAddress()"/>
             <list-address [data]="addresses" [editable]="true" 
                 (updateById)="updateById($event)"
                 (removeById)="removeAddress($event)" />
@@ -32,10 +32,10 @@
         <mat-step label="Dependentes" >  
             <div class="dependent-box">
                 <div class="section-form-dependent">
-                    <form-customer [formControl]="dependentFC"/>
+                    <form-customer [formGroup]="dependentFG"/>
                     <button 
                         mat-raised-button color="primary"
-                        [disabled]="dependentFC.invalid"
+                        [disabled]="dependentFG.invalid"
                         (click)="saveDependent()">Salvar</button>
                 </div>
                 
@@ -54,5 +54,5 @@
         
     </mat-stepper>
 
-    <div class="block" [class.unlock]="customerFC.value?.id"></div>
+    <div class="block" [class.unlock]="isCustomerPersisted()"></div>
 </div>

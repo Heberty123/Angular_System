@@ -34,7 +34,6 @@ export class DetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe({
       next: (editedProduct: Product) => {
-        console.log(editedProduct)
         if(editedProduct)
           this._productService.update(editedProduct)
             .subscribe({ next: (value: Product) => this.choosenProduct = value })

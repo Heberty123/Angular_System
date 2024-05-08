@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Signal, ViewChild, WritableSignal, computed } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -9,12 +9,12 @@ import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
-import { FormAddressComponent } from '../../components/forms/form-address/form-address.component';
 import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
 import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { EditAddressComponent } from '../../components/dialogs/edit-address/edit-address.component';
+import { formAddressComponent } from '../../components/forms/form-address/form-address.component';
 
 @Component({
   selector: 'register',
@@ -24,7 +24,7 @@ import { EditAddressComponent } from '../../components/dialogs/edit-address/edit
   imports: [
     CommonModule,
     FormCustomerComponent,
-    FormAddressComponent,
+    formAddressComponent,
     MatStepperModule,
     MatButtonModule,
     MatIconModule,
@@ -34,9 +34,9 @@ import { EditAddressComponent } from '../../components/dialogs/edit-address/edit
   ]
 })
 export class RegisterComponent{
-  customerFC = new FormControl<Customer>({} as Customer);
-  addressFC = new FormControl<Address>({} as Address);
-  dependentFC = new FormControl<Customer>({} as Customer);
+  customerFG = new FormGroup({})
+  addressFG = new FormGroup({});
+  dependentFG = new FormGroup({})
   addresses: Address[] = [];
   dependents: Customer[] = [];
 
@@ -44,18 +44,19 @@ export class RegisterComponent{
   constructor(private _customerService: CustomerService,
     private _addressService: AddressService,
     public dialog: MatDialog){
-      this.addressFC.disable();
-      this.dependentFC.disable();
+      this.addressFG.disable();
+      this.dependentFG.disable();
     }
 
   saveCustomer(): void {
-    if(this.customerFC.valid) {
-      this._customerService.save(this.customerFC.value)
+    this.customerFG.markAllAsTouched();
+    if(this.customerFG.valid) {
+      this._customerService.save(this.customerFG.value as Customer)
       .subscribe({
         next: (value: Customer) => {
-          this.customerFC.setValue(value);
-          this.addressFC.enable();
-          this.dependentFC.enable();
+          this.customerFG.patchValue(value);
+          this.addressFG.enable();
+          this.dependentFG.enable();
         },
         error: (e) => console.error(e)
       });
@@ -63,38 +64,45 @@ export class RegisterComponent{
   }
 
   saveAddress(): void {
-    if(this.addressFC.valid) {
-      this._addressService.save(this.addressFC.value, this.customerFC.value!.id!)
+    if(this.addressFG.valid) {
+      this._addressService.save(this.addressFG.value, this.customerFG.value as Customer)
       .subscribe({
         next: (address: Address) => this.addresses.push(address)
       });
-      this.addressFC.reset();
+      this.addressFG.reset();
     }
   }
 
   saveDependent(): void {
-    if(this.dependentFC.valid) {
+    this.dependentFG.markAllAsTouched();
+    if(this.dependentFG.valid) {
       this._customerService.addDependent(
-        this.dependentFC.value!,
-        this.customerFC.value!)
+        this.dependentFG.value! as Customer,
+        this.customerFG.value! as Customer)
         .subscribe({
           next: (value: Customer) => { 
             this.dependents = [...this.dependents, value];
-            this.dependentFC.reset();
+            this.dependentFG.reset();
           }
         })
     }
   }
 
   reset(): void {
-    this.customerFC.reset()
-    this.addressFC.reset()
-    this.dependentFC.reset()
-    this.addressFC.disable();
-    this.dependentFC.disable()
+    this.customerFG.reset()
+    this.addressFG.reset()
+    this.dependentFG.reset()
+    this.addressFG.disable();
+    this.dependentFG.disable()
     this.addresses = [];
     this.dependents = [];
   }
+
+  isCustomerPersisted(): boolean {
+    let value: Customer = this.customerFG.value as Customer;
+    return value.id != undefined;
+  }
+
 
   toggleSelectable(pointer: TableEntitiesComponent<Customer>): void {
     pointer.selectable = !pointer.selectable;

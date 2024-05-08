@@ -1,7 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Customer } from 'src/app/shared/interfaces/customer';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormCustomerComponent } from '../../forms/form-customer/form-customer.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +20,13 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AddDependentComponent {
 
-  customerFC = new FormControl<Customer>({} as Customer);
+  customerFG = new FormGroup({});
 
   constructor(public dialogRef: MatDialogRef<AddDependentComponent>) {}
+
+  save(): void {
+    this.customerFG.markAllAsTouched();
+    if(this.customerFG.valid)
+      this.dialogRef.close(this.customerFG.value)
+  }
 }

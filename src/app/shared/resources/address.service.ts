@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, take, throwError } from 'rxjs';
 import { Address } from '../interfaces/address';
+import { Customer } from '../interfaces/customer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class AddressService {
   private apiUrl: string = 'api/address';
   private headers = { 'content-type': 'application/json'}
 
-  save(address: any, customerId: number): Observable<Address>{
-    return this.http.post<Address>(this.apiUrl + `/create/${customerId}`, address, {'headers': this.headers});
+  save(address: any, customer: Customer): Observable<Address>{
+    return this.http.post<Address>(this.apiUrl + `/create/${customer.id}`, address, {'headers': this.headers});
   }
 
   searchByCPF(cep: string): Observable<any>{

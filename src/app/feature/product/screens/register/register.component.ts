@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Product } from 'src/app/shared/interfaces/product';
-// import { DialogOverviewAddChipComponent } from '../../components/dialogs/add-mat-chip/add-mat-chip.component';
 import { ProductService } from 'src/app/shared/resources/product.service';
 
 @Component({
@@ -12,22 +11,22 @@ import { ProductService } from 'src/app/shared/resources/product.service';
 export class RegisterComponent {
 
   chipRemovable: boolean = false;
-  private _productFC = new FormControl<Product>({} as Product);
+  private _productFG = new FormGroup({});
 
   constructor(private _productService: ProductService) {}
 
   public saveProduct(): void {
-    console.log(this._productFC.valid)/*
-    if(this._productFC.valid) {
-      this._productService.save(this._productFC.value!)
+
+    if(this._productFG.valid) {
+      this._productService.save(this._productFG.value! as Product)
         .subscribe({
-          next: (value: Product) => this._productFC.reset()
+          next: () => this._productFG.reset()
         })
-    }*/
+    }
   }
 
-  get productFC() {
-    return this._productFC
+  get productFG(): FormGroup {
+    return this._productFG
   }
 
 }

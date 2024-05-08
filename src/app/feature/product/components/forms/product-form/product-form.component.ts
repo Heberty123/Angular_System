@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgForm, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher, MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,14 +34,6 @@ interface ProductForm {
   max_quantity: FormControl<number | null>
 }
 
-class CustomErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: AbstractControl<any, any> | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-      return (control?.invalid && control.dirty) ?? false;
-  }
-}
 
 @Component({
   selector: 'product-form',
@@ -60,31 +52,18 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
     MatChipsModule
   ],
   providers: [
-    provideNgxMask(),
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ProductFormComponent),
-      multi: true,
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => ProductFormComponent),
-      multi: true,
-    },
-    {
-      provide: ErrorStateMatcher, useClass: CustomErrorStateMatcher
-    }
+    provideNgxMask()
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css'
 })
-export class ProductFormComponent implements ControlValueAccessor, Validator, OnInit,  OnDestroy {
+export class ProductFormComponent implements OnInit,  OnDestroy {
   destroySubject = new Subject<void>();
   productTypes: ProductType[] = [];
   brands: Brand[] = [];
   chipRemovable: boolean = false;
   @Input() displaySubmit?: boolean = false;
-  @Output() submit = new EventEmitter<void>();
+  @Input() formGroup: FormGroup
 
   constructor(private _productTypeService: ProductTypeService,
     private _brandService: BrandService,
@@ -99,21 +78,20 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
       .subscribe({
         next: (value: Brand[]) => this.brands = value
       })
-  }
 
-  private _form = new FormGroup<ProductForm>({
-    id: new FormControl(null),
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl(),
-    reference: new FormControl(),
-    barcode: new FormControl(),
-    brand: new FormControl({} as Brand, [Validators.required]),
-    productType: new FormControl({} as ProductType, [Validators.required]),
-    price: new FormControl(null, [Validators.required]),
-    quantity: new FormControl(1, [Validators.required]),
-    min_quantity: new FormControl(1, [Validators.required]),
-    max_quantity: new FormControl(1, [Validators.required])
-  });
+      this.formGroup.addControl('id', new FormControl(null))
+      this.formGroup.addControl('name', new FormControl('', [Validators.required]))
+      this.formGroup.addControl('description', new FormControl())
+      this.formGroup.addControl('reference', new FormControl(null))
+      this.formGroup.addControl('barcode', new FormControl(null))
+      this.formGroup.addControl('brand', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('productType', new FormControl(null, [Validators.required]))
+
+      this.formGroup.addControl('price', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('quantity', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('min_quantity', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('max_quantity', new FormControl(null, [Validators.required]))
+  }
 
   openDialogAddProductType(): void{
     const dialogRef = this._dialog.open(AddProductTypeComponent);
@@ -173,10 +151,6 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
         });
   }
   
-  validate(control: AbstractControl<any, any>): ValidationErrors | null {
-    console.log("EU fui chamado, ok?")
-    return this._form.valid ? null : { product: true };
-  }
 
   compareBrandFn(one: Brand, two?: Brand ): boolean {
     return one.id === two?.id;
@@ -227,37 +201,12 @@ export class ProductFormComponent implements ControlValueAccessor, Validator, On
   }
 
   get form(): FormGroup{
-    return this._form;
+    return this.formGroup;
   }
 
   onSubmit(): void {
-    this.brand.markAsDirty();
-    this.submit.emit();
   }
 
-  writeValue(obj: Product): void {
-    if(obj === null) {
-      this._form.reset();
-    } else {
-      this._form
-        .patchValue(obj, { emitEvent: false });
-    } 
-  }
-  registerOnChange(fn: any): void {
-    this._form.valueChanges
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(fn);
-  }
-  registerOnTouched(fn: any): void {
-    this._form.valueChanges
-    .pipe(takeUntil(this.destroySubject))
-    .subscribe(fn);
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    isDisabled ? 
-      this._form.disable() :
-      this._form.enable();
-  }
   ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();

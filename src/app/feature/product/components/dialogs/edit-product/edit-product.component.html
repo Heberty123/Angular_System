@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Adicionar uma marca</h2>
 <div mat-dialog-content>
-    <product-form [formControl]="productFC"/>
+    <product-form [formGroup]="productFG"/>
 </div>
 <mat-dialog-actions align="end">
     <button color="warn" mat-button (click)="dialogRef.close()">Cancelar</button>
-    <button color="primary" mat-button [mat-dialog-close]="productFC.value" cdkFocusInitial>Editar</button>
+    <button color="primary" mat-button cdkFocusInitial (click)="onSave()">Editar</button>
 </mat-dialog-actions>

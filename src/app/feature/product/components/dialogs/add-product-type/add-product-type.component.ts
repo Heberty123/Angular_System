@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormAddressComponent } from 'src/app/feature/customer/components/forms/form-address/form-address.component';
+import { formAddressComponent } from 'src/app/feature/customer/components/forms/form-address/form-address.component';
 
 @Component({
   selector: 'app-add-product-type',
@@ -14,7 +14,7 @@ import { FormAddressComponent } from 'src/app/feature/customer/components/forms/
     CommonModule,
     MatDialogModule,
     MatButtonModule,
-    FormAddressComponent,
+    formAddressComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule

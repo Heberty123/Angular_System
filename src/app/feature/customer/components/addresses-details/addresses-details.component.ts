@@ -9,8 +9,8 @@ import { Customer } from 'src/app/shared/interfaces/customer';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
-import { FormAddressComponent } from '../forms/form-address/form-address.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { formAddressComponent } from '../forms/form-address/form-address.component';
 
 let snackBarRef: any;
 
@@ -22,7 +22,7 @@ let snackBarRef: any;
   imports: [
     CommonModule,
     ListAddressComponent,
-    FormAddressComponent,
+    formAddressComponent,
     MatButtonModule,
     MatSnackBarModule,
     ReactiveFormsModule
@@ -34,12 +34,12 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
 
   @Input() customer: Customer;
   @Input() addresses: Address[] = [];
-  addressFC = new FormControl<Address>({} as Address);
+  addressFG = new FormGroup({});
 
   constructor(private _addressService: AddressService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog) {
-      this.addressFC.disable();
+      this.addressFG.disable();
     }
 
   ngOnInit(): void {
@@ -55,15 +55,16 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
   }
 
   saveAddress(): void {
-    if(this.addressFC.valid){
+    this.addressFG.markAllAsTouched();
+    if(this.addressFG.valid){
       this._addressService.save(
-        this.addressFC.value,
-        this.customer.id!)
+        this.addressFG.value,
+        this.customer)
       .subscribe({
         next: (address: Address) => {
           this.addresses.push(address);
-          this.addressFC.reset();
-          this.addressFC.disable();
+          this.addressFG.reset();
+          this.addressFG.disable();
         }
       })
     }

@@ -1,14 +1,14 @@
-<form [formGroup]="form" #formDir="ngForm" class="form-customer"> 
+<form [formGroup]="formGroup" #formDir="ngForm" class="form-customer"> 
     <mat-form-field class="input-name">
       <mat-label>Nome</mat-label>
       <input matInput type="text" matInput formControlName="name"
           placeholder="Nome do cliente">
-      <button *ngIf="name.value" matSuffix mat-icon-button aria-label="Clear" (click)="name.setValue('')"
-      [disabled]="form.status === 'DISABLED'">
+      <button *ngIf="name?.value" matSuffix mat-icon-button aria-label="Clear" (click)="name?.setValue('')"
+      [disabled]="formGroup.status === 'DISABLED'">
           <mat-icon>close</mat-icon>
       </button>
       <mat-hint>Digite o nome do cliente</mat-hint>
-      <mat-error *ngIf="name.errors?.['required']">
+      <mat-error *ngIf="name?.errors?.['required']">
         O nome é obrigatório.
       </mat-error>
     </mat-form-field>
@@ -19,14 +19,14 @@
       <input type="text" matInput formControlName="cpf" placeholder="xxx.xxx.xxx-xx"
         maxlength="14" mask="000.000.000-00" [dropSpecialCharacters]="false">
       <mat-hint>Digite o cpf do cliente</mat-hint>
-      <mat-error *ngIf="cpf.errors?.['required']">
+      <mat-error *ngIf="cpf?.errors?.['required']">
         O cpf é obrigatório.
       </mat-error>
-      <mat-error *ngIf="cpf.errors?.['pattern']">
+      <mat-error *ngIf="cpf?.errors?.['pattern']">
         cpf inválido.
       </mat-error>
-      <mat-error *ngIf="cpf.errors?.['appExistCPF']">
-        {{ cpf.errors?.['appExistCPF'] }}
+      <mat-error *ngIf="cpf?.errors?.['appExistCPF']">
+        {{ cpf?.errors?.['appExistCPF'] }}
       </mat-error>
     </mat-form-field>
 </form>

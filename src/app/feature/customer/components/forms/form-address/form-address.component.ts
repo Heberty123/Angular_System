@@ -1,31 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DeliveryType } from 'src/app/shared/interfaces/delivery-type';
-import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { DeliveryTypeService } from 'src/app/shared/resources/delivery-type.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { provideNgxMask } from 'ngx-mask';
 import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-delivery-type-dialog/add-delivery-type-dialog.component';
-
- interface AddressForm {
-  id?: FormControl <number | null>,
-  street: FormControl <string | null>,
-  number: FormControl <number | null>,
-  neighborhood: FormControl <string | null>,
-  city: FormControl <string | null>,
-  uf: FormControl <string | null>,
-  cep: FormControl <string | null>,
-  deliveryType: FormControl <DeliveryType | null>,
-  cellphone1: FormControl <string | null>,
-  cellphone2: FormControl <string | null>,
-  telephone1: FormControl <string | null>,
-  telephone2: FormControl <string | null>,
-}
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsBasics } from 'src/app/shared/modules/forms-basics.module';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'form-address',
@@ -39,23 +25,13 @@ import { AddDeliveryTypeDialogComponent } from '../../dialogs/add-delivery-type-
     ReactiveFormsModule
   ],
   providers: [
-    provideNgxMask(),
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormAddressComponent),
-      multi: true,
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => FormAddressComponent),
-      multi: true,
-    }
+    provideNgxMask()
   ],
 })
-export class FormAddressComponent implements OnInit, ControlValueAccessor, Validator, OnDestroy {
+export class formAddressComponent implements OnInit, OnDestroy {
 
   @Input() enableButton: boolean = true;
-  @Output() submit = new EventEmitter<void>();
+  @Input() formGroup: FormGroup;
   destroySubject = new Subject<void>();
   deliveries: DeliveryType[] = [];
 
@@ -72,32 +48,28 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
             this.deliveries = value;
           }
         });
+
+      this.formGroup.addControl('id', new FormControl(null))
+      this.formGroup.addControl('cep', new FormControl(null, [Validators.pattern(this.regexCEP)]))
+      this.formGroup.addControl('street', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('number', new FormControl(null))
+      this.formGroup.addControl('neighborhood', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('city', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('uf', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('deliveryType', new FormControl(null, [Validators.required]))
+      this.formGroup.addControl('cellphone1', new FormControl(null))
+      this.formGroup.addControl('cellphone2', new FormControl(null))
+      this.formGroup.addControl('telephone1', new FormControl(null))
+      this.formGroup.addControl('telephone2', new FormControl(null))
     }
 
-    private _form = new FormGroup<AddressForm>({
-      id: new FormControl(null),
-      cep: new FormControl('', {validators: [Validators.pattern(this.regexCEP)] }),
-      street: new FormControl('', [Validators.required]),
-      number: new FormControl(null),
-      neighborhood: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
-      uf: new FormControl('', [Validators.required]),
-      deliveryType: new FormControl({} as DeliveryType, [Validators.required]),
-      cellphone1: new FormControl(''),
-      cellphone2: new FormControl(''),
-      telephone1: new FormControl(''),
-      telephone2: new FormControl(''),
-    });
-
-    
-
     findByCEP(): void {
-      this._addressService.searchByCPF(this.cep.value!)
+      this._addressService.searchByCPF(this.cep?.value!)
         .subscribe(value => {
-          this.street.setValue(value.logradouro),
-          this.neighborhood.setValue(value.bairro),
-          this.city.setValue(value.localidade),
-          this.uf.setValue(value.uf)
+          this.street?.setValue(value.logradouro),
+          this.neighborhood?.setValue(value.bairro),
+          this.city?.setValue(value.localidade),
+          this.uf?.setValue(value.uf)
         })
     }
 
@@ -114,96 +86,63 @@ export class FormAddressComponent implements OnInit, ControlValueAccessor, Valid
       })
     }
 
-
-  validate(control: AbstractControl<any, any>): ValidationErrors | null {
-    return this._form.valid ? null : { customer: true };
-  }
-
-  writeValue(obj: any): void {
-    if(obj === null) {
-      this._form.reset();
-    } else {
-      this._form
-      .patchValue(obj, { emitEvent: false});
-    }
-  }
-  registerOnChange(fn: any): void {
-    this._form.valueChanges
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(fn);
-  }
-  registerOnTouched(fn: any): void {
-    this._form.valueChanges
-    .pipe(takeUntil(this.destroySubject))
-    .subscribe(fn);
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    isDisabled ? 
-    this._form.disable() :
-    this._form.enable();
-  }
-
   ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
   }
 
-  // Getters
-
   isEditable(): boolean {
     console.log()
-    return this._form.get('id')?.value ? true : false
+    return this.formGroup?.get('id')?.value ? true : false
   }
 
   compareDTFn(one: DeliveryType, two?: DeliveryType ): boolean {
     return one.id === two?.id;
   }
 
-  get cep(): AbstractControl<string | null> {
-    return this._form.get('cep')!;
+    // Getters
+
+  get cep(): AbstractControl<any, any> | null {
+    return this.formGroup?.get('cep');
   }
 
-  get street(): AbstractControl<string | null>{
-    return this._form.get('street')!;
+  get street() {
+    return this.formGroup?.get('street');
   }
 
-  get number(): AbstractControl<number | null>{
-    return this._form.get('number')!;
+  get number() {
+    return this.formGroup?.get('number');
   }
 
-  get neighborhood(): AbstractControl<string | null>{
-    return this._form.get('neighborhood')!;
+  get neighborhood() {
+    return this.formGroup?.get('neighborhood');
   }
 
-  get city(): AbstractControl<string | null>{
-    return this._form.get('city')!;
+  get city() {
+    return this.formGroup?.get('city');
   }
 
-  get uf(): AbstractControl<string | null>{
-    return this._form.get('uf')!;
+  get uf() {
+    return this.formGroup?.get('uf');
   }
 
-  get deliveryType(): AbstractControl<DeliveryType | null>{
-    return this._form.get('deliveryType')!;
+  get deliveryType() {
+    return this.formGroup?.get('deliveryType');
   }
 
-  get cellphone1(): AbstractControl<string | null>{
-    return this._form.get('cellphone1')!;
+  get cellphone1() {
+    return this.formGroup?.get('cellphone1');
   }
 
-  get cellphone2(): AbstractControl<string | null>{
-    return this._form.get('cellphone2')!;
+  get cellphone2() {
+    return this.formGroup?.get('cellphone2');
   }
 
-  get telephone1(): AbstractControl<string | null>{
-    return this._form.get('telephone1')!;
+  get telephone1() {
+    return this.formGroup?.get('telephone1');
   }
 
-  get telephone2(): AbstractControl<string | null>{
-    return this._form.get('telephone2')!;
-  }
-
-  get form(): FormGroup{
-    return this._form;
+  get telephone2() {
+    return this.formGroup?.get('telephone2');
   }
 }

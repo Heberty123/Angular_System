@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { FormCustomerComponent } from '../../forms/form-customer/form-customer.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'edit-customer',
@@ -20,12 +20,22 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ]
 })
-export class EditCustomerComponent {
+export class EditCustomerComponent implements OnInit {
 
-  customerFC = new FormControl<Customer>({} as Customer);
+  customerFG = new FormGroup({});
 
   constructor(public dialogRef: MatDialogRef<EditCustomerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Customer) {
-      this.customerFC.patchValue(data);
-    }
+    @Inject(MAT_DIALOG_DATA) public data: Customer) {}
+    
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.customerFG.patchValue(this.data);    
+    });
+  }
+
+  save(): void {
+    this.customerFG.markAllAsTouched();
+    if(this.customerFG.valid)
+      this.dialogRef.close(this.customerFG.value)
+  }
 }

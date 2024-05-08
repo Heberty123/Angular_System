@@ -1,4 +1,4 @@
-<form [formGroup]="form" #formDir="ngForm" class="form-address"> 
+<form [formGroup]="formGroup" #formDir="ngForm" class="form-address"> 
       
 
     <mat-form-field appearance="fill" class="input-cep">
@@ -6,12 +6,12 @@
       <input type="text" matInput placeholder="xxxxx-xxx" maxlength="9" formControlName="cep"
       mask="00000-000" [dropSpecialCharacters]="false">
       <button type="button" mat-icon-button matSuffix 
-        [disabled]="cep.value == '' || cep.invalid"
+        [disabled]="cep?.value == '' || cep?.invalid"
         (click)="findByCEP()">
         <mat-icon>search</mat-icon>
       </button>
       <mat-hint>nome do cep</mat-hint>
-      <mat-error *ngIf="cep.errors?.['required']">
+      <mat-error *ngIf="cep?.errors?.['required']">
         O cep é obrigatório.
       </mat-error>
     </mat-form-field>
@@ -22,7 +22,7 @@
         <input type="text" matInput formControlName="street"
                placeholder="Nome da rua">
         <mat-hint>nome da rua</mat-hint>
-        <mat-error *ngIf="street.errors?.['required']">
+        <mat-error *ngIf="street?.errors?.['required']">
           O nome da rua é obrigatório.
         </mat-error>
       </mat-form-field>
@@ -32,7 +32,7 @@
         <mat-label>Número</mat-label>
         <input type="text" matInput formControlName="number">
         <mat-hint>número</mat-hint>
-        <mat-error *ngIf="number.errors?.['required']">
+        <mat-error *ngIf="number?.errors?.['required']">
           O número é obrigatório.
         </mat-error>
       </mat-form-field>
@@ -43,7 +43,7 @@
         <input type="text" matInput formControlName="neighborhood"
                placeholder="nome do bairro">
         <mat-hint>nome do bairro</mat-hint>
-        <mat-error *ngIf="neighborhood.errors?.['required']">
+        <mat-error *ngIf="neighborhood?.errors?.['required']">
           O nome do bairro é obrigatório.
         </mat-error>
       </mat-form-field>
@@ -54,7 +54,7 @@
         <input type="text" matInput formControlName="city"
                placeholder="nome da cidade">
         <mat-hint>nome da cidade</mat-hint>
-        <mat-error *ngIf="city.errors?.['required']">
+        <mat-error *ngIf="city?.errors?.['required']">
           O nome de uma cidade é obrigatório.
         </mat-error>
       </mat-form-field>
@@ -65,7 +65,7 @@
         <input type="text" matInput formControlName="uf"
                placeholder="nome do estado">
         <mat-hint>UF</mat-hint>
-        <mat-error *ngIf="uf.errors?.['required']">
+        <mat-error *ngIf="uf?.errors?.['required']">
           O nome de um estado é obrigatório.
         </mat-error>
       </mat-form-field>
@@ -94,7 +94,7 @@
         <input type="text" matInput formControlName="cellphone1" 
           prefix="+55 "  mask="(00) 00000-0000" [dropSpecialCharacters]="false">
         <mat-hint>número de celular 1</mat-hint>
-        <mat-error *ngIf="cellphone1.errors?.['mask']">
+        <mat-error *ngIf="cellphone1?.errors?.['mask']">
           celular 1 inválido.
         </mat-error>
       </mat-form-field>
@@ -105,7 +105,7 @@
         <input type="text" matInput formControlName="cellphone2"
           prefix="+55 "  mask="(00) 00000-0000" [dropSpecialCharacters]="false">
         <mat-hint>número de celular 2</mat-hint>
-        <mat-error *ngIf="cellphone2.errors?.['mask']">
+        <mat-error *ngIf="cellphone2?.errors?.['mask']">
           celular 2 inválido.
         </mat-error>
       </mat-form-field>
@@ -116,7 +116,7 @@
         <input type="text" matInput formControlName="telephone1"
           prefix="+55 "  mask="(00) 0000-0000" [dropSpecialCharacters]="false">
         <mat-hint>número de telefone 1</mat-hint>
-        <mat-error *ngIf="telephone1.errors?.['mask']">
+        <mat-error *ngIf="telephone1?.errors?.['mask']">
           telefone 1 inválido.
         </mat-error>
       </mat-form-field>
@@ -127,16 +127,14 @@
         <input type="text" matInput formControlName="telephone2"
           prefix="+55 "  mask="(00) 0000-0000" [dropSpecialCharacters]="false">
         <mat-hint>número de telefone 2</mat-hint>
-        <mat-error *ngIf="telephone2.errors?.['mask']">
+        <mat-error *ngIf="telephone2?.errors?.['mask']">
           telefone 2 inválido.
         </mat-error>
       </mat-form-field>
           
       <button mat-raised-button 
         type="submit"
-        [disabled]="form.status === 'DISABLED'"
         *ngIf="enableButton"
-        (click)="submit"
         class="btt-form-address">
         {{ isEditable() ? 'Editar' : 'Salvar' }}
       </button>

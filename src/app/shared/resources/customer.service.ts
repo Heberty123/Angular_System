@@ -31,7 +31,7 @@ export class CustomerService {
       );
   }
 
-  save(customer: any): Observable<Customer>{
+  save(customer: Customer): Observable<Customer>{
     return this.http.post<Customer>(this.apiUrl, customer, {'headers': this.headers});
   }
 

@@ -3,13 +3,13 @@
 <div class="container">
     <button 
         mat-raised-button 
-        color="{{ addressFC.enabled ? 'warn' : 'primary' }}" 
-        (click)="addressFC.enabled ? addressFC.disable() : addressFC.enable()"
+        color="{{ addressFG.enabled ? 'warn' : 'primary' }}" 
+        (click)="addressFG.enabled ? addressFG.disable() : addressFG.enable()"
         class="bttn-new">
-            {{ addressFC.enabled ? 'Fechar' : 'Novo' }}
+            {{ addressFG.enabled ? 'Fechar' : 'Novo' }}
     </button>
     
-    <form-address *ngIf="!addressFC.disabled" [formControl]="addressFC" (submit)="saveAddress()"/>
+    <form-address *ngIf="!addressFG.disabled" [formGroup]="addressFG" (submit)="saveAddress()"/>
 
     <list-address [data]="addresses" [editable]="true"
         (updateById)="updateById($event)"
