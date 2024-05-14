@@ -73,10 +73,9 @@ export class PaymentsComponent implements OnInit {
       next: (dataUpdated: Payment) => {
         this.data[0]!.find((value, index) => {
             if (value.id! == dataUpdated.id!){
-              let arr: Payment[] | undefined = this.data[0]!.splice(index, 1);
-              console.log(this.data[0])
+              this.data[0]!.splice(index, 1);
               this.data[0] = [...this.data[0]!];
-              this.data[1]!.push(...arr);
+              this.data[1]!.push(dataUpdated);
               return;
             }
         })

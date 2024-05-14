@@ -38,7 +38,7 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
 
   @Input() products: ProductOrder[];
   @Input() editable?: boolean;
-  displayedColumns: string[] = ['name', 'price', 'grossAmount', 'netValue', 'discounts', 'promotion', 'quantity', 'options'];
+  displayedColumns: string[] = ['name', 'price', 'grossAmount', 'netValue', 'discounts', 'quantity', 'options'];
   dataSource = new MatTableDataSource<ProductOrder>([]);
   selection = new SelectionModel<ProductOrder>(true, []);
   @Output() selectedEvent = new EventEmitter<SimpleProduct[]>();

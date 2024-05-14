@@ -105,11 +105,15 @@ list-address {
   width: 100%;
 }
 
-.section-form-dependent form-customer{}
+.section-form-dependent form-customer{
+  width: 70%;
+  max-width: 500px;
+}
 
 .section-dependent-bttns{
   display: flex;
   flex-direction: row-reverse;
+  gap: 0 10px;
 }
 
 table-entities{

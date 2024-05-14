@@ -1,9 +1,13 @@
 <h1 mat-dialog-title>Produto: {{data.name}}</h1>
 <div mat-dialog-content>
-    <h1>Tipo de produto: {{data.productType}}</h1>
+    <h1>Tipo de produto: {{data.productType.name}}</h1>
     <h1>Descrição: {{data.description}}</h1>
-    <h1>Marca: {{data.brand}}</h1>
+    <h1>Marca: {{data.brand.name}}</h1>
+    <h1>Referência: {{data.reference}}</h1>
     <h1>Preço: {{data.price}}</h1>
+    <h1>Quantidade: {{data.quantity}}</h1>
+    <h1>Quantidade mínima: {{data.min_quantity}}</h1>
+    <h1>Quantidade máxima: {{data.max_quantity}}</h1>
 </div>
 <mat-dialog-actions align="end">
     <button color="warn" mat-button (click)="onNoClick()">Cancelar</button>
