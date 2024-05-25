@@ -68,17 +68,9 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                    <mat-icon>edit</mat-icon>
-                    <span>Editar valor</span>
-                </button>
                 <button mat-menu-item (click)="expandedElement = expandedElement === element ? cancelExpanded() : element">
                     <mat-icon>{{expandedElement === element ? 'cancel' : 'attach_money'}}</mat-icon>
                     <span>{{expandedElement === element ? 'Cancelar' : 'Pagar já'}}</span>
-                </button>
-                <button mat-menu-item>
-                    <mat-icon>notifications_off</mat-icon>
-                    <span>Não sei</span>
                 </button>
             </mat-menu>
 

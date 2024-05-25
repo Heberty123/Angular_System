@@ -98,7 +98,7 @@ export class RegisterComponent{
     this.dependents = [];
   }
 
-  isCustomerPersisted(): boolean {
+  isCustomerEmpty(): boolean {
     let value: Customer = this.customerFG.value as Customer;
     return value.id != undefined;
   }

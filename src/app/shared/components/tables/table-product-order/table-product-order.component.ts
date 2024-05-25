@@ -93,10 +93,6 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
 
   /*  Options operations   */
 
-  returnProduct(product: ProductOrder): void {
-    product.isRefund = !product.isRefund;
-  }
-
   deductProduct(product: ProductOrder): void {
     const dialogRef = this.dialog.open(DiscountsDialogComponent, {
       data: new DiscountsDialog(product)
@@ -123,9 +119,5 @@ export class TableProductOrderComponent implements OnInit, OnChanges {
       next: (products: SimpleProduct[]) => 
         this.selectedEvent.next(products)
     })
-  }
-
-  editProduct(product: ProductOrder): void {
-    console.log(`Editando o produto ${product.product.name}`);
   }
 }

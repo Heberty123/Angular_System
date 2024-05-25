@@ -13,3 +13,5 @@
 :host ::ng-deep .mat-tab-body.mat-tab-body-active {
   height: 100%;
 }
+
+::ng-deep .chart-legend .legend-label-text { color: #000000 !important; }

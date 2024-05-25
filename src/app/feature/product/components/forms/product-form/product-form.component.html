@@ -63,6 +63,9 @@
               {{brand.name}}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="brand.errors?.['required']">
+            Obrigatório.
+          </mat-error>
         </mat-form-field>
     
         <mat-form-field class="input-price">

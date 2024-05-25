@@ -18,6 +18,10 @@ import { PaymentMethodComponent } from './components/dialogs/payment-method/paym
 import { OrderSectionModule } from './components/order-section/order-section.module';
 import { SimpleProductInterface } from 'src/app/shared/interfaces/SimpleProductInterface';
 import { DialogInsufficientProductsComponent } from './components/dialogs/dialog-insufficient-products/dialog-insufficient-products.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { OrderSavedComponent } from './components/snackbar/order-saved/order-saved.component';
+
+let snackBarRef: any;
 
 @Component({
   selector: 'order',
@@ -30,20 +34,25 @@ import { DialogInsufficientProductsComponent } from './components/dialogs/dialog
     OrderSectionModule,
     TableProductOrderComponent,
     TableEntitiesComponent,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 export class OrderComponent implements OnInit, OnDestroy {
 
-  customerChoosed: Customer;
+  customerChoosed: Customer | undefined;
   order: Order = new Order();
   private subscription: Subscription;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private _productService: ProductService,
     private _orderService: OrderService,
     private dialog: MatDialog,
-    private _controlBarcodeService: ControlBarcodeReaderService) {
+    private _controlBarcodeService: ControlBarcodeReaderService,
+    private _snackBar: MatSnackBar) {
     this._controlBarcodeService.setComponentReader(true);
+    
   }
 
   ngOnInit(): void {
@@ -121,9 +130,23 @@ export class OrderComponent implements OnInit, OnDestroy {
   private definitelySave(): void {
     this._orderService.save(this.order)
       .subscribe({
-        next: (value: Order) => console.log(value),
+        next: (value: Order) => this.requestPersistedSuccessfully(),
         error: (value: any) => this.openInsufficienteProductDialog(value.error.products) 
       })    
+  }
+
+  private requestPersistedSuccessfully(): void {
+    this.openSnackBar()
+    this.customerChoosed = undefined
+    this.order = new Order()
+  }
+
+  private openSnackBar() {
+    snackBarRef = this._snackBar.openFromComponent(OrderSavedComponent, {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5000
+    });
   }
 
   openInsufficienteProductDialog(products: SimpleProductInterface[]): void {
@@ -136,5 +159,6 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._controlBarcodeService.setComponentReader(false);
     this.subscription && this.subscription.unsubscribe();
+    this._snackBar && this._snackBar.dismiss();
   }
 }

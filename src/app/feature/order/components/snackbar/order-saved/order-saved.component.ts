@@ -4,15 +4,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'address-deleted',
-  templateUrl: './address-deleted.component.html',
-  styleUrls: ['./address-deleted.component.css'],
+  selector: 'app-order-saved',
   standalone: true,
   imports: [
     MatButtonModule,
     MatIconModule
-  ]
+  ],
+  templateUrl: './order-saved.component.html',
+  styleUrl: './order-saved.component.css'
 })
-export class AddressDeletedComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
-}
+export class OrderSavedComponent {}

@@ -9,7 +9,7 @@ import { Customer } from 'src/app/shared/interfaces/customer';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { formAddressComponent } from '../forms/form-address/form-address.component';
 
 let snackBarRef: any;
