@@ -1,12 +1,11 @@
 <h2 mat-dialog-title>Detalhes do pedido {{data.id}}</h2>
 <div mat-dialog-content>
     <div class="details">
-        <h2>Status: {{data.paid}}</h2>
+        <h2>Pago: {{(data.paid ? "sim" : "não")}}</h2>
         <h2>{{data.createdAt | date: 'dd/MM/yyyy - HH:mm' }}</h2>
         <h2>Valor bruto: {{data.grossAmount | currency }}</h2>
         <h2>Valor líquido: {{data.netAmount | currency }}</h2>
         <h2>Descontos: {{data.discounts | percent: '1.2-2' }}</h2>
-        <h2>Promoção: 0</h2>
     </div>
 
     <div class="table">

@@ -4,6 +4,7 @@ import { ProductDashboardComponent } from './screens/product-dashboard/product-d
 import {MatTabsModule} from '@angular/material/tabs';
 import { CustomerDashboardComponent } from './screens/customer-dashboard/customer-dashboard.component';
 import { PaymentDashboardComponent } from './screens/payment-dashboard/payment-dashboard.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'dashboard',
@@ -15,7 +16,8 @@ import { PaymentDashboardComponent } from './screens/payment-dashboard/payment-d
     MatTabsModule,
     ProductDashboardComponent,
     CustomerDashboardComponent,
-    PaymentDashboardComponent
+    PaymentDashboardComponent,
+    MatIconModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
