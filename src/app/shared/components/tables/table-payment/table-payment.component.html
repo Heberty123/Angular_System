@@ -51,7 +51,7 @@
                             <input type="number" matInput [formControl]="inputAmount">
                         </mat-form-field>
 
-                        <advance-chip-listbox [data]="paymentTypes!" [formControl]="chipPaymentType"/>
+                        <advance-chip-listbox [bttns]="false" [data]="paymentTypes!" [formControl]="chipPaymentType"/>
 
                         <button mat-button color="warn" (click)="cancelExpanded()">Cancelar</button>
                         <button mat-raised-button color="primary" (click)="expandedPay(element)">Pagar</button>

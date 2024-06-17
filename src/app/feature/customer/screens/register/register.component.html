@@ -9,7 +9,7 @@
     <button 
         mat-flat-button
         color="primary"
-        [disabled]="customerFG.invalid"
+        [disabled]="customerFG.invalid || isCustomerEmpty()"
         (click)="saveCustomer()">
         Salvar
     </button>

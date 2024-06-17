@@ -10,7 +10,7 @@ import { InventoryControlComponent } from './feature/inventory-control/inventory
 const routes: Routes = [
     { path: 'home', component: HomeComponent,  },
     { path: 'client', component: CustomerComponent },
-    { path: 'product', component: ProductComponent },
+    { path: 'product', component: ProductComponent },         
     { path: 'order', component: OrderComponent },
     { path: 'inventory-control', component: InventoryControlComponent },
     { path: 'dashboard', component: DashboardComponent },

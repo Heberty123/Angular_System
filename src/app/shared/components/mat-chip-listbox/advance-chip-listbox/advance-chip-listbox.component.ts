@@ -36,6 +36,7 @@ export class AdvanceChipListboxComponent<T extends HasDisplayProperty>
   @ViewChild('matChip') matChip: MatChipListbox
   @Input() data: T[];
   @Input() displayProperty: keyof T = 'name';
+  @Input() bttns: boolean = true
   selected: T;
   onChange: (value: T) => void
   onTouched: () => void;

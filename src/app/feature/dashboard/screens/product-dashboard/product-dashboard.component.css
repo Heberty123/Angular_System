@@ -2,15 +2,19 @@
     background-color: rgb(190, 196, 196);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto auto;
     gap: 40px 40px;
     padding: 30px;
+    width: 100%;
+    height: 100%;
 }
 
 .ngx-pie {
     width: 100%;
     height: 100%;
+    margin-bottom: 40px;
 }
+
 
 table-entities {
     width: 100%;

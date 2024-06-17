@@ -4,6 +4,8 @@
       <mat-chip-listbox formControlName="productType">
           <mat-chip-option *ngFor="let value of productTypes" [value]="value"
             [selected]="productType.value?.id === value.id ? true : false"
+            [cdkContextMenuTriggerFor]="context_menu"
+            (cdkContextMenuOpened)="setSelectedChip(value)"
             (removed)="openDialogDeleteProductType(value)">
             {{ value.name }}
             <button matChipRemove *ngIf="chipRemovable">
@@ -12,12 +14,12 @@
           </mat-chip-option>
       </mat-chip-listbox>
     
-      <button mat-mini-fab color="primary"
+      <button mat-mini-fab color="primary" type="button"
         (click)="openDialogAddProductType()">
         <mat-icon>add</mat-icon>
       </button>
       
-      <button mat-mini-fab color="warn"
+      <button mat-mini-fab color="warn" type="button"
         (click)="chipRemovable = !chipRemovable">
         <mat-icon>delete</mat-icon>
       </button>
@@ -109,3 +111,10 @@
           Salvar
         </button>
 </form>
+
+
+<ng-template #context_menu>
+  <div class="example-menu" cdkMenu>
+    <button class="example-menu-item" (click)="EditProductType()" cdkMenuItem>Editar</button>
+  </div>
+</ng-template>

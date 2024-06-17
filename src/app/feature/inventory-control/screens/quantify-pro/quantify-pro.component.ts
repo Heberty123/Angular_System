@@ -10,6 +10,8 @@ import { Product } from 'src/app/shared/interfaces/product';
 import { ProductService } from 'src/app/shared/resources/product.service';
 import { ProductListComponent } from '../../dialogs/product-list/product-list.component';
 import { ProductStockEdit } from 'src/app/shared/interfaces/ProductStockEdit';
+import { UpdatedSavedComponent } from '../../snackbar/updated-saved/updated-saved.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 let columnsToDisplay: ObjToDisplayColumns[] = [
   {key: 'id', label: 'Id'},
@@ -19,6 +21,8 @@ let columnsToDisplay: ObjToDisplayColumns[] = [
   {key: 'min_quantity', label: 'mín'},
   {key: 'max_quantity', label: 'máx'}
 ];
+
+let snackBarRef: any;
 
 @Component({
   selector: 'quantify-pro',
@@ -36,10 +40,13 @@ export class QuantifyProComponent implements OnInit, OnDestroy {
   productStocks: Product[] = [];
   columnDisplayed: ObjToDisplayColumns[] = columnsToDisplay;
   private subscription: Subscription;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private _controlBarcodeService: ControlBarcodeReaderService,
     private _productService: ProductService,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar,) {
     this._controlBarcodeService.setComponentReader(true);
   }
 
@@ -73,8 +80,19 @@ export class QuantifyProComponent implements OnInit, OnDestroy {
     let updating: ProductStockEdit[] = [];
     this.productStocks.forEach((p: Product) => updating.push({id: p.id, quantity: p.quantity}));
     this._productService.updateAllStocks(updating).subscribe({
-      next: () => console
+      next: () => {
+        this.productStocks = []
+        this.openSnackBar()
+      }
     })
+  }
+
+  private openSnackBar(): void {
+    snackBarRef = this._snackBar.openFromComponent(UpdatedSavedComponent, {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5000
+    });
   }
 
   openDialog(): void {

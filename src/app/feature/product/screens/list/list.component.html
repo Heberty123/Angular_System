@@ -1,4 +1,14 @@
+<mat-form-field>
+    <mat-label>Nome ou CPF</mat-label>
+    <input matInput type="text" #input>
+    <button *ngIf="input.value" matSuffix mat-icon-button aria-label="Limpar" (click)="input.value = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-hint>Digite o nome do cliente</mat-hint>
+</mat-form-field>
+
 <table-entities 
     [data]="products"
     [displayColumns]="columnsDiplayed"
+    [filterByValue]="input.value"
     (rowClicked)="rowClicked.emit($event)"/>

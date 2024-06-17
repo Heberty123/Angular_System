@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ErrorStateMatcher, MatOptionModule } from '@angular/material/core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Brand } from 'src/app/shared/interfaces/brand';
-import { Product } from 'src/app/shared/interfaces/product';
 import { ProductType } from 'src/app/shared/interfaces/productType';
 import { BrandService } from 'src/app/shared/resources/brand.service';
 import { ProductTypeService } from 'src/app/shared/resources/product-type.service';
@@ -19,6 +18,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { AddProductTypeComponent } from '../../dialogs/add-product-type/add-product-type.component';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { ConflictProductTypeComponent } from '../../dialogs/conflict-product-type/conflict-product-type.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CdkMenuModule } from '@angular/cdk/menu';
+import { EditProductTypeComponent } from '../../dialogs/edit-product-type/edit-product-type.component';
 
 interface ProductForm {
   id: FormControl<number | null>,
@@ -49,7 +52,8 @@ interface ProductForm {
     MatButtonModule,
     MatOptionModule,
     MatSelectModule,
-    MatChipsModule
+    MatChipsModule,
+    CdkMenuModule
   ],
   providers: [
     provideNgxMask()
@@ -62,6 +66,7 @@ export class ProductFormComponent implements OnInit,  OnDestroy {
   productTypes: ProductType[] = [];
   brands: Brand[] = [];
   chipRemovable: boolean = false;
+  selectedChip: any;
   @Input() displaySubmit?: boolean = false;
   @Input() formGroup: FormGroup
 
@@ -93,6 +98,14 @@ export class ProductFormComponent implements OnInit,  OnDestroy {
       this.formGroup.addControl('max_quantity', new FormControl(null, [Validators.required]))
   }
 
+  setSelectedChip(chip: any) {
+    this.selectedChip = chip;
+  }
+
+  EditProductType(): void {
+    this.openDialogEditProductType({id: this.selectedChip.id, name: this.selectedChip.name})
+  }
+
   openDialogAddProductType(): void{
     const dialogRef = this._dialog.open(AddProductTypeComponent);
       dialogRef.afterClosed()
@@ -102,6 +115,26 @@ export class ProductFormComponent implements OnInit,  OnDestroy {
               .subscribe({
                 next: (productType: ProductType) => {
                   this.productTypes.push(productType);
+                }
+              })
+          }
+        });
+  }
+
+  openDialogEditProductType(productType: ProductType): void{
+    const dialogRef = this._dialog.open(EditProductTypeComponent, {data: productType});
+      dialogRef.afterClosed()
+        .subscribe((newProductTypeName: string) => {
+          if (newProductTypeName) {
+            this._productTypeService.save({id: productType.id, name: newProductTypeName})
+              .subscribe({
+                next: (productType: ProductType) => {
+                  this.productTypes.find((value, index) => {
+                    if(value.id === productType.id) {
+                      this.productTypes[index] = productType
+                      return;
+                    }
+                  })
                 }
               })
           }
@@ -129,10 +162,15 @@ export class ProductFormComponent implements OnInit,  OnDestroy {
                         return;
                       }
                     })
+                  },
+                  error: (err: HttpErrorResponse) => {
+                    if(err.status == 409) {
+                      this._dialog.open(ConflictProductTypeComponent);
+                    }
                   }
                 })
             }
-          }
+          },
         })
   }
 
@@ -150,7 +188,7 @@ export class ProductFormComponent implements OnInit,  OnDestroy {
           }
         });
   }
-  
+
 
   compareBrandFn(one: Brand, two?: Brand ): boolean {
     return one.id === two?.id;

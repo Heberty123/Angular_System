@@ -30,6 +30,6 @@ export class InventoryComponent {
 
   constructor(private _inventoryStatus: InventoryStatusService) {
     this._inventoryStatus.getStockStatus().subscribe({
-      next: (value: ProductStock[]) => { this.inventoryStatus = value; console.log(value) } })
+      next: (value: ProductStock[]) => { this.inventoryStatus = value; } })
   }
 }

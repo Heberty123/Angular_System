@@ -9,14 +9,16 @@
     </mat-chip-option>
 </mat-chip-listbox>
 
-<button mat-fab color="primary"
-  aria-label="Example icon button with a delete icon"
-  (click)="addItemEvent.next()">
-  <mat-icon>add</mat-icon>
-</button>
+<div *ngIf="bttns">
+    <button mat-fab color="primary"
+    aria-label="Example icon button with a delete icon"
+    (click)="addItemEvent.next()">
+    <mat-icon>add</mat-icon>
+  </button>
 
-<button mat-fab color="warn"
-  aria-label="Example icon button with a delete icon"
-  (click)="isRemovable = !isRemovable">
-  <mat-icon>delete</mat-icon>
-</button>
+  <button mat-fab color="warn"
+    aria-label="Example icon button with a delete icon"
+    (click)="isRemovable = !isRemovable">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

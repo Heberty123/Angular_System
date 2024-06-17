@@ -1,5 +1,5 @@
 <div class="bttns">
-    <button mat-flat-button color="primary" (click)="save()">Salvar</button>
+    <button mat-flat-button color="primary" [disabled]="productStocks.length == 0" (click)="save()">Salvar</button>
     <button mat-flat-button color="primary" (click)="openDialog()">Produtos</button>
 </div>
 

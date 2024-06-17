@@ -18,8 +18,7 @@ let complexColumnsPurchase: ObjToDisplayColumns[] = [
   { key: 'id', label: 'Id' },
   { key: 'name', label: 'Nome' },
   { key: 'cpf', label: 'CPF' },
-  { key: 'value', label: 'Valor', pipe: { type: 'currency' } },
-  { key: 'qtyPayments', label: 'Pagamentos' }
+  { key: 'value', label: 'Valor', pipe: { type: 'currency' } }
 ]
 
 let complexColumnsDefaulting: ObjToDisplayColumns[] = [

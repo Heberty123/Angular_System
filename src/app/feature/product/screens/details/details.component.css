@@ -20,7 +20,7 @@
     flex: 1;
     border-radius: 4px;
     padding: 20px;
-    background-color: rgb(157, 209, 237);
+    background-color: rgb(242, 242, 242);
 }
 
 .container .section .bttns {
@@ -33,7 +33,7 @@
     width: 70%;
     border-radius: 4px;
     padding: 20px;
-    background-color: rgb(157, 209, 237);
+    background-color: rgb(242, 242, 242);
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;

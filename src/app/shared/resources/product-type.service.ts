@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { ProductType } from '../interfaces/productType';
 import { ProductTypeDashboard } from '../interfaces/ProductTypeDashboard';
 import moment, { Moment } from 'moment';
@@ -23,8 +23,10 @@ export class ProductTypeService {
     return this._http.post<ProductType>(this.apiUrl, value, { headers: this.headers })
   }
 
+
   delete(value: ProductType): Observable<void>{
     return this._http.delete<void>(this.apiUrl + `/${value.id!}`, { headers: this.headers })
+    .pipe(catchError((error: HttpErrorResponse) => throwError(() => error)))
   }
 
   getDashboard(startDate?: Moment, endDate?: Moment): Observable<ProductTypeDashboard[]>{
