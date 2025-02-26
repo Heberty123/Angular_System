@@ -1,40 +1,12 @@
-<mat-tab-group #tabGroup [@.disabled]="true" [(selectedIndex)]="selectedTabIndex"
-class="mat-tabGroup" mat-stretch-tabs="false" mat-align-tabs="center">
-    <mat-tab #tabRegister>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">person_add</mat-icon>
-        Adicionar cliente
-      </ng-template>
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" mat-align-tabs="center">
+  <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+    [active]="rla.isActive">
+    {{link.label}}
+  </a>
+</nav>
 
-      <ng-template matTabContent>
-        <register/>
-      </ng-template>
-    </mat-tab>
-  
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">list</mat-icon>
-        Lista
-      </ng-template>
-
-      <ng-template matTabContent>
-        <list (rowClicked)="selectedCustomer = $event; tabGroup.selectedIndex = 3"/>
-      </ng-template>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">person</mat-icon>
-        Cliente
-      </ng-template>
-  
-      <ng-template matTabContent>
-        <details-customer 
-          [customer]="selectedCustomer!" 
-          (toList)="selectedTabIndex = 1; selectedCustomer = null" />
-      </ng-template>
-    </mat-tab>
-</mat-tab-group>
-
-
-
+<mat-tab-nav-panel #tabPanel>
+  <div [@triggerName]="prepareRoute(outlet)" class="container">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </div>
+</mat-tab-nav-panel>

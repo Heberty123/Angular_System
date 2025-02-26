@@ -25,76 +25,9 @@
     gap: 0 10px;
 }
 
-.container-stepper{
-    flex: 1;
-    height: 100%;
-    border-radius: 4px;
-}
-
-
-.form-customer{
+.body {
+    background-color: aqua;
     width: 100%;
-    height: auto;
-}
-
-.div-buttons{
-    display: flex;
-    gap: 0px 10px;
-    justify-content: flex-end;
-}
-
-.box-address, .box-sub-customers{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px 0px;
-}
-
-.btt-add-address{
-    align-self: flex-end;
-    margin-right: 20px;
-    height: 40px;
-    width: 100px;
-}
-
-.list-address{
-    flex: 1;
-}
-
-.form-address{
-    padding: 15px;
-}
-
-:host .container-stepper ::ng-deep .mat-horizontal-stepper-header-container{
-    width: auto;
-}
-
-:host .container-stepper ::ng-deep .mat-horizontal-content-container {
-    margin: 10px;
-}
-
-:host .container-stepper ::ng-deep .mat-horizontal-stepper-wrapper {
-    height: 100%;
-}
-
-:host ::ng-deep .mat-horizontal-stepper-content {
-    height: 100%;
-}
-
-addresses-details {
-    height: 100%;
-}
-
-dependents {
-    height: 100%;
-}
-
-payments {
-    height: 100%;
-}
-
-orders {
     height: 100%;
 }
 

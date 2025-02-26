@@ -1,5 +1,8 @@
-export interface UserInterface {
-    user: string
+import { Role } from "./role"
+
+export interface User {
+    id: number
+    username: string
     token: string
-    roles: string[]
+    role: Role
 }

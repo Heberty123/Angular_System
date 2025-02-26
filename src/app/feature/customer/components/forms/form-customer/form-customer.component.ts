@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -34,14 +34,13 @@ import { CustomerService } from 'src/app/shared/resources/customer.service';
 export class FormCustomerComponent implements OnInit, OnDestroy {
   destroySubject = new Subject<void>();
   @Input() formGroup: FormGroup;
-  private regexCPF: string = "^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$";
 
   constructor(private _service: CustomerService){}
 
   ngOnInit(): void {
     this.formGroup.addControl('id', new FormControl(null))
     this.formGroup.addControl('name', new FormControl(null, [Validators.required]))
-    this.formGroup.addControl('cpf', new FormControl(null, [Validators.required, Validators.pattern(this.regexCPF)]))
+    this.formGroup.addControl('cpf', new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{11}$')]))
   }
 
   get name() {

@@ -64,7 +64,7 @@ export class formAddressComponent implements OnInit, OnDestroy {
     }
 
     findByCEP(): void {
-      this._addressService.searchByCPF(this.cep?.value!)
+      this._addressService.searchByCEP(this.cep?.value!)
         .subscribe(value => {
           this.street?.setValue(value.logradouro),
           this.neighborhood?.setValue(value.bairro),

@@ -1,0 +1,25 @@
+<form [formGroup]="form" (submit)="onSubmit()" #formDir="ngForm" class="form-customer"> 
+    <mat-form-field class="input-name">
+      <mat-label>Usuário</mat-label>
+      <input matInput type="text" matInput formControlName="username"
+          placeholder="Usuário">
+      <!--<button *ngIf="username?.value" matSuffix mat-icon-button aria-label="Clear" (click)="username?.setValue('')"
+      [disabled]="formGroup.status === 'DISABLED'">
+          <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="username?.errors?.['required']">
+        Obrigatório.
+      </mat-error>-->
+    </mat-form-field>
+  
+  
+    <mat-form-field class="input-cpf">
+      <mat-label>Senha</mat-label>
+      <input type="passowrd" matInput formControlName="password">
+      <!--<mat-error *ngIf="password?.errors?.['required']">
+        Obrigatório.
+      </mat-error>-->
+    </mat-form-field>
+
+    <button type="submit">Logar</button>
+</form>

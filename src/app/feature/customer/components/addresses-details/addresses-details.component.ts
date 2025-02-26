@@ -1,16 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Address } from 'src/app/shared/interfaces/address';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { EditAddressComponent } from '../dialogs/edit-address/edit-address.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AddressDeletedComponent } from '../snackbar/address-deleted/address-deleted.component';
-import { Customer } from 'src/app/shared/interfaces/customer';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { formAddressComponent } from '../forms/form-address/form-address.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 let snackBarRef: any;
 
@@ -25,50 +26,40 @@ let snackBarRef: any;
     formAddressComponent,
     MatButtonModule,
     MatSnackBarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AddressesDetailsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  @Input() customer: Customer;
-  @Input() addresses: Address[] = [];
+  @Input() customerID!: number
+  addresses: Address[] = [];
   addressFG = new FormGroup({});
+  loading: boolean = true;
+  private _addressService = inject(AddressService)
+  private _snackBar = inject(MatSnackBar)
+  dialog = inject(MatDialog)
 
-  constructor(private _addressService: AddressService,
-    private _snackBar: MatSnackBar,
-    public dialog: MatDialog) {
+  constructor() {
       this.addressFG.disable();
-    }
+  }
 
   ngOnInit(): void {
-    this._addressService.findAllByCustomerId(this.customer.id!)
-      .subscribe({
-        next: (data: Address[]) => this.addresses = data
-      })
+    this.loadAddresses()
   }
 
-  ngOnDestroy(): void {
-    snackBarRef && snackBarRef.dismiss();
-    console.log("Fui destruído")
+  loadAddresses(): void {
+    this._addressService.findAllByCustomerId(this.customerID)
+    .subscribe({
+      next: (data: Address[]) => {
+        this.addresses = data
+        this.loading = false
+      }
+    })
   }
 
-  saveAddress(): void {
-    this.addressFG.markAllAsTouched();
-    if(this.addressFG.valid){
-      this._addressService.save(
-        this.addressFG.value,
-        this.customer)
-      .subscribe({
-        next: (address: Address) => {
-          this.addresses.push(address);
-          this.addressFG.reset();
-          this.addressFG.disable();
-        }
-      })
-    }
-  }
 
   updateById(id: number): void {
     let value: Address =
@@ -81,7 +72,7 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe({
       next: (editedAddress: Address) => {
         if (editedAddress) {
-          this._addressService.update(editedAddress)
+          this._addressService.update(editedAddress, this.customerID)
             .subscribe({
               next: (address: Address) => {
                 this.addresses.find((value, index) => {
@@ -125,13 +116,17 @@ export class AddressesDetailsComponent implements OnInit, OnDestroy {
     });
     snackBarRef.afterDismissed().subscribe(() => {
       if (!haveRetrieved) {
-        this._addressService.deleteById(address.id)
+        this._addressService.delete(address, this.customerID)
           .subscribe({
             next: (value: unknown) => { console.log(value) },
             error: (error: any) => { console.error(error) }
           })
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    snackBarRef && snackBarRef.dismiss();
   }
 
 }

@@ -13,15 +13,17 @@ export class PaymentService {
 
   constructor(private http:HttpClient) { }
 
-  private apiUrl: string = 'api/payments';
+  private apiUrl: string = 'api/customers';
   private headers = { 'content-type': 'application/json'}
 
   findAllToday(): Observable<CustomerPayment[]>{
     return this.http.get<CustomerPayment[]>(this.apiUrl + "/today", { headers: this.headers })
   }
 
-  findAllByCustomerId(id: number, paid: boolean): Observable<Payment[]>{
-    return this.http.get<Payment[]>(this.apiUrl + `/${id}/${paid}`, { headers: this.headers })
+  filterStatusByCustomerId(id: number, status: string): Observable<Payment[]>{
+    const params = new HttpParams()
+    params.set("status", status)
+    return this.http.get<Payment[]>(this.apiUrl + `/${id}/payments`, { headers: this.headers, params: params })
   }
 
   payNow(payment: Payment): Observable<Payment>{

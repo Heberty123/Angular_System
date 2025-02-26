@@ -16,43 +16,33 @@
         <h1>É dependente de: {{customer.parent?.name || 'ninguém'}}</h1>
     </div>
 
-    <mat-horizontal-stepper #stepper class="container-stepper" [@.disabled]="true">        
-        <mat-step label="Endereço">
-            <ng-template matStepContent>
-                <addresses-details [customer]="customer" />
-            </ng-template>          
-        </mat-step>
 
-        <mat-step label="Dependentes">
-            <ng-template matStepContent>
-                <dependents [customer]="customer" />
-            </ng-template>
-        </mat-step>
+    <div class="body">
+        <nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" mat-align-tabs="center">
+            <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+            [active]="rla.isActive">
+            {{link.label}}
+            </a>
+        </nav>
+        
+        <mat-tab-nav-panel #tabPanel>
+            <div class="container">
+            <router-outlet #outlet="outlet"></router-outlet>
+            </div>
+        </mat-tab-nav-panel>
+    </div>
 
-        <mat-step label="Pagamentos">
-            <ng-template matStepContent>
-                <payments [customer]="customer" />
-            </ng-template>
-        </mat-step>
 
-        <mat-step label="Pedidos">
-            <ng-template matStepContent>
-                <orders [customer]="customer" />
-            </ng-template>
-        </mat-step>
-    </mat-horizontal-stepper>
-
-    <!--
     <ng-template #loading>
         <mat-spinner></mat-spinner>
     </ng-template>
-    -->
+   
 </ng-container>
 
 <ng-template #empty>
     <div class="auto-reply-message">
         <h1>Cliente não foi selecionado !</h1>
         <strong>Por favor, selecione um cliente</strong>
-        <button mat-raised-button color="primary" (click)="toList.emit()">Lista</button>
+        <button mat-raised-button color="primary">Lista</button>
     </div>
 </ng-template>

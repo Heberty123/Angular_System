@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from 'src/app/shared/interfaces/customer';
@@ -21,7 +21,8 @@ let complexColumns: ObjToDisplayColumns[] = [
 })
 export class PaymentsComponent implements OnInit {
 
-  @Input() customer: Customer;
+  // customer id
+  @Input() id: number;
   // index 0 -> payments unpaid;
   // index 1 -> payments paid;
   data: [Payment[]?, Payment[]?] = [];
@@ -29,13 +30,14 @@ export class PaymentsComponent implements OnInit {
     { key: 'amount', label: 'Valor', pipe: { type: 'currency' } },
     { key: 'paymentDate', label: 'Data', pipe: { type: 'date' } }
   ]
+  loading: boolean = true;
+  private _paymentService = inject(PaymentService)
+  dialog = inject(MatDialog)
 
-  constructor(private _paymentService: PaymentService,
-    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Primeiro pagamentos pendentes
-    this._paymentService.findAllByCustomerId(this.customer.id!, false)
+    this._paymentService.filterStatusByCustomerId(this.id, "pending,delayed")
       .subscribe({
         next: (data: Payment[]) => this.data[0] = data
       })
@@ -48,7 +50,7 @@ export class PaymentsComponent implements OnInit {
       // Pagamentos já pagos
       this._pushMoreColumns();
       if (!this.data[1])
-        this._paymentService.findAllByCustomerId(this.customer.id!, true)
+        this._paymentService.filterStatusByCustomerId(this.id, "paid")
           .subscribe({
             next: (data: Payment[]) => this.data[1] = data
       })

@@ -3,25 +3,29 @@
 <div class="container">
     <button 
         mat-raised-button 
-        color="{{ addressFG.enabled ? 'warn' : 'primary' }}" 
-        (click)="addressFG.enabled ? addressFG.disable() : addressFG.enable()"
+        color="primary" 
+        (click)="null"
         class="bttn-new">
-            {{ addressFG.enabled ? 'Fechar' : 'Novo' }}
+            Novo
     </button>
-    
-    <form-address *ngIf="!addressFG.disabled" [formGroup]="addressFG" (submit)="saveAddress()"/>
 
-    <list-address [data]="addresses" [editable]="true"
+    <div *ngIf="loading; else display" class="spinner-container">
+        <mat-spinner></mat-spinner> <!-- Mat Spinner do Angular Material -->
+    </div>
+    
+    <ng-template #display>
+        <list-address [data]="addresses" [editable]="true"
         (updateById)="updateById($event)"
         (removeById)="removeById($event)"
         *ngIf="addresses.length > 0; else empty"/>
+
+        <ng-template #empty>
+            <div class="message-empty">
+                <h1>Endereços estão vazios</h1>
+                <span>Crie um endereço aqui mesmo !</span>
+            </div>
+        </ng-template>
+    </ng-template>
 </div>
 
 
-
-<ng-template #empty>
-    <div class="message-empty">
-        <h1>Endereços estão vazios</h1>
-        <span>Crie um endereço aqui mesmo !</span>
-    </div>
-</ng-template>

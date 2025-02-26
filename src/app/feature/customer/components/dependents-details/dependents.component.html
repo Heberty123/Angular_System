@@ -1,0 +1,22 @@
+<button mat-mini-fab color="primary" (click)="openDialogAdd()">
+    <mat-icon>add</mat-icon>
+</button>
+
+<div *ngIf="loading; else display" class="spinner-container">
+    <mat-spinner></mat-spinner> <!-- Mat Spinner do Angular Material -->
+</div>
+
+<ng-template #display>
+    <table-entities 
+    [data]="data" 
+    (rowClicked)="null"
+    [displayColumns]="displayColumns" 
+    *ngIf="!loading && data.length > 0; else empty" />
+
+    <ng-template #empty>
+        <div class="message-empty">
+            <h1>Dependentes estão vazios</h1>
+            <span>Crie um dependente aqui mesmo !</span>
+        </div>
+    </ng-template>
+</ng-template>

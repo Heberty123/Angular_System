@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,10 @@ import { ObjToDisplayColumns, TableEntitiesComponent } from 'src/app/shared/comp
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
 import { AddDependentComponent } from '../dialogs/add-dependent/add-dependent.component';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 let complexColumns: ObjToDisplayColumns[] = [
   { key: 'name', label: 'Nome' },
@@ -16,29 +20,37 @@ let complexColumns: ObjToDisplayColumns[] = [
   selector: 'dependents',
   standalone: true,
   imports: [
+    CommonModule,
     TableEntitiesComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './dependents.component.html',
   styleUrl: './dependents.component.css'
 })
 export class DependentsComponent implements OnInit {
 
-  @Input() customer: Customer;
+  @Input('id') customerID!: number;
   data: Customer[] = [];
   displayColumns: ObjToDisplayColumns[] = complexColumns;
-  @Output() findDependent = new EventEmitter<Customer>();
+  loading: boolean = true;
 
   constructor(private _customerService: CustomerService,
     private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this._customerService.findAllDependentsByCustomer(this.customer)
+    this.loadDependents()
+  }
+
+  loadDependents(): void {
+    this._customerService.findDependentsByCustomer(this.customerID)
     .subscribe({
-      next: (dependents: Customer[]) => this.data = dependents
+      next: (dependents: Customer[]) => {
+        this.data = dependents;
+        this.loading = false;
+      }
     })
-    console.log("Eu fui chamado de novo");
   }
 
   openDialogAdd(): void {
@@ -53,7 +65,7 @@ export class DependentsComponent implements OnInit {
   }
 
   addDependent(customer: Customer): void {
-    this._customerService.addDependent(customer, this.customer)
+    this._customerService.addDependent(customer, this.customerID)
       .subscribe({
         next: (dependent: Customer) => {
           this.data.push(dependent);

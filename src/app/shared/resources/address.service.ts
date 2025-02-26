@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, take, throwError } from 'rxjs';
+import { catchError, delay, Observable, take, throwError } from 'rxjs';
 import { Address } from '../interfaces/address';
 import { Customer } from '../interfaces/customer';
 
@@ -12,27 +12,29 @@ export class AddressService {
 
   constructor(private http:HttpClient) { }
 
-  private apiUrl: string = 'api/address';
   private headers = { 'content-type': 'application/json'}
 
-  save(address: any, customer: Customer): Observable<Address>{
-    return this.http.post<Address>(this.apiUrl + `/create/${customer.id}`, address, {'headers': this.headers});
+  save(address: any, customer_id: number): Observable<Address>{
+    return this.http.post<Address>(`customers/${customer_id}/addresses`, address, {'headers': this.headers});
   }
 
-  searchByCPF(cep: string): Observable<any>{
+  searchByCEP(cep: string): Observable<any>{
     return this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`, { headers: this.headers });
   }
 
   findAllByCustomerId(id: number): Observable<Address[]>{
-    return this.http.get<Address[]>(this.apiUrl + `/all/${id}`, { headers: this.headers });
+    return this.http.get<Address[]>(`api/customers/${id}/addresses`, { headers: this.headers })
+    .pipe(delay(2000));
   }
 
-  update(address: Address): Observable<Address>{
-    return this.http.put<Address>(this.apiUrl , address, {'headers': this.headers});
+  update(address: Address, customer_id: number): Observable<Address>{
+    return this.http.put<Address>(`customers/${customer_id}/addresses/${address.id}` ,
+      address, {'headers': this.headers});
   }
   
-  deleteById(id: number): Observable<unknown>{
-    return this.http.delete(this.apiUrl + `/delete/${id}`, { observe: 'response', headers: this.headers })
+  delete(address: Address, customer_id: number): Observable<unknown>{
+    return this.http.delete(`customers/${customer_id}/addresses/${address.id}`,
+      { observe: 'response', headers: this.headers })
       .pipe(
         take(1),
         catchError(this.handleError)

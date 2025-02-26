@@ -1,13 +1,15 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ControlBarcodeReaderService } from './services/control-barcode-reader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductByBarcodeComponent } from './shared/components/dialogs/product-by-barcode/product-by-barcode.component';
 import { Product } from './shared/interfaces/product';
 import { ProductService } from './shared/resources/product.service';
-import { WebSocketStockService } from './shared/resources/web-socket-stock.service';
-import { ProductStock } from './shared/interfaces/ProductStock';
 import { InventoryStatusService } from './services/inventory-status.service';
+import { AuthService } from './services/auth-service';
+import { UserService } from './shared/resources/user.service';
+import { Router } from '@angular/router';
+import { User } from './shared/interfaces/user';
 
 
 @Component({
@@ -16,6 +18,9 @@ import { InventoryStatusService } from './services/inventory-status.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  authService = inject(AuthService);
+  userService = inject(UserService);
+  route = inject(Router)
   title: string = 'Amelia_Angular';
   showFiller: boolean = false;
   opened: boolean;
@@ -37,15 +42,21 @@ export class AppComponent implements OnInit, OnDestroy {
           next: (value: boolean) =>
             this.isThereComponentBarcodeReader = value
         });
+      this.userService.getUserByToken().subscribe({
+        next: (user: User) => {
+          this.authService.currentUserSig.set(user)
+        }
+      })
   }
-
-  ngOnDestroy(): void {
-    this.subscription && this.subscription.unsubscribe();
-  }
-
 
   changeOpened(value: boolean): void {
     this.opened = value;
+  }
+
+  logout(): void {
+    console.log('logout');
+    localStorage.setItem('token', '');
+    this.authService.currentUserSig.set(null);
   }
 
   /** !!!!!! HostListeners  !!!!! */
@@ -99,6 +110,10 @@ export class AppComponent implements OnInit, OnDestroy {
           });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription && this.subscription.unsubscribe();
   }
 
 }

@@ -29,7 +29,7 @@ export class InventoryComponent {
   columnsDisplayed: ObjToDisplayColumns[] = columnsToDisplay;
 
   constructor(private _inventoryStatus: InventoryStatusService) {
-    this._inventoryStatus.getStockStatus().subscribe({
-      next: (value: ProductStock[]) => { this.inventoryStatus = value; } })
+    // this._inventoryStatus.getStockStatus().subscribe({
+    //   next: (value: ProductStock[]) => { this.inventoryStatus = value; } })
   }
 }

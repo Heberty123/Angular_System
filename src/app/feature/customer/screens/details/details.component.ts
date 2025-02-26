@@ -1,47 +1,61 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatStepperModule } from '@angular/material/stepper';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
-import { AddressesDetailsComponent } from '../../components/addresses-details/addresses-details.component';
 import { EditCustomerComponent } from '../../components/dialogs/edit-customer/edit-customer.component';
-import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
-import { OrdersComponent } from '../../components/orders/orders.component';
-import { PaymentsModule } from '../../components/payments/payments.module';
-import { DependentsComponent } from '../../components/dependents/dependents.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'details-customer',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatStepperModule,
-    FormCustomerComponent,
-    OrdersComponent,
-    PaymentsModule,
-    AddressesDetailsComponent,
-    MatProgressSpinnerModule,
-    DependentsComponent
-  ]
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
-  @Input() customer: Customer;
-  @Output() toList = new EventEmitter<void>()
+  @Input('id') customerID!: number
+  customer: Customer;
+  navLinks: any[];
+  activeLinkIndex = -1;
 
   constructor(private _customerService: CustomerService,
-    public dialog: MatDialog) { }
+    private route: ActivatedRoute,
+    public dialog: MatDialog) {
+          this.navLinks = [
+      {
+        label: "Endereços",
+        link: "./addresses",
+        index: 0
+      },
+      {
+        label: "Dependentes",
+        link: "./dependents",
+        index: 1
+      },
+      {
+        label: "Pagamentos",
+        link: "./payments",
+        index: 2
+      },
+      {
+        label: "Pedidos",
+        link: "./orders",
+        index: 3
+      },
+    ];
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.findCustomer(this.customerID);
+  }
+
+  findCustomer(id: number): void {
+    if (!isNaN(id)) {
+      this._customerService.findById(id).subscribe({
+        next: (found: Customer) => this.customer = found
+      })
+    }
+  }
 
   openEditCustomer(): void {
     const dialogRef = this.dialog.open(EditCustomerComponent, {
@@ -59,7 +73,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-
   openRemoveCustomer(): void {
     let information: GeneralDialogData = {
       title: `Apagar cliente id ${this.customer.id}`,
@@ -76,7 +89,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this._customerService.deleteById(this.customer.id!)
             .subscribe({
               next: () => {
-                this.toList.emit();
+                
               }
             })
       }

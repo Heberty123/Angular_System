@@ -1,35 +1,44 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
-import { Customer } from 'src/app/shared/interfaces/customer';
-import { MaterialBasicModule } from 'src/app/shared/modules/material-basic.module';
-import { ListModule } from './screens/list/list.module';
-import { RegisterComponent } from './screens/register/register.component';
-import { DetailsComponent } from './screens/details/details.component';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { ChildrenOutletContexts, Router, RouterOutlet } from '@angular/router';
+import { routeTransitionAnimations } from './route-transition-animations';
 
 @Component({
   selector: 'customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css'],
-  standalone: true,
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  imports: [
-    CommonModule,
-    MaterialBasicModule,
-    RegisterComponent,
-    ListModule, 
-    DetailsComponent,
-    
-  ],
-  providers: []
+  animations: [routeTransitionAnimations]
 })
 export class CustomerComponent implements OnInit, OnDestroy{
-  selectedCustomer: Customer | null;
-  selectedTabIndex: number;
 
-  constructor(){}
+  router = inject(Router)
+  contexts = inject(ChildrenOutletContexts)
+  navLinks: any[];
+  activeLinkIndex = -1;
+
+  constructor() {
+    this.navLinks = [
+      {
+        label: "First",
+        link: "./new",
+        index: 0
+      },
+      {
+        label: "Second",
+        link: "./list",
+        index: 1
+      },
+    ];
+  }
   
+
   ngOnInit(): void {
   }
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && 
+      outlet.activatedRouteData && 
+      outlet.activatedRouteData['animationState'];
+   }
 
 
   ngOnDestroy(): void {

@@ -16,7 +16,7 @@
     <mat-form-field class="input-cpf">
       <mat-label>CPF</mat-label>
       <input type="text" matInput formControlName="cpf" placeholder="xxx.xxx.xxx-xx"
-        maxlength="14" mask="000.000.000-00" [dropSpecialCharacters]="false">
+        maxlength="14" mask="000.000.000-00">
       <mat-error *ngIf="cpf?.errors?.['required']">
         Obrigatório.
       </mat-error>

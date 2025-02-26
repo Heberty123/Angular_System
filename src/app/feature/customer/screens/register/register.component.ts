@@ -1,37 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatStepperModule } from '@angular/material/stepper';
-import { ListAddressComponent } from 'src/app/shared/components/list-address/list-address.component';
+import { FormGroup } from '@angular/forms';
 import { Address } from 'src/app/shared/interfaces/address';
 import { Customer } from 'src/app/shared/interfaces/customer';
 import { AddressService } from 'src/app/shared/resources/address.service';
 import { CustomerService } from 'src/app/shared/resources/customer.service';
-import { FormCustomerComponent } from '../../components/forms/form-customer/form-customer.component';
 import { TableEntitiesComponent } from 'src/app/shared/components/tables/table-entities/table-entities.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GeneralDialogConfirmComponent, GeneralDialogData } from 'src/app/shared/components/dialogs/general-dialog-confirm/general-dialog-confirm.component';
 import { EditAddressComponent } from '../../components/dialogs/edit-address/edit-address.component';
-import { formAddressComponent } from '../../components/forms/form-address/form-address.component';
 
 @Component({
   selector: 'register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormCustomerComponent,
-    formAddressComponent,
-    MatStepperModule,
-    MatButtonModule,
-    MatIconModule,
-    ListAddressComponent,
-    ReactiveFormsModule,
-    TableEntitiesComponent
-  ]
 })
 export class RegisterComponent{
   customerFG = new FormGroup({})
@@ -65,7 +46,8 @@ export class RegisterComponent{
 
   saveAddress(): void {
     if(this.addressFG.valid) {
-      this._addressService.save(this.addressFG.value, this.customerFG.value as Customer)
+      let customer = this.customerFG.value as Customer
+      this._addressService.save(this.addressFG.value, customer.id!)
       .subscribe({
         next: (address: Address) => this.addresses.push(address)
       });
@@ -78,7 +60,7 @@ export class RegisterComponent{
     if(this.dependentFG.valid) {
       this._customerService.addDependent(
         this.dependentFG.value! as Customer,
-        this.customerFG.value! as Customer)
+        (this.customerFG.value! as Customer).id!)
         .subscribe({
           next: (value: Customer) => { 
             this.dependents = [...this.dependents, value];
@@ -140,6 +122,7 @@ export class RegisterComponent{
     }    
   }
 
+  /*
   updateById(id: number): void {
     let value: Address =
       this.addresses.find(value => value.id === id)!;
@@ -164,15 +147,16 @@ export class RegisterComponent{
         }
       }
     });
-  }
+  }*/
 
-  removeAddress(id: number): void{
-     this._addressService.deleteById(id)
+  /*
+  removeAddress(address: Address): void{
+     this._addressService.delete(address, this.customerFG.value)
        .subscribe({
          next: (n: any) => {
            if(n.status == 200){
              this.addresses.filter((value, index) => {
-               if(value.id === id){
+               if(value.id === address.id){
                  this.addresses.splice(index, 1);
                }
              })
@@ -180,5 +164,5 @@ export class RegisterComponent{
          },
          error: (v) => console.error(v),
        })
-   }
+   }*/
 }

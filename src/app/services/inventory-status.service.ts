@@ -9,26 +9,26 @@ import { ProductService } from '../shared/resources/product.service';
 })
 export class InventoryStatusService {
 
-  private stocks$: BehaviorSubject<ProductStock[]> = new BehaviorSubject<ProductStock[]>([]);
+  // private stocks$: BehaviorSubject<ProductStock[]> = new BehaviorSubject<ProductStock[]>([]);
 
-  constructor(private _webSocketStockService: WebSocketStockService,
-    private _productService: ProductService){
-      this._productService.getAllStockStatus().subscribe({
-        next: (value: ProductStock[]) => { this.addStatus(value) },
-        complete: () => this._webSocketStockService.listen((news: ProductStock[]) => {this.addStatus(news); console.log(news)} )
-      })
-  }
+  // constructor(private _webSocketStockService: WebSocketStockService,
+  //   private _productService: ProductService){
+  //     this._productService.getAllStockStatus().subscribe({
+  //       next: (value: ProductStock[]) => { this.addStatus(value) },
+  //       complete: () => this._webSocketStockService.listen((news: ProductStock[]) => {this.addStatus(news); console.log(news)} )
+  //     })
+  // }
 
-  getStockStatus(): Observable<ProductStock[]> {
-    return this.stocks$.asObservable();
-  }
+  // getStockStatus(): Observable<ProductStock[]> {
+  //   return this.stocks$.asObservable();
+  // }
 
-  get qtyStatus(): number | null {
-    return this.stocks$.value.length || null;
-  }
+  // get qtyStatus(): number | null {
+  //   return this.stocks$.value.length || null;
+  // }
 
-  private addStatus(products: ProductStock[]) {
-    this.stocks$.next(products);
-    console.log(this.stocks$.value);
-  }
+  // private addStatus(products: ProductStock[]) {
+  //   this.stocks$.next(products);
+  //   console.log(this.stocks$.value);
+  // }
 }

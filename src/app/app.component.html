@@ -1,10 +1,12 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
     <button class="box-button-menu" (click)="changeOpened(!opened)">
       <mat-icon class="title">menu</mat-icon>
       <h1 class="title">Amélia Revendedora</h1>
     </button>
-  </mat-toolbar-row>
+    <span class="example-spacer"></span>
+    <div *ngIf="authService.currentUserSig">
+      <h2>{{ authService.currentUserSig()?.username }}</h2>
+    </div>
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize>
@@ -20,7 +22,7 @@
         </mat-list-item>
 
         <mat-list-item>
-          <button [routerLink]="['/client']" routerLinkActive="LinkActive" class="sidenav-btt">
+          <button [routerLink]="['/customer']" routerLinkActive="LinkActive" class="sidenav-btt">
             <mat-icon>person</mat-icon>
             <a>Cliente</a>
           </button>
@@ -42,7 +44,7 @@
 
         <mat-list-item>
           <button [routerLink]="['/inventory-control']" routerLinkActive="LinkActive" class="sidenav-btt">
-            <mat-icon [matBadge]="inventoryStatus.qtyStatus" matBadgeColor="warn">home</mat-icon>
+            <!-- <mat-icon [matBadge]="inventoryStatus.qtyStatus" matBadgeColor="warn">home</mat-icon> -->
             <a>Estoque</a>
           </button>
         </mat-list-item>
@@ -51,6 +53,13 @@
           <button [routerLink]="['/dashboard']" routerLinkActive="LinkActive" class="sidenav-btt">
             <mat-icon>data_usage</mat-icon>
             <a>Vendas</a>
+          </button>
+        </mat-list-item>
+
+        <mat-list-item>
+          <button [routerLink]="['/admin']" routerLinkActive="LinkActive" class="sidenav-btt">
+            <mat-icon>admin</mat-icon>
+            <a>Administrador</a>
           </button>
         </mat-list-item>
         

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first, Observable } from 'rxjs';
+import { delay, first, Observable } from 'rxjs';
 import { Customer } from '../interfaces/customer';
 import { DefaultingCustomer } from '../interfaces/DefaultingCustomer';
 import { CustomerPurchase } from '../interfaces/CustomerPurchase';
@@ -25,7 +25,7 @@ export class CustomerService {
   }
 
   findAll(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.apiUrl)
+    return this.http.get<Customer[]>(this.apiUrl, {'headers': this.headers})
       .pipe(
         first()
       );
@@ -48,12 +48,13 @@ export class CustomerService {
     return this.http.put<Customer>(this.apiUrl, customer, {'headers': this.headers});
   }
 
-  addDependent(dependent: Customer, parent: Customer): Observable<Customer>{
-    return this.http.post<Customer>(this.apiUrl + `/${parent.id!}/dependents`, dependent, {'headers': this.headers});
+  addDependent(dependent: Customer, parent_id: number): Observable<Customer>{
+    return this.http.post<Customer>(this.apiUrl + `/${parent_id}/dependents`, dependent, {'headers': this.headers});
   }
 
-  findAllDependentsByCustomer(customer: Customer): Observable<Customer[]>{
-    return this.http.get<Customer[]>(this.apiUrl + `/${customer.id}/dependents`, { headers: this.headers });
+  findDependentsByCustomer(id: number): Observable<Customer[]>{
+    return this.http.get<Customer[]>(this.apiUrl + `/${id}/dependents`, { headers: this.headers })
+      .pipe(delay(2000));
   }
   
   getPurchase(startDate?: Moment, endDate?: Moment): Observable<CustomerPurchase[]>{

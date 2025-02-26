@@ -25,8 +25,8 @@
                 [formGroup]="addressFG"
                 (ngSubmit)="saveAddress()"/>
             <list-address [data]="addresses" [editable]="true" 
-                (updateById)="updateById($event)"
-                (removeById)="removeAddress($event)" />
+                (updateById)="null"
+                (removeById)="null" />
         </mat-step>
 
         <mat-step label="Dependentes" >  
